@@ -28,7 +28,7 @@ $posts = [['title' => 'цитата',
         'type' => 'post-link',
         'content' => 'www.htmlacademy.ru/',
         'name' => 'Владик',
-        'avatar' => 'serpic.jpg']]
+        'avatar' => 'serpic.jpg']];
 ?>
 <!DOCTYPE html>
 <html lang="ru">
