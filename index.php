@@ -31,24 +31,23 @@ $posts = [['title' => 'цитата',
         'avatar' => 'serpic.jpg']];
 
 $cut_text = function($text, $length = 300) {
-    if (strlen($text) > $length) { //проверяем длинну, если длина норм, то ниче делать не надо
+    if(strlen($text) > 300) {
         $text_words = explode(" ", $text);
         $counter = 0;
         $final_text = null;
-        foreach ($text_words as $word) { //перебираем массив из слов, считаем буквы
+        foreach ($text_words as $word) {
             $counter += strlen($word);
             if ($counter >= 300) {
                 break;
             }
-            $final_text .= ' ' . $word; // если букв больше, чем надо, то последнее слово не добавляется
+            $final_text .= ' ' . $word;
         }
-        $text = '<p>' . $final_text . '...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>'; // собираем то, что выводим на экран
-        return $text;
+        $text = '<p>' . $final_text . '...' .  '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
     } else {
-        $final_text = '<p>' . $text . '</p>';
-        return $final_text;
+        $text = '<p>' . $text . '</p>';
     }
-} // возмонжо не стоит делать возвраты из функций с HTML кодом, а просто добавить ветку в разметку, тогда функция не будет такой тяжелой, но это уже вопрос для рефакторинга))))
+    return $text;
+}
 
 ?>
 <!DOCTYPE html>
@@ -281,7 +280,7 @@ $cut_text = function($text, $length = 300) {
                             <cite>Неизвестный Автор</cite>
                         </blockquote>
                     <?php elseif($post['type'] === 'post-text'): ?>
-                        <?= $cut_text($post['content']) ?>
+                        <?=$cut_text($post['content'])?>
                     <?php elseif($post['type'] === 'post-link'): ?>
                         <div class="post-link__wrapper">
                             <a class="post-link__external" href="http://" title="Перейти по ссылке">
