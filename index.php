@@ -31,22 +31,17 @@ $posts = [['title' => 'цитата',
         'avatar' => 'serpic.jpg']];
 
 $cut_text = function($text, $length = 300) {
-    if(strlen($text) > 300) {
-        $text_words = explode(" ", $text);
-        $counter = 0;
-        $final_text = null;
-        foreach ($text_words as $word) {
-            $counter += strlen($word);
-            if ($counter >= 300) {
-                break;
-            }
-            $final_text .= ' ' . $word;
+    $text_words = explode(" ", $text);
+    $counter = 0;
+    $final_text = null;
+    foreach ($text_words as $word) {
+        $counter += strlen($word);
+        if ($counter >= 300) {
+            break;
         }
-        $text = '<p>' . $final_text . '...' .  '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
-    } else {
-        $text = '<p>' . $text . '</p>';
+        $final_text .= ' ' . $word;
     }
-    return $text;
+    return $final_text;
 }
 
 ?>
@@ -280,7 +275,12 @@ $cut_text = function($text, $length = 300) {
                             <cite>Неизвестный Автор</cite>
                         </blockquote>
                     <?php elseif($post['type'] === 'post-text'): ?>
-                        <?=$cut_text($post['content'])?>
+                        <?php if(mb_strlen($post['content']) > 300): ?>
+                            <p><?=$cut_text($post['content']) . '...'?></p>
+                            <a class="post-text__more-link" href="#">Читать далее</a>
+                        <?php else: ?>
+                            <p><?=$post['content']?></p>
+                        <?php endif; ?>
                     <?php elseif($post['type'] === 'post-link'): ?>
                         <div class="post-link__wrapper">
                             <a class="post-link__external" href="http://" title="Перейти по ссылке">
