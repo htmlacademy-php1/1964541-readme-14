@@ -11,7 +11,7 @@ $posts = [['title' => 'цитата',
     'avatar' => 'userpic-larisa-small.jpg'],
     ['title' => 'Игра престолов',
         'type' => 'post-text',
-        'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
+        'content' => 'Имеется начальное значение счётчика. Мы его поместили в переменную. Затем у нас есть выражение, то есть условие цикла. Оно очень простое. То, что находится в переменной должно быть меньше 10. Если 1 < 10, то цикл выполнится. Также имеется тело цикла, которое состоит из двух строк. Первая просто показывает на экране очередное значение переменной. А вторая строчка увеличивает значение переменной на единицу.',
         'name' => 'Владик',
         'avatar' => 'userpic.jpg'],
     ['title' => 'Наконец, обработал фотки!',
@@ -29,6 +29,27 @@ $posts = [['title' => 'цитата',
         'content' => 'www.htmlacademy.ru/',
         'name' => 'Владик',
         'avatar' => 'serpic.jpg']];
+
+$cut_text = function($text, $length = 300) {
+    if (strlen($text) > $length) { //проверяем длинну, если длина норм, то ниче делать не надо
+        $text_words = explode(" ", $text);
+        $counter = 0;
+        $final_text = null;
+        foreach ($text_words as $word) { //перебираем массив из слов, считаем буквы
+            $counter += strlen($word);
+            if ($counter >= 300) {
+                break;
+            }
+            $final_text .= ' ' . $word; // если букв больше, чем надо, то последнее слово не добавляется
+        }
+        $text = '<p>' . $final_text . '...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>'; // собираем то, что выводим на экран
+        return $text;
+    } else {
+        $final_text = '<p>' . $text . '</p>';
+        return $final_text;
+    }
+} // возмонжо не стоит делать возвраты из функций с HTML кодом, а просто добавить ветку в разметку, тогда функция не будет такой тяжелой, но это уже вопрос для рефакторинга))))
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -260,7 +281,7 @@ $posts = [['title' => 'цитата',
                             <cite>Неизвестный Автор</cite>
                         </blockquote>
                     <?php elseif($post['type'] === 'post-text'): ?>
-                        <p><?= $post['content'] ?></p>
+                        <?= $cut_text($post['content']) ?>
                     <?php elseif($post['type'] === 'post-link'): ?>
                         <div class="post-link__wrapper">
                             <a class="post-link__external" href="http://" title="Перейти по ссылке">
