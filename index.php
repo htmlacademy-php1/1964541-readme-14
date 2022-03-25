@@ -4,31 +4,41 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Кирилл';
 
-$posts = [['title' => 'цитата',
-    'type' => 'post-quote',
-    'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
-    'name' => 'Лариса',
-    'avatar' => 'userpic-larisa-small.jpg'],
-    ['title' => 'Игра престолов',
+$posts = [
+    [
+        'title' => 'цитата',
+        'type' => 'post-quote',
+        'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
+        'name' => 'Лариса',
+        'avatar' => 'userpic-larisa-small.jpg'
+    ],
+    [
+        'title' => 'Игра престолов',
         'type' => 'post-text',
         'content' => 'Всё, что заключено в фигурные скобки – это инструкции (тело) цикла. Они повторяются до тех пор, пока условие возвращает значение true. В примере, приведенном выше, $i выводится на экран, а затем переменная счётчика увеличивается на 1. Это важно чтобы условие цикла, в конце концов, перестало соблюдаться. Если условие цикла соблюдается всегда, например, потому что вы забыли увеличить переменную счётчика $i, тогда скрипт войдёт в бесконечный цикл. ',
         'name' => 'Владик',
-        'avatar' => 'userpic.jpg'],
-    ['title' => 'Наконец, обработал фотки!',
+        'avatar' => 'userpic.jpg'
+    ],
+    [
+        'title' => 'Наконец, обработал фотки!',
         'type' => 'post-photo',
         'content' => 'rock-medium.jpg',
         'name' => 'Виктор',
-        'avatar' => 'userpic-mark.jpg'],
-    ['title' => 'Моя мечта',
+        'avatar' => 'userpic-mark.jpg'
+    ],
+    [
+        'title' => 'Моя мечта',
         'type' => 'post-photo',
         'content' => 'coast-medium.jpg',
         'name' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg'],
-    ['title' => 'Лучшие курсы',
+        'avatar' => 'userpic-larisa-small.jpg'
+    ],
+    [
+        'title' => 'Лучшие курсы',
         'type' => 'post-link',
         'content' => 'www.htmlacademy.ru/',
         'name' => 'Владик',
-        'avatar' => 'serpic.jpg']];
+        'avatar' => 'userpic.jpg']];
 
 $cut_text = function($text, $length = 300) {
     $text_words = explode(" ", $text);
@@ -39,7 +49,7 @@ $cut_text = function($text, $length = 300) {
         $i++;
     }
     return $final_text;
-}
+};
 
 ?>
 <!DOCTYPE html>
@@ -280,7 +290,7 @@ $cut_text = function($text, $length = 300) {
                         <?php endif; ?>
                     <?php elseif($post['type'] === 'post-link'): ?>
                         <div class="post-link__wrapper">
-                            <a class="post-link__external" href="http://" title="Перейти по ссылке">
+                            <a class="post-link__external" href="http://<?=$post['content']?>" title="Перейти по ссылке">
                                 <div class="post-link__info-wrapper">
                                     <div class="post-link__icon-wrapper">
                                         <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
