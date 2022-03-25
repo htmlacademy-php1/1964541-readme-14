@@ -4,31 +4,44 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Кирилл';
 
-$posts = [['title' => 'цитата',
-    'type' => 'post-quote',
-    'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
-    'name' => 'Лариса',
-    'avatar' => 'userpic-larisa-small.jpg'],
-    ['title' => 'Игра престолов',
+$posts = [
+    [
+        'title' => 'цитата',
+        'type' => 'post-quote',
+        'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
+        'name' => 'Лариса',
+        'avatar' => 'userpic-larisa-small.jpg'
+    ],
+    [
+        'title' => 'Игра престолов',
         'type' => 'post-text',
         'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
         'name' => 'Владик',
-        'avatar' => 'userpic.jpg'],
-    ['title' => 'Наконец, обработал фотки!',
+        'avatar' => 'userpic.jpg'
+    ],
+    [
+        'title' => 'Наконец, обработал фотки!',
         'type' => 'post-photo',
         'content' => 'rock-medium.jpg',
         'name' => 'Виктор',
-        'avatar' => 'userpic-mark.jpg'],
-    ['title' => 'Моя мечта',
+        'avatar' => 'userpic-mark.jpg'
+    ],
+    [
+        'title' => 'Моя мечта',
         'type' => 'post-photo',
         'content' => 'coast-medium.jpg',
         'name' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg'],
-    ['title' => 'Лучшие курсы',
+        'avatar' => 'userpic-larisa-small.jpg'
+    ],
+    [
+        'title' => 'Лучшие курсы',
         'type' => 'post-link',
         'content' => 'www.htmlacademy.ru/',
         'name' => 'Владик',
-        'avatar' => 'serpic.jpg']];
+        'avatar' => 'userpic.jpg'
+    ]
+];
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -263,7 +276,7 @@ $posts = [['title' => 'цитата',
                         <p><?= $post['content'] ?></p>
                     <?php elseif($post['type'] === 'post-link'): ?>
                         <div class="post-link__wrapper">
-                            <a class="post-link__external" href="http://" title="Перейти по ссылке">
+                            <a class="post-link__external" href="http://<?=$post['content']?>" title="Перейти по ссылке">
                                 <div class="post-link__info-wrapper">
                                     <div class="post-link__icon-wrapper">
                                         <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
