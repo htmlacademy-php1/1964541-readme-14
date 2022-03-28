@@ -58,7 +58,7 @@
                 <div class="post__info">
                     <b class="post__author-name"><?= $post['name'] ?></b>
                     <time class="post__time" title="<?= date("d.m.y g:i", strtotime(generate_random_date($i))) ?>"
-                          datetime="<?= generate_random_date($i) ?>"><?= show_past_time($i) ?></time>
+                          datetime="<?= generate_random_date($i) ?>"><?= show_past_time(generate_random_date($i)) ?></time>
                 </div>
             </a>
         </div>

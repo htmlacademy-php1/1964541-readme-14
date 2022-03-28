@@ -17,11 +17,11 @@ function cut_text($text, $length = 300): string
     return $final_text;
 }
 
-function show_past_time($i): string
+function show_past_time($time): string
 {
     date_default_timezone_set("Europe/Moscow");
     setlocale(LC_ALL, 'ru_RU');
-    $post_date = strtotime(generate_random_date($i));
+    $post_date = strtotime($time);
     $cur_date = strtotime('now');
     $diff = $cur_date - $post_date;
 
