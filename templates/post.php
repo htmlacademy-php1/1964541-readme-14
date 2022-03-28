@@ -1,3 +1,31 @@
+<?php
+$post_date = strtotime(generate_random_date($i));
+$cur_date = strtotime('now');
+$diff = $cur_date - $post_date;
+$date_original = generate_random_date($i);
+
+if ($diff < 3600) {
+    $diff /= 60;
+    $diff = floor($diff);
+    $diff .= ' ' . get_noun_plural_form($diff, 'минута', 'минуты', 'минут') . ' назад';
+} else if ($diff < 86400) {
+    $diff /= 3600;
+    $diff = floor($diff);
+    $diff .= ' ' . get_noun_plural_form($diff, 'час', 'часа', 'часов') . ' назад';
+} else if ($diff < 604800) {
+    $diff /= 86400;
+    $diff = floor($diff);
+    $diff .= ' ' . get_noun_plural_form($diff, 'день', 'дня', 'дней') . ' назад';
+} else if ($diff < 2419200) {
+    $diff /= 604800;
+    $diff = floor($diff);
+    $diff .= ' ' . get_noun_plural_form($diff, 'неделя', 'недели', 'недель') . ' назад';
+} else {
+    $diff /= 2419200;
+    $diff = floor($diff);
+    $diff .= ' ' . get_noun_plural_form($diff, 'месяц', 'месяца', 'месяцев') . ' назад';
+}
+?>
 <article class="popular__post post <?= $post['type'] ?>">
     <header class="post__header">
         <h2><?= htmlspecialchars($post['title']) ?></h2>
@@ -57,7 +85,7 @@
                 </div>
                 <div class="post__info">
                     <b class="post__author-name"><?= $post['name'] ?></b>
-                    <time class="post__time" datetime="">дата</time>
+                    <time class="post__time" title="<?= date("d.m.y g:i", $post_date) ?>" datetime="<?= $date_original?>"><?= $diff ?></time>
                 </div>
             </a>
         </div>
@@ -86,3 +114,5 @@
         </div>
     </footer>
 </article>
+
+

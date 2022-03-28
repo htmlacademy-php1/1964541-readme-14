@@ -86,8 +86,10 @@
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($posts as $post): ?>
-            <?= include_template('post.php', ['post' => $post]); ?>
+            <?php $i = 0?>
+            <?php foreach ($posts as $post):?>
+            <?= include_template('post.php', ['post' => $post, 'i' => $i]);
+                $i++;?>
             <?php endforeach; ?>
         </div>
     </div>
