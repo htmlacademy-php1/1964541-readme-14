@@ -57,7 +57,7 @@
                 </div>
                 <div class="post__info">
                     <b class="post__author-name"><?= $post['name'] ?></b>
-                    <time class="post__time" title="<?= date("d.m.y g:i", strtotime($post['date'])) ?>"
+                    <time class="post__time" title="<?= date("d.m.y H:i", strtotime($post['date'])) ?>"
                           datetime="<?= $post['date'] ?>"><?= show_past_time($post['date']) ?></time>
                 </div>
             </a>

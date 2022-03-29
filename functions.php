@@ -19,32 +19,28 @@ function cut_text($text, $length = 300): string
 
 function show_past_time($time): string
 {
-    date_default_timezone_set("Europe/Moscow");
-    setlocale(LC_ALL, 'ru_RU');
     $post_date = strtotime($time);
     $cur_date = strtotime('now');
     $diff = $cur_date - $post_date;
 
-    if ($diff < 3600) {
-        $diff /= 60;
-        $diff = floor($diff);
-        $diff .= ' ' . get_noun_plural_form($diff, 'минута', 'минуты', 'минут') . ' назад';
-    } else if ($diff < 86400) {
-        $diff /= 3600;
-        $diff = floor($diff);
-        $diff .= ' ' . get_noun_plural_form($diff, 'час', 'часа', 'часов') . ' назад';
-    } else if ($diff < 604800) {
-        $diff /= 86400;
-        $diff = floor($diff);
-        $diff .= ' ' . get_noun_plural_form($diff, 'день', 'дня', 'дней') . ' назад';
-    } else if ($diff < 2419200) {
-        $diff /= 604800;
-        $diff = floor($diff);
-        $diff .= ' ' . get_noun_plural_form($diff, 'неделя', 'недели', 'недель') . ' назад';
+    if ($diff < SECONDS_IN_HOUR) {
+        $divider = SECONDS_IN_MIN;
+        $form = ['минута', 'минуты', 'минут'];
+    } else if ($diff < SECONDS_IN_DAY) {
+        $divider = SECONDS_IN_HOUR;
+        $form = ['час', 'часа', 'часов'];
+    } else if ($diff < SECONDS_IN_WEEK) {
+        $divider = SECONDS_IN_DAY;
+        $form = ['день', 'дня', 'дней'];
+    } else if ($diff < SECONDS_IN_MONTH) {
+        $divider = SECONDS_IN_WEEK;
+        $form = ['неделя', 'недели', 'недель'];
     } else {
-        $diff /= 2419200;
-        $diff = floor($diff);
-        $diff .= ' ' . get_noun_plural_form($diff, 'месяц', 'месяца', 'месяцев') . ' назад';
+        $divider= SECONDS_IN_MONTH;
+        $form = ['месяц', 'месяца', 'месяцев'];
     }
-    return $diff;
+    $diff /= $divider;
+    $diff = floor($diff);
+
+    return $diff . ' ' . get_noun_plural_form($diff, $form[0], $form[1], $form[2]) . ' назад';
 }
