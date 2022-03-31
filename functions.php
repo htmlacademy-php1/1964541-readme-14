@@ -16,3 +16,31 @@ function cut_text($text, $length = 300): string
     }
     return $final_text;
 }
+
+function show_past_time($time): string
+{
+    $post_date = strtotime($time);
+    $cur_date = strtotime('now');
+    $diff = $cur_date - $post_date;
+
+    if ($diff < SECONDS_IN_HOUR) {
+        $divider = SECONDS_IN_MIN;
+        $form = ['минута', 'минуты', 'минут'];
+    } else if ($diff < SECONDS_IN_DAY) {
+        $divider = SECONDS_IN_HOUR;
+        $form = ['час', 'часа', 'часов'];
+    } else if ($diff < SECONDS_IN_WEEK) {
+        $divider = SECONDS_IN_DAY;
+        $form = ['день', 'дня', 'дней'];
+    } else if ($diff < SECONDS_IN_MONTH) {
+        $divider = SECONDS_IN_WEEK;
+        $form = ['неделя', 'недели', 'недель'];
+    } else {
+        $divider= SECONDS_IN_MONTH;
+        $form = ['месяц', 'месяца', 'месяцев'];
+    }
+    $diff /= $divider;
+    $diff = floor($diff);
+
+    return $diff . ' ' . get_noun_plural_form($diff, $form[0], $form[1], $form[2]) . ' назад';
+}
