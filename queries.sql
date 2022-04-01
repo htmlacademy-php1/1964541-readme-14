@@ -25,20 +25,32 @@ VALUES ('Безумно можно быть первым!', '1', '1'),
        ('Согласена, я в полном восторге!', '5', '2');
 
 #список постов с сортировкой по популярности вместе с именами авторов и типом контента
-SELECT title, views, login, type FROM posts
-JOIN users u on posts.user_id = u.id
-JOIN cont_types ct ON posts.cont_type_id = ct.id ORDER BY views DESC;
+SELECT title, views, login, type
+FROM posts
+JOIN users u
+ON posts.user_id = u.id
+JOIN cont_types ct
+ON posts.cont_type_id = ct.id
+ORDER BY views DESC;
 
 #получить список постов для конкретного пользователя
 SELECT login, title, text, quote_auth, img, video, link, views, cont_type_id, tag_id
-FROM posts JOIN users u on posts.user_id = u.id WHERE u.login = 'Владик';
+FROM posts
+JOIN users u
+ON posts.user_id = u.id
+WHERE u.login = 'Владик';
 
 #получить список комментариев для одного поста, в комментариях должен быть логин пользователя
-SELECT login, content FROM comments JOIN users u ON comments.user_id = u.id
+SELECT login, content
+FROM comments
+JOIN users u
+ON comments.user_id = u.id
 WHERE post_id = 2;
 
 #добавить лайк к посту
-INSERT INTO likes (user_id, post_id) VALUE (2, 1);
+INSERT INTO likes (user_id, post_id)
+VALUE (2, 1);
 
 #Лариса подписалась на Владика
-INSERT INTO subscribes (follower_id, follow_id) VALUE (2, 3);
+INSERT INTO subscribes (follower_id, follow_id)
+VALUE (2, 3);
