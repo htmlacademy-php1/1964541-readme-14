@@ -64,4 +64,3 @@ CREATE TABLE cont_types (
                           type CHAR(64),
                           name CHAR(64)
 );
-
