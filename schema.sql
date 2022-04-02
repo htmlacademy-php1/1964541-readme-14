@@ -44,10 +44,10 @@ CREATE TABLE posts_tags (
 CREATE TABLE comments (
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        content TEXT NOT NULL ,
-                        user_id INT,
+                        content TEXT NOT NULL,
+                        user_id INT NOT NULL,
                         FOREIGN KEY (user_id) REFERENCES users (id),
-                        post_id INT,
+                        post_id INT NOT NULL,
                         FOREIGN KEY (post_id) REFERENCES posts (id)
 );
 
@@ -55,24 +55,24 @@ CREATE TABLE messages (
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         content TEXT NOT NULL,
-                        sender_id INT,
+                        sender_id INT NOT NULL,
                         FOREIGN KEY (sender_id) REFERENCES users (id),
-                        recipient_id INT,
+                        recipient_id INT NOT NULL,
                         FOREIGN KEY (recipient_id) REFERENCES users (id)
 );
 
 CREATE TABLE likes (
-                     user_id INT,
+                     user_id INT NOT NULL,
                      FOREIGN KEY (user_id) REFERENCES users (id),
-                     post_id INT,
+                     post_id INT NOT NULL,
                      FOREIGN KEY (post_id) REFERENCES posts (id),
                      CONSTRAINT likes_pk PRIMARY KEY (user_id, post_id)
 );
 
 CREATE TABLE subscribes (
-                          follower_id INT,
+                          follower_id INT NOT NULL,
                           FOREIGN KEY (follower_id) REFERENCES users (id),
-                          follow_id INT,
+                          follow_id INT NOT NULL,
                           FOREIGN KEY (follow_id) REFERENCES users (id),
                           CONSTRAINT subscribes PRIMARY KEY (follower_id, follow_id)
 );
