@@ -12,6 +12,12 @@ CREATE TABLE users (
                      avatar TEXT
 );
 
+CREATE TABLE cont_types (
+                          id INT AUTO_INCREMENT PRIMARY KEY,
+                          type ENUM('small'),
+                          name ENUM('small')
+);
+
 CREATE TABLE posts (
                      id INT AUTO_INCREMENT PRIMARY KEY,
                      title VARCHAR(128),
@@ -21,10 +27,10 @@ CREATE TABLE posts (
                      video TEXT,
                      link TEXT,
                      views INT,
-                     repost INT,
+                     reposts INT,
                      user_id INT,
+                     cont_type_id INT,
                      FOREIGN KEY (user_id) REFERENCES users (id),
-                     cont_type_id ENUM(5),
                      FOREIGN KEY (cont_type_id) REFERENCES cont_types (id)
 );
 
@@ -75,11 +81,5 @@ CREATE TABLE subscribes (
                           FOREIGN KEY (follower_id) REFERENCES users (id),
                           follow_id INT,
                           FOREIGN KEY (follow_id) REFERENCES users (id)
-);
-
-CREATE TABLE cont_types (
-                          id INT AUTO_INCREMENT PRIMARY KEY,
-                          type ENUM(5),
-                          name ENUM(5)
 );
 
