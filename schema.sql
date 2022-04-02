@@ -5,8 +5,8 @@ USE readme;
 
 CREATE TABLE users (
                      id INT AUTO_INCREMENT PRIMARY KEY,
-                     email VARCHAR(128),
-                     password CHAR(64),
+                     email VARCHAR(320),
+                     password VARCHAR(320),
                      login CHAR(64),
                      dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                      avatar TEXT
@@ -21,9 +21,24 @@ CREATE TABLE posts (
                      video TEXT,
                      link TEXT,
                      views INT,
+                     repost INT,
                      user_id INT,
-                     cont_type_id INT,
-                     tag_id INT
+                     FOREIGN KEY (user_id) REFERENCES users (id),
+                     cont_type_id ENUM(5),
+                     FOREIGN KEY (cont_type_id) REFERENCES cont_types (id)
+);
+
+CREATE TABLE tags (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    tag_name CHAR(64)
+);
+
+CREATE TABLE posts_tags (
+                         post_id INT,
+                         FOREIGN KEY (post_id) REFERENCES posts (id),
+                         tag_id INT,
+                         FOREIGN KEY (tag_id) REFERENCES tags (id),
+                         PRIMARY KEY (post_id, tag_id)
 );
 
 CREATE TABLE comments (
@@ -31,7 +46,9 @@ CREATE TABLE comments (
                         dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         content TEXT,
                         user_id INT,
-                        post_id INT
+                        FOREIGN KEY (user_id) REFERENCES users (id),
+                        post_id INT,
+                        FOREIGN KEY (post_id) REFERENCES posts (id)
 );
 
 CREATE TABLE messages (
@@ -39,29 +56,30 @@ CREATE TABLE messages (
                         dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         content TEXT,
                         sender_id INT,
-                        recipient_id INT
-);
-
-CREATE TABLE tags (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    tag CHAR(64)
+                        FOREIGN KEY (sender_id) REFERENCES users (id),
+                        recipient_id INT,
+                        FOREIGN KEY (recipient_id) REFERENCES users (id)
 );
 
 CREATE TABLE likes (
-                     id INT AUTO_INCREMENT PRIMARY KEY,
                      user_id INT,
-                     post_id INT
+                     FOREIGN KEY (user_id) REFERENCES users (id),
+                     post_id INT,
+                     FOREIGN KEY (post_id) REFERENCES posts (id),
+                     CONSTRAINT likes_pk PRIMARY KEY (user_id, post_id)
 );
 
 CREATE TABLE subscribes (
                           id INT AUTO_INCREMENT PRIMARY KEY,
                           follower_id INT,
-                          follow_id INT
+                          FOREIGN KEY (follower_id) REFERENCES users (id),
+                          follow_id INT,
+                          FOREIGN KEY (follow_id) REFERENCES users (id)
 );
 
 CREATE TABLE cont_types (
                           id INT AUTO_INCREMENT PRIMARY KEY,
-                          type CHAR(64),
-                          name CHAR(64)
+                          type ENUM(5),
+                          name ENUM(5)
 );
 
