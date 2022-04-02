@@ -5,38 +5,32 @@ USE readme;
 
 CREATE TABLE users (
                      id INT AUTO_INCREMENT PRIMARY KEY,
-                     email VARCHAR(320),
-                     password VARCHAR(320),
-                     login CHAR(64),
+                     email VARCHAR(320) NOT NULL,
+                     password CHAR(64) NOT NULL,
+                     login VARCHAR(320) NOT NULL,
                      dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                     avatar TEXT
-);
-
-CREATE TABLE cont_types (
-                          id INT AUTO_INCREMENT PRIMARY KEY,
-                          type ENUM('small'),
-                          name ENUM('small')
+                     avatar TEXT DEFAULT NULL
 );
 
 CREATE TABLE posts (
                      id INT AUTO_INCREMENT PRIMARY KEY,
-                     title VARCHAR(128),
-                     text TEXT,
-                     quote_auth VARCHAR(128),
-                     img TEXT,
-                     video TEXT,
-                     link TEXT,
-                     views INT,
-                     reposts INT,
-                     user_id INT,
-                     cont_type_id INT,
+                     title VARCHAR(128) NOT NULL,
+                     text TEXT DEFAULT NULL,
+                     quote_auth VARCHAR(128) DEFAULT NULL,
+                     img TEXT DEFAULT NULL,
+                     video TEXT DEFAULT NULL,
+                     link TEXT DEFAULT NULL,
+                     views INT DEFAULT NULL,
+                     reposts INT DEFAULT NULL,
+                     user_id INT NOT NULL,
+                     content_type ENUM('small') NOT NULL,
                      FOREIGN KEY (user_id) REFERENCES users (id),
-                     FOREIGN KEY (cont_type_id) REFERENCES cont_types (id)
+                     FOREIGN KEY (reposts) REFERENCES posts (id)
 );
 
 CREATE TABLE tags (
                     id INT AUTO_INCREMENT PRIMARY KEY,
-                    tag_name CHAR(64)
+                    name CHAR(64) DEFAULT NULL
 );
 
 CREATE TABLE posts_tags (
@@ -50,7 +44,7 @@ CREATE TABLE posts_tags (
 CREATE TABLE comments (
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        content TEXT,
+                        content TEXT NOT NULL ,
                         user_id INT,
                         FOREIGN KEY (user_id) REFERENCES users (id),
                         post_id INT,
@@ -60,7 +54,7 @@ CREATE TABLE comments (
 CREATE TABLE messages (
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        content TEXT,
+                        content TEXT NOT NULL,
                         sender_id INT,
                         FOREIGN KEY (sender_id) REFERENCES users (id),
                         recipient_id INT,
@@ -76,10 +70,10 @@ CREATE TABLE likes (
 );
 
 CREATE TABLE subscribes (
-                          id INT AUTO_INCREMENT PRIMARY KEY,
                           follower_id INT,
                           FOREIGN KEY (follower_id) REFERENCES users (id),
                           follow_id INT,
-                          FOREIGN KEY (follow_id) REFERENCES users (id)
+                          FOREIGN KEY (follow_id) REFERENCES users (id),
+                          CONSTRAINT subscribes PRIMARY KEY (follower_id, follow_id)
 );
 
