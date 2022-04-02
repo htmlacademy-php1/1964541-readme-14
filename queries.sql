@@ -1,10 +1,5 @@
 #заполняем типы контента
-INSERT INTO cont_types (type, name)
-VALUES ('Текст', 'text'),
-       ('Цитата', 'quote'),
-       ('Картинка', 'photo'),
-       ('Видео', 'video'),
-       ('Ссылка', 'link');
+
 #заполняем юзеров
 INSERT INTO users (email, password, login, avatar)
 VALUES ('4204884@gmail.com', 'WASH32rh' , 'gervant of irvia', '/img/cat.jpg'),
@@ -12,12 +7,12 @@ VALUES ('4204884@gmail.com', 'WASH32rh' , 'gervant of irvia', '/img/cat.jpg'),
        ('volandeslav@gmail.com', 'BUric1hK', 'Владик', 'userpic.jpg'),
        ('dargin@mail.ru', 'SWAGmad', 'Виктор', 'userpic-mark.jpg');
 #заполняем посты
-INSERT INTO posts (title, text, quote_auth, img, video, link, views, cont_type_id, tag_id, user_id)
-VALUES ('Цитата', 'Мы в жизни любим только раз, а после ищем лишь похожих', 'Неизвестный автор', NULL, NULL, NULL, 7, '2', NULL, '2'),
-       ('Игра престолов', 'Власть пребывает там, куда помещает её всеобщая вера. Это уловка, тень на стене.', NULL, NULL, NULL, NULL, 5, '1', NULL, '3'),
-       ('Наконец обработал фотки!', NULL, NULL, 'rock-medium.jpg', NULL, NULL, 2, '3', NULL, '4'),
-       ('Моя мечта', NULL, NULL, 'coast-medium.jpg', NULL, NULL, 10, '3', NULL, '2'),
-       ('Лучшие курсы', NULL, NULL, NULL, NULL, 'www.htmlacademy.ru/', 20, '5', NULL, '3');
+INSERT INTO posts (title, text, quote_auth, img, video, link, views, content_type, user_id)
+VALUES ('Цитата', 'Мы в жизни любим только раз, а после ищем лишь похожих', 'Неизвестный автор', NULL, NULL, NULL, 7, 'quote', '2'),
+       ('Игра престолов', 'Власть пребывает там, куда помещает её всеобщая вера. Это уловка, тень на стене.', NULL, NULL, NULL, NULL, 5, 'text', '3'),
+       ('Наконец обработал фотки!', NULL, NULL, 'rock-medium.jpg', NULL, NULL, 2, 'photo', '4'),
+       ('Моя мечта', NULL, NULL, 'coast-medium.jpg', NULL, NULL, 10, 'photo', '2'),
+       ('Лучшие курсы', NULL, NULL, NULL, NULL, 'www.htmlacademy.ru/', 20, 'link', '3');
 #заполняем комменты
 INSERT INTO comments (content, post_id, user_id)
 VALUES ('Безумно можно быть первым!', '1', '1'),
@@ -25,16 +20,14 @@ VALUES ('Безумно можно быть первым!', '1', '1'),
        ('Согласена, я в полном восторге!', '5', '2');
 
 #список постов с сортировкой по популярности вместе с именами авторов и типом контента
-SELECT title, views, login, type
+SELECT title, views, login, content_type
 FROM posts
 JOIN users u
 ON posts.user_id = u.id
-JOIN cont_types ct
-ON posts.cont_type_id = ct.id
 ORDER BY views DESC;
 
 #получить список постов для конкретного пользователя
-SELECT login, title, text, quote_auth, img, video, link, views, cont_type_id, tag_id
+SELECT login, title, text, quote_auth, img, video, link, views
 FROM posts
 JOIN users u
 ON posts.user_id = u.id
