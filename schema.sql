@@ -23,7 +23,7 @@ CREATE TABLE posts (
                      views INT DEFAULT NULL,
                      reposts INT DEFAULT NULL,
                      user_id INT NOT NULL,
-                     content_type ENUM('small') NOT NULL,
+                     content_type ENUM('text', 'quote', 'photo', 'video', 'link') NOT NULL,
                      FOREIGN KEY (user_id) REFERENCES users (id),
                      FOREIGN KEY (reposts) REFERENCES posts (id)
 );
