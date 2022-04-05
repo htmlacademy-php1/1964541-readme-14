@@ -5,62 +5,79 @@ USE readme;
 
 CREATE TABLE users (
                      id INT AUTO_INCREMENT PRIMARY KEY,
-                     email VARCHAR(128),
-                     password CHAR(64),
-                     login CHAR(64),
+                     email VARCHAR(320) NOT NULL,
+                     password CHAR(64) NOT NULL,
+                     login VARCHAR(320) NOT NULL,
                      dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                     avatar TEXT
+                     avatar TEXT DEFAULT NULL,
+                     UNIQUE INDEX UI_email (email),
+                     UNIQUE INDEX UI_login (login)
 );
 
 CREATE TABLE posts (
                      id INT AUTO_INCREMENT PRIMARY KEY,
-                     title VARCHAR(128),
-                     text TEXT,
-                     quote_auth VARCHAR(128),
-                     img TEXT,
-                     video TEXT,
-                     link TEXT,
-                     views INT,
-                     user_id INT,
-                     cont_type_id INT,
-                     tag_id INT
+                     title VARCHAR(128) NOT NULL,
+                     text TEXT DEFAULT NULL,
+                     quote_auth VARCHAR(128) DEFAULT NULL,
+                     img TEXT DEFAULT NULL,
+                     video TEXT DEFAULT NULL,
+                     link TEXT DEFAULT NULL,
+                     views INT DEFAULT 0,
+                     original_id INT DEFAULT NULL,
+                     user_id INT NOT NULL,
+                     content_type ENUM('text', 'quote', 'photo', 'video', 'link') NOT NULL,
+                     FOREIGN KEY (user_id) REFERENCES users (id),
+                     FOREIGN KEY (original_id) REFERENCES posts (id)
+);
+
+CREATE TABLE tags (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    name CHAR(64) DEFAULT NULL,
+                    UNIQUE INDEX UI_tag (name)
+);
+
+CREATE TABLE posts_tags (
+                         post_id INT,
+                         FOREIGN KEY (post_id) REFERENCES posts (id),
+                         tag_id INT,
+                         FOREIGN KEY (tag_id) REFERENCES tags (id),
+                         PRIMARY KEY (post_id, tag_id)
 );
 
 CREATE TABLE comments (
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        content TEXT,
-                        user_id INT,
-                        post_id INT
+                        content TEXT NOT NULL,
+                        user_id INT NOT NULL,
+                        FOREIGN KEY (user_id) REFERENCES users (id),
+                        post_id INT NOT NULL,
+                        FOREIGN KEY (post_id) REFERENCES posts (id)
 );
 
 CREATE TABLE messages (
                         id INT AUTO_INCREMENT PRIMARY KEY,
                         dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        content TEXT,
-                        sender_id INT,
-                        recipient_id INT
-);
-
-CREATE TABLE tags (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    tag CHAR(64)
+                        content TEXT NOT NULL,
+                        sender_id INT NOT NULL,
+                        FOREIGN KEY (sender_id) REFERENCES users (id),
+                        recipient_id INT NOT NULL,
+                        FOREIGN KEY (recipient_id) REFERENCES users (id)
 );
 
 CREATE TABLE likes (
-                     id INT AUTO_INCREMENT PRIMARY KEY,
-                     user_id INT,
-                     post_id INT
+                     user_id INT NOT NULL,
+                     FOREIGN KEY (user_id) REFERENCES users (id),
+                     post_id INT NOT NULL,
+                     FOREIGN KEY (post_id) REFERENCES posts (id),
+                     CONSTRAINT likes_pk PRIMARY KEY (user_id, post_id)
 );
 
 CREATE TABLE subscribes (
-                          id INT AUTO_INCREMENT PRIMARY KEY,
-                          follower_id INT,
-                          follow_id INT
+                          follower_id INT NOT NULL,
+                          FOREIGN KEY (follower_id) REFERENCES users (id),
+                          follow_id INT NOT NULL,
+                          FOREIGN KEY (follow_id) REFERENCES users (id),
+                          CONSTRAINT subscribes PRIMARY KEY (follower_id, follow_id)
 );
 
-CREATE TABLE cont_types (
-                          id INT AUTO_INCREMENT PRIMARY KEY,
-                          type CHAR(64),
-                          name CHAR(64)
-);
+
