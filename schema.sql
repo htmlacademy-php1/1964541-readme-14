@@ -10,7 +10,8 @@ CREATE TABLE users (
                      login VARCHAR(320) NOT NULL,
                      dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                      avatar TEXT DEFAULT NULL,
-                     CONSTRAINT UC_users UNIQUE (email, login)
+                     UNIQUE INDEX UI_email (email),
+                     UNIQUE INDEX UI_login (login)
 );
 
 CREATE TABLE posts (
@@ -32,7 +33,7 @@ CREATE TABLE posts (
 CREATE TABLE tags (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     name CHAR(64) DEFAULT NULL,
-                    CONSTRAINT UC_tags UNIQUE (name)
+                    UNIQUE INDEX UI_tag (name)
 );
 
 CREATE TABLE posts_tags (
