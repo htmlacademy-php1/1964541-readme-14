@@ -1,4 +1,4 @@
-#заполняем типы контента
+USE readme;
 
 #заполняем юзеров
 INSERT INTO users (email, password, login, avatar)
@@ -6,6 +6,7 @@ VALUES ('4204884@gmail.com', 'WASH32rh' , 'gervant of irvia', '/img/cat.jpg'),
        ('larisa@gmail.com', 'QWERTY1234', 'Лариса', 'userpic-larisa-small.jpg'),
        ('volandeslav@gmail.com', 'BUric1hK', 'Владик', 'userpic.jpg'),
        ('dargin@mail.ru', 'SWAGmad', 'Виктор', 'userpic-mark.jpg');
+
 #заполняем посты
 INSERT INTO posts (title, text, quote_auth, img, video, link, views, content_type, user_id)
 VALUES ('Цитата', 'Мы в жизни любим только раз, а после ищем лишь похожих', 'Неизвестный автор', NULL, NULL, NULL, 7, 'quote', '2'),
@@ -13,6 +14,7 @@ VALUES ('Цитата', 'Мы в жизни любим только раз, а �
        ('Наконец обработал фотки!', NULL, NULL, 'rock-medium.jpg', NULL, NULL, 2, 'photo', '4'),
        ('Моя мечта', NULL, NULL, 'coast-medium.jpg', NULL, NULL, 10, 'photo', '2'),
        ('Лучшие курсы', NULL, NULL, NULL, NULL, 'www.htmlacademy.ru/', 20, 'link', '3');
+
 #заполняем комменты
 INSERT INTO comments (content, post_id, user_id)
 VALUES ('Безумно можно быть первым!', '1', '1'),
