@@ -22,7 +22,7 @@ VALUES ('Безумно можно быть первым!', '1', '1'),
        ('Согласена, я в полном восторге!', '5', '2');
 
 #список постов с сортировкой по популярности вместе с именами авторов и типом контента
-SELECT title, views, login, content_type
+SELECT title, login, content_type
 FROM posts
 JOIN users u
 ON posts.user_id = u.id
