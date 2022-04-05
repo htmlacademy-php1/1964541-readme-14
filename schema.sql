@@ -9,7 +9,8 @@ CREATE TABLE users (
                      password CHAR(64) NOT NULL,
                      login VARCHAR(320) NOT NULL,
                      dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                     avatar TEXT DEFAULT NULL
+                     avatar TEXT DEFAULT NULL,
+                     CONSTRAINT UC_users UNIQUE (email, login)
 );
 
 CREATE TABLE posts (
@@ -20,17 +21,18 @@ CREATE TABLE posts (
                      img TEXT DEFAULT NULL,
                      video TEXT DEFAULT NULL,
                      link TEXT DEFAULT NULL,
-                     views INT DEFAULT NULL,
-                     reposts INT DEFAULT NULL,
+                     views INT DEFAULT 0,
+                     original_id INT DEFAULT NULL,
                      user_id INT NOT NULL,
                      content_type ENUM('text', 'quote', 'photo', 'video', 'link') NOT NULL,
                      FOREIGN KEY (user_id) REFERENCES users (id),
-                     FOREIGN KEY (reposts) REFERENCES posts (id)
+                     FOREIGN KEY (original_id) REFERENCES posts (id)
 );
 
 CREATE TABLE tags (
                     id INT AUTO_INCREMENT PRIMARY KEY,
-                    name CHAR(64) DEFAULT NULL
+                    name CHAR(64) DEFAULT NULL,
+                    CONSTRAINT UC_tags UNIQUE (name)
 );
 
 CREATE TABLE posts_tags (
@@ -76,4 +78,3 @@ CREATE TABLE subscribes (
                           FOREIGN KEY (follow_id) REFERENCES users (id),
                           CONSTRAINT subscribes PRIMARY KEY (follower_id, follow_id)
 );
-
