@@ -9,11 +9,11 @@ VALUES ('4204884@gmail.com', 'WASH32rh' , 'gervant of irvia', '/img/cat.jpg'),
 
 #заполняем посты
 INSERT INTO posts (title, text, quote_auth, img, video, link, views, content_type, user_id)
-VALUES ('Цитата', 'Мы в жизни любим только раз, а после ищем лишь похожих', 'Неизвестный автор', NULL, NULL, NULL, 7, 'quote', '2'),
-       ('Игра престолов', 'Власть пребывает там, куда помещает её всеобщая вера. Это уловка, тень на стене.', NULL, NULL, NULL, NULL, 5, 'text', '3'),
-       ('Наконец обработал фотки!', NULL, NULL, 'rock-medium.jpg', NULL, NULL, 2, 'photo', '4'),
-       ('Моя мечта', NULL, NULL, 'coast-medium.jpg', NULL, NULL, 10, 'photo', '2'),
-       ('Лучшие курсы', NULL, NULL, NULL, NULL, 'www.htmlacademy.ru/', 20, 'link', '3');
+VALUES ('Цитата', 'Мы в жизни любим только раз, а после ищем лишь похожих', 'Неизвестный автор', NULL, NULL, NULL, 7, 'post-quote', '2'),
+       ('Игра престолов', 'Власть пребывает там, куда помещает её всеобщая вера. Это уловка, тень на стене.', NULL, NULL, NULL, NULL, 5, 'post-text', '3'),
+       ('Наконец обработал фотки!', NULL, NULL, 'rock-medium.jpg', NULL, NULL, 2, 'post-photo', '4'),
+       ('Моя мечта', NULL, NULL, 'coast-medium.jpg', NULL, NULL, 10, 'post-photo', '2'),
+       ('Лучшие курсы', NULL, NULL, NULL, NULL, 'www.htmlacademy.ru/', 20, 'post-link', '3');
 
 #заполняем комменты
 INSERT INTO comments (content, post_id, user_id)

@@ -25,7 +25,8 @@ CREATE TABLE posts (
                      views INT DEFAULT 0,
                      original_id INT DEFAULT NULL,
                      user_id INT NOT NULL,
-                     content_type ENUM('text', 'quote', 'photo', 'video', 'link') NOT NULL,
+                     content_type ENUM('post-text', 'post-quote', 'post-photo', 'post-video', 'post-link') NOT NULL,
+                     dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                      FOREIGN KEY (user_id) REFERENCES users (id),
                      FOREIGN KEY (original_id) REFERENCES posts (id)
 );
@@ -79,5 +80,4 @@ CREATE TABLE subscribes (
                           FOREIGN KEY (follow_id) REFERENCES users (id),
                           CONSTRAINT subscribes PRIMARY KEY (follower_id, follow_id)
 );
-
 

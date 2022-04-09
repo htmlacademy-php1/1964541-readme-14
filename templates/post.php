@@ -1,17 +1,17 @@
-<article class="popular__post post <?= $post['type'] ?>">
+<article class="popular__post post <?= $post['content_type'] ?>">
     <header class="post__header">
         <h2><?= htmlspecialchars($post['title']) ?></h2>
     </header>
     <div class="post__main">
-        <?php if ($post['type'] === 'post-photo'): ?>
+        <?php if ($post['content_type'] === 'post-photo'): ?>
             <div class="post-photo__image-wrapper">
-                <img src="img/<?= htmlspecialchars($post['content']) ?>" alt="Фото от пользователя" width="360"
+                <img src="img/<?= htmlspecialchars($post['img']) ?>" alt="Фото от пользователя" width="360"
                      height="240">
             </div>
-        <?php elseif ($post['type'] === 'post-video'): ?>
+        <?php elseif ($post['content_type'] === 'post-video'): ?>
             <div class="post-video__block">
                 <div class="post-video__preview">
-                    <?= embed_youtube_cover(htmlspecialchars($post['content'])); ?>
+                    <?= embed_youtube_cover(htmlspecialchars($post['video'])); ?>
                     <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">
                 </div>
                 <a href="post-details.html" class="post-video__play-big button">
@@ -21,18 +21,18 @@
                     <span class="visually-hidden">Запустить проигрыватель</span>
                 </a>
             </div>
-        <?php elseif ($post['type'] === 'post-quote'): ?>
+        <?php elseif ($post['content_type'] === 'post-quote'): ?>
             <blockquote>
                 <p>
-                    <?= htmlspecialchars($post['content']) ?>
+                    <?= htmlspecialchars($post['text']) ?>
                 </p>
-                <cite>Неизвестный Автор</cite>
+                <cite><?= $post['quote_auth']?></cite>
             </blockquote>
-        <?php elseif ($post['type'] === 'post-text'): ?>
-            <?= cut_text(htmlspecialchars($post['content'])) ?>
-        <?php elseif ($post['type'] === 'post-link'): ?>
+        <?php elseif ($post['content_type'] === 'post-text'): ?>
+            <?= cut_text(htmlspecialchars($post['text'])) ?>
+        <?php elseif ($post['content_type'] === 'post-link'): ?>
             <div class="post-link__wrapper">
-                <a class="post-link__external" href="http://<?= htmlspecialchars($post['content']) ?>"
+                <a class="post-link__external" href="http://<?= htmlspecialchars($post['link']) ?>"
                    title="Перейти по ссылке">
                     <div class="post-link__info-wrapper">
                         <div class="post-link__icon-wrapper">
@@ -43,7 +43,7 @@
                             <h3><?= htmlspecialchars($post['title']) ?></h3>
                         </div>
                     </div>
-                    <span><?= htmlspecialchars($post['content']) ?></span>
+                    <span><?= htmlspecialchars($post['link']) ?></span>
                 </a>
             </div>
         <?php endif; ?>
@@ -56,9 +56,9 @@
                          alt="Аватар пользователя">
                 </div>
                 <div class="post__info">
-                    <b class="post__author-name"><?= $post['name'] ?></b>
-                    <time class="post__time" title="<?= date("d.m.y H:i", strtotime($post['date'])) ?>"
-                          datetime="<?= $post['date'] ?>"><?= show_past_time($post['date']) ?></time>
+                    <b class="post__author-name"><?= $post['login'] ?></b>
+                    <time class="post__time" title="<?= date("d.m.y H:i", strtotime($post['dt_add'])) ?>"
+                          datetime="<?= $post['dt_add'] ?>"><?= show_past_time($post['dt_add']) ?></time>
                 </div>
             </a>
         </div>
