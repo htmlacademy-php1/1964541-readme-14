@@ -81,3 +81,9 @@ CREATE TABLE subscribes (
                           CONSTRAINT subscribes PRIMARY KEY (follower_id, follow_id)
 );
 
+CREATE TABLE content_type (
+                           id INT AUTO_INCREMENT PRIMARY KEY,
+                           name CHAR(64) NOT NULL,
+                           type CHAR(64) NOT NULL
+);
+

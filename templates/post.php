@@ -1,14 +1,14 @@
-<article class="popular__post post <?= $post['content_type'] ?>">
+<article class="popular__post post <?= $post['type'] ?>">
     <header class="post__header">
         <h2><?= htmlspecialchars($post['title']) ?></h2>
     </header>
     <div class="post__main">
-        <?php if ($post['content_type'] === 'post-photo'): ?>
+        <?php if ($post['type'] === 'post-photo'): ?>
             <div class="post-photo__image-wrapper">
                 <img src="img/<?= htmlspecialchars($post['img']) ?>" alt="Фото от пользователя" width="360"
                      height="240">
             </div>
-        <?php elseif ($post['content_type'] === 'post-video'): ?>
+        <?php elseif ($post['type'] === 'post-video'): ?>
             <div class="post-video__block">
                 <div class="post-video__preview">
                     <?= embed_youtube_cover(htmlspecialchars($post['video'])); ?>
@@ -21,16 +21,16 @@
                     <span class="visually-hidden">Запустить проигрыватель</span>
                 </a>
             </div>
-        <?php elseif ($post['content_type'] === 'post-quote'): ?>
+        <?php elseif ($post['type'] === 'post-quote'): ?>
             <blockquote>
                 <p>
                     <?= htmlspecialchars($post['text']) ?>
                 </p>
                 <cite><?= $post['quote_auth']?></cite>
             </blockquote>
-        <?php elseif ($post['content_type'] === 'post-text'): ?>
+        <?php elseif ($post['type'] === 'post-text'): ?>
             <?= cut_text(htmlspecialchars($post['text'])) ?>
-        <?php elseif ($post['content_type'] === 'post-link'): ?>
+        <?php elseif ($post['type'] === 'post-link'): ?>
             <div class="post-link__wrapper">
                 <a class="post-link__external" href="http://<?= htmlspecialchars($post['link']) ?>"
                    title="Перейти по ссылке">

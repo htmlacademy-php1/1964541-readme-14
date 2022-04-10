@@ -21,11 +21,20 @@ VALUES ('Безумно можно быть первым!', '1', '1'),
        ('Последний сезон слил весь сериал...', '2', '3'),
        ('Согласена, я в полном восторге!', '5', '2');
 
+#заполняем типы контента
+INSERT INTO content_type (name, type)
+VALUE ('Текст', 'post-text'),
+      ('Цитата', 'post-quote'),
+      ('Картинка', 'post-photo'),
+      ('Ссылка', 'post-link'),
+      ('Видео', 'post-video');
+
 #список постов с сортировкой по популярности вместе с именами авторов и типом контента
-SELECT title, login, content_type
+SELECT title, login, name
 FROM posts
 JOIN users u
 ON posts.user_id = u.id
+JOIN content_type ct ON posts.content_type_id = ct.id
 ORDER BY views DESC;
 
 #получить список постов для конкретного пользователя
@@ -49,3 +58,14 @@ VALUE (2, 1);
 #Лариса подписалась на Владика
 INSERT INTO subscribes (follower_id, follow_id)
 VALUE (2, 3);
+
+ALTER TABLE posts DROP content_type_id;
+ALTER TABLE posts ADD content_type_id INT, ADD
+FOREIGN KEY (content_type_id) REFERENCES content_type(id);
+
+UPDATE posts SET posts.content_type_id = 2 WHERE id = 1;
+UPDATE posts SET posts.content_type_id = 1 WHERE id = 2;
+UPDATE posts SET posts.content_type_id = 3 WHERE id = 3;
+UPDATE posts SET posts.content_type_id = 3 WHERE id = 4;
+UPDATE posts SET posts.content_type_id = 4 WHERE id = 5;
+
