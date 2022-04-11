@@ -4,48 +4,15 @@
     </header>
     <div class="post__main">
         <?php if ($post['type'] === 'post-photo'): ?>
-            <div class="post-photo__image-wrapper">
-                <img src="img/<?= htmlspecialchars($post['img']) ?>" alt="Фото от пользователя" width="360"
-                     height="240">
-            </div>
+            <?= include_template('post-photo.php', ['post' => $post]); ?>
         <?php elseif ($post['type'] === 'post-video'): ?>
-            <div class="post-video__block">
-                <div class="post-video__preview">
-                    <?= embed_youtube_cover(htmlspecialchars($post['video'])); ?>
-                    <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">
-                </div>
-                <a href="post-details.html" class="post-video__play-big button">
-                    <svg class="post-video__play-big-icon" width="14" height="14">
-                        <use xlink:href="#icon-video-play-big"></use>
-                    </svg>
-                    <span class="visually-hidden">Запустить проигрыватель</span>
-                </a>
-            </div>
+            <?= include_template('post-video.php', ['post' => $post]) ?>
         <?php elseif ($post['type'] === 'post-quote'): ?>
-            <blockquote>
-                <p>
-                    <?= htmlspecialchars($post['text']) ?>
-                </p>
-                <cite><?= $post['quote_auth']?></cite>
-            </blockquote>
+            <?= include_template('post-quote.php', ['post' => $post]) ?>
         <?php elseif ($post['type'] === 'post-text'): ?>
             <?= cut_text(htmlspecialchars($post['text'])) ?>
         <?php elseif ($post['type'] === 'post-link'): ?>
-            <div class="post-link__wrapper">
-                <a class="post-link__external" href="http://<?= htmlspecialchars($post['link']) ?>"
-                   title="Перейти по ссылке">
-                    <div class="post-link__info-wrapper">
-                        <div class="post-link__icon-wrapper">
-                            <img src="https://www.google.com/s2/favicons?domain=vitadental.ru"
-                                 alt="Иконка">
-                        </div>
-                        <div class="post-link__info">
-                            <h3><?= htmlspecialchars($post['title']) ?></h3>
-                        </div>
-                    </div>
-                    <span><?= htmlspecialchars($post['link']) ?></span>
-                </a>
-            </div>
+            <?= include_template('post-link.php', ['post' => $post]) ?>
         <?php endif; ?>
     </div>
     <footer class="post__footer">
