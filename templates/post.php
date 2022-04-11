@@ -3,17 +3,24 @@
         <h2><?= htmlspecialchars($post['title']) ?></h2>
     </header>
     <div class="post__main">
-        <?php if ($post['type'] === 'post-photo'): ?>
-            <?= include_template('post-photo.php', ['post' => $post]); ?>
-        <?php elseif ($post['type'] === 'post-video'): ?>
-            <?= include_template('post-video.php', ['post' => $post]) ?>
-        <?php elseif ($post['type'] === 'post-quote'): ?>
-            <?= include_template('post-quote.php', ['post' => $post]) ?>
-        <?php elseif ($post['type'] === 'post-text'): ?>
-            <?= cut_text(htmlspecialchars($post['text'])) ?>
-        <?php elseif ($post['type'] === 'post-link'): ?>
-            <?= include_template('post-link.php', ['post' => $post]) ?>
-        <?php endif; ?>
+        <?php switch ($post['type']) {
+            case 'post-photo':
+                echo include_template('post-types/post-photo.php', ['post' => $post]);
+                break;
+            case 'post-video':
+                echo include_template('post-types/post-video.php', ['post' => $post]);
+                break;
+            case 'post-quote':
+                echo include_template('post-types/post-quote.php', ['post' => $post]);
+                break;
+            case 'post-text':
+                echo cut_text(htmlspecialchars($post['text']));
+                break;
+            case 'post-link':
+                echo include_template('post-types/post-link.php', ['post' => $post]);
+                break;
+        }
+        ?>
     </div>
     <footer class="post__footer">
         <div class="post__author">

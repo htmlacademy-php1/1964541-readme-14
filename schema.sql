@@ -87,3 +87,7 @@ CREATE TABLE content_type (
                            type CHAR(64) NOT NULL
 );
 
+ALTER TABLE posts DROP content_type;
+ALTER TABLE posts ADD content_type_id INT, ADD
+FOREIGN KEY (content_type_id) REFERENCES content_type(id);
+ALTER TABLE content_type ADD UNIQUE INDEX UI_type (type);
