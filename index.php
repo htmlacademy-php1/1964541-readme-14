@@ -24,7 +24,7 @@ if (!$con) {
 if (!$con) {
     print ('Error: ' . mysqli_connect_error($con));
 } else {
-    $sql2 = 'SELECT name FROM content_type;';
+    $sql2 = 'SELECT type FROM content_type;';
     if ($result2 = mysqli_query($con, $sql2)) {
         $content_types = mysqli_fetch_all($result2, MYSQLI_ASSOC);
     } else {

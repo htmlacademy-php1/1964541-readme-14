@@ -43,51 +43,16 @@
                         </a>
                     </li>
                     <?php foreach($content_types as $type): ?>
-                        <?php if($type['name'] === 'Текст'): ?>
-                        <li class="popular__filters-item filters__item">
-                            <a class="filters__button filters__button--text button" href="#">
-                                <span class="visually-hidden"></span>
-                                <svg class="filters__icon" width="20" height="21">
-                                    <use xlink:href="#icon-filter-text"></use>
-                                </svg>
-                            </a>
-                        </li>
-                        <?php elseif($type['name'] === 'Цитата'): ?>
-                        <li class="popular__filters-item filters__item">
-                            <a class="filters__button filters__button--quote button" href="#">
-                                <span class="visually-hidden"></span>
-                                <svg class="filters__icon" width="21" height="20">
-                                    <use xlink:href="#icon-filter-quote"></use>
-                                </svg>
-                            </a>
-                        </li>
-                        <?php elseif($type['name'] === 'Фото'): ?>
-                        <li class="popular__filters-item filters__item">
-                            <a class="filters__button filters__button--photo button" href="#">
-                                <span class="visually-hidden"></span>
-                                <svg class="filters__icon" width="22" height="18">
-                                    <use xlink:href="#icon-filter-photo"></use>
-                                </svg>
-                            </a>
-                        </li>
-                        <?php elseif($type['name'] === 'Ссылка'): ?>
-                        <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--link button" href="#">
-                            <span class="visually-hidden"></span>
-                            <svg class="filters__icon" width="21" height="18">
-                                <use xlink:href="#icon-filter-link"></use>
-                            </svg>
-                        </a>
-                    </li>
-                        <?php elseif($type['name'] === 'Видео'): ?>
-                        <li class="popular__filters-item filters__item">
-                            <a class="filters__button filters__button--video button" href="#">
-                                <span class="visually-hidden"></span>
-                                <svg class="filters__icon" width="24" height="16">
-                                    <use xlink:href="#icon-filter-video"></use>
-                                </svg>
-                            </a>
-                        </li>
+                        <?php if($type['type'] === 'post-text'): ?>
+                            <?= include_template('filter-text.php', ['type' => $type]) ?>
+                        <?php elseif($type['type'] === 'post-quote'): ?>
+                            <?= include_template('filter-quote.php', ['type' => $type]) ?>
+                        <?php elseif($type['type'] === 'post-photo'): ?>
+                            <?= include_template('filter-photo.php', ['type' => $type]) ?>
+                        <?php elseif($type['type'] === 'post-link'): ?>
+                            <?= include_template('filter-link.php', ['type' => $type]) ?>
+                        <?php elseif($type['type'] === 'post-video'): ?>
+                            <?= include_template('filter-video.php', ['type' => $type]) ?>
                     <?php endif; ?>
                     <?php endforeach; ?>
                 </ul>

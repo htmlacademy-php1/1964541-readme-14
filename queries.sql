@@ -62,6 +62,7 @@ VALUE (2, 3);
 ALTER TABLE posts DROP content_type_id;
 ALTER TABLE posts ADD content_type_id INT, ADD
 FOREIGN KEY (content_type_id) REFERENCES content_type(id);
+ALTER TABLE content_type ADD UNIQUE INDEX UI_type (type);
 
 UPDATE posts SET posts.content_type_id = 2 WHERE id = 1;
 UPDATE posts SET posts.content_type_id = 1 WHERE id = 2;
