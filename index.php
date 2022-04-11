@@ -26,7 +26,7 @@ if (!$connection) {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
 } else {
-    $sql = 'SELECT type FROM content_type;';
+    $sql = 'SELECT name, type FROM content_type;';
     if ($result = mysqli_query($connection, $sql)) {
         $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
     } else {
