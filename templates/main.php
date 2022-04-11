@@ -42,19 +42,25 @@
                             <span>Все</span>
                         </a>
                     </li>
-                    <?php foreach($content_types as $type): ?>
-                        <?php if($type['type'] === 'post-text'): ?>
-                            <?= include_template('filter-text.php', ['type' => $type]) ?>
-                        <?php elseif($type['type'] === 'post-quote'): ?>
-                            <?= include_template('filter-quote.php', ['type' => $type]) ?>
-                        <?php elseif($type['type'] === 'post-photo'): ?>
-                            <?= include_template('filter-photo.php', ['type' => $type]) ?>
-                        <?php elseif($type['type'] === 'post-link'): ?>
-                            <?= include_template('filter-link.php', ['type' => $type]) ?>
-                        <?php elseif($type['type'] === 'post-video'): ?>
-                            <?= include_template('filter-video.php', ['type' => $type]) ?>
-                    <?php endif; ?>
-                    <?php endforeach; ?>
+                    <?php foreach ($content_types as $type) {
+                        switch ($type['type']) {
+                            case 'post-text':
+                                echo include_template('filters/filter-text.php', ['type' => $type]);
+                                break;
+                            case 'post-quote':
+                                echo include_template('filters/filter-quote.php', ['type' => $type]);
+                                break;
+                            case 'post-photo':
+                                echo include_template('filters/filter-photo.php', ['type' => $type]);
+                                break;
+                            case 'post-link':
+                                echo include_template('filters/filter-link.php', ['type' => $type]);
+                                break;
+                            case 'post-video':
+                                echo include_template('filters/filter-video.php', ['type' => $type]);
+                                break;
+                        }
+                    } ?>
                 </ul>
             </div>
         </div>
