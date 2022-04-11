@@ -8,7 +8,8 @@ $is_auth = rand(0, 1);
 $user_name = 'Кирилл';
 
 if (!$connection) {
-    exit;
+    $error = mysqli_error($connection);
+    $page_content = include_template('error.php', ['error' => $error]);
 } else {
     $sql = 'SELECT * FROM posts' .
         ' JOIN users u ON posts.user_id = u.id' .
@@ -22,7 +23,8 @@ if (!$connection) {
 }
 
 if (!$connection) {
-    print ('Error: ' . mysqli_connect_error($connection));
+    $error = mysqli_error($connection);
+    $page_content = include_template('error.php', ['error' => $error]);
 } else {
     $sql = 'SELECT type FROM content_type;';
     if ($result = mysqli_query($connection, $sql)) {
