@@ -7,28 +7,28 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Кирилл';
 
-if (!$con) {
-    print ('Error: ' . mysqli_connect_error($con));
+if (!$connection) {
+    exit;
 } else {
     $sql = 'SELECT * FROM posts' .
         ' JOIN users u ON posts.user_id = u.id' .
         ' JOIN content_type ct ON posts.content_type_id = ct.id'  .
         ' ORDER BY views DESC;';
-    if ($result = mysqli_query($con, $sql)) {
+    if ($result = mysqli_query($connection, $sql)) {
         $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
     } else {
-        print ('Error: ' . mysqli_error($con));
+        print ('Error: ' . mysqli_error($connection));
     }
 }
 
-if (!$con) {
-    print ('Error: ' . mysqli_connect_error($con));
+if (!$connection) {
+    print ('Error: ' . mysqli_connect_error($connection));
 } else {
-    $sql2 = 'SELECT type FROM content_type;';
-    if ($result2 = mysqli_query($con, $sql2)) {
-        $content_types = mysqli_fetch_all($result2, MYSQLI_ASSOC);
+    $sql = 'SELECT type FROM content_type;';
+    if ($result = mysqli_query($connection, $sql)) {
+        $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
     } else {
-        print ('Error: ' . mysqli_error($con));
+        print ('Error: ' . mysqli_error($connection));
     }
 }
 
