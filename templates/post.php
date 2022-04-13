@@ -3,50 +3,24 @@
         <h2><?= htmlspecialchars($post['title']) ?></h2>
     </header>
     <div class="post__main">
-        <?php if ($post['type'] === 'post-photo'): ?>
-            <div class="post-photo__image-wrapper">
-                <img src="img/<?= htmlspecialchars($post['content']) ?>" alt="Фото от пользователя" width="360"
-                     height="240">
-            </div>
-        <?php elseif ($post['type'] === 'post-video'): ?>
-            <div class="post-video__block">
-                <div class="post-video__preview">
-                    <?= embed_youtube_cover(htmlspecialchars($post['content'])); ?>
-                    <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">
-                </div>
-                <a href="post-details.html" class="post-video__play-big button">
-                    <svg class="post-video__play-big-icon" width="14" height="14">
-                        <use xlink:href="#icon-video-play-big"></use>
-                    </svg>
-                    <span class="visually-hidden">Запустить проигрыватель</span>
-                </a>
-            </div>
-        <?php elseif ($post['type'] === 'post-quote'): ?>
-            <blockquote>
-                <p>
-                    <?= htmlspecialchars($post['content']) ?>
-                </p>
-                <cite>Неизвестный Автор</cite>
-            </blockquote>
-        <?php elseif ($post['type'] === 'post-text'): ?>
-            <?= cut_text(htmlspecialchars($post['content'])) ?>
-        <?php elseif ($post['type'] === 'post-link'): ?>
-            <div class="post-link__wrapper">
-                <a class="post-link__external" href="http://<?= htmlspecialchars($post['content']) ?>"
-                   title="Перейти по ссылке">
-                    <div class="post-link__info-wrapper">
-                        <div class="post-link__icon-wrapper">
-                            <img src="https://www.google.com/s2/favicons?domain=vitadental.ru"
-                                 alt="Иконка">
-                        </div>
-                        <div class="post-link__info">
-                            <h3><?= htmlspecialchars($post['title']) ?></h3>
-                        </div>
-                    </div>
-                    <span><?= htmlspecialchars($post['content']) ?></span>
-                </a>
-            </div>
-        <?php endif; ?>
+        <?php switch ($post['type']) {
+            case 'post-photo':
+                echo include_template('post-types/post-photo.php', ['post' => $post]);
+                break;
+            case 'post-video':
+                echo include_template('post-types/post-video.php', ['post' => $post]);
+                break;
+            case 'post-quote':
+                echo include_template('post-types/post-quote.php', ['post' => $post]);
+                break;
+            case 'post-text':
+                echo cut_text(htmlspecialchars($post['text']));
+                break;
+            case 'post-link':
+                echo include_template('post-types/post-link.php', ['post' => $post]);
+                break;
+        }
+        ?>
     </div>
     <footer class="post__footer">
         <div class="post__author">
@@ -56,9 +30,9 @@
                          alt="Аватар пользователя">
                 </div>
                 <div class="post__info">
-                    <b class="post__author-name"><?= $post['name'] ?></b>
-                    <time class="post__time" title="<?= date("d.m.y H:i", strtotime($post['date'])) ?>"
-                          datetime="<?= $post['date'] ?>"><?= show_past_time($post['date']) ?></time>
+                    <b class="post__author-name"><?= $post['login'] ?></b>
+                    <time class="post__time" title="<?= date("d.m.y H:i", strtotime($post['dt_add'])) ?>"
+                          datetime="<?= $post['dt_add'] ?>"><?= show_past_time($post['dt_add']) ?></time>
                 </div>
             </a>
         </div>

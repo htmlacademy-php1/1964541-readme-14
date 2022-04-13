@@ -42,46 +42,25 @@
                             <span>Все</span>
                         </a>
                     </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--photo button" href="#">
-                            <span class="visually-hidden">Фото</span>
-                            <svg class="filters__icon" width="22" height="18">
-                                <use xlink:href="#icon-filter-photo"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--video button" href="#">
-                            <span class="visually-hidden">Видео</span>
-                            <svg class="filters__icon" width="24" height="16">
-                                <use xlink:href="#icon-filter-video"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--text button" href="#">
-                            <span class="visually-hidden">Текст</span>
-                            <svg class="filters__icon" width="20" height="21">
-                                <use xlink:href="#icon-filter-text"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--quote button" href="#">
-                            <span class="visually-hidden">Цитата</span>
-                            <svg class="filters__icon" width="21" height="20">
-                                <use xlink:href="#icon-filter-quote"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--link button" href="#">
-                            <span class="visually-hidden">Ссылка</span>
-                            <svg class="filters__icon" width="21" height="18">
-                                <use xlink:href="#icon-filter-link"></use>
-                            </svg>
-                        </a>
-                    </li>
+                    <?php foreach ($content_types as $type) {
+                        switch ($type['type']) {
+                            case 'post-text':
+                                echo include_template('filters/filter-text.php', ['type' => $type]);
+                                break;
+                            case 'post-quote':
+                                echo include_template('filters/filter-quote.php', ['type' => $type]);
+                                break;
+                            case 'post-photo':
+                                echo include_template('filters/filter-photo.php', ['type' => $type]);
+                                break;
+                            case 'post-link':
+                                echo include_template('filters/filter-link.php', ['type' => $type]);
+                                break;
+                            case 'post-video':
+                                echo include_template('filters/filter-video.php', ['type' => $type]);
+                                break;
+                        }
+                    } ?>
                 </ul>
             </div>
         </div>
