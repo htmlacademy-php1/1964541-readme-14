@@ -12,11 +12,27 @@ if (!$connection) {
     $page_content = include_template('error.php', ['error' => $error]);
 }
 
-$sql = 'SELECT * FROM posts' .
-    ' JOIN users u ON posts.user_id = u.id' .
-    ' JOIN content_type ct ON posts.content_type_id = ct.id' .
-    ' ORDER BY views DESC;';
-$result = mysqli_query($connection, $sql);
+$tab  = filter_input(INPUT_GET, 'tab');
+
+if ($tab) {
+    $sql = 'SELECT * FROM posts' .
+        ' JOIN users u ON posts.user_id = u.id' .
+        ' JOIN content_type ct' .
+        ' ON posts.content_type_id = ct.id' .
+        ' WHERE ct.id = ?' .
+        ' ORDER BY views DESC;';
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $tab);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+} else {
+    $sql = 'SELECT * FROM posts' .
+        ' JOIN users u ON posts.user_id = u.id' .
+        ' JOIN content_type ct' .
+        ' ON posts.content_type_id = ct.id' .
+        ' ORDER BY views DESC;';
+    $result = mysqli_query($connection, $sql);
+}
 
 if ($result) {
     $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -26,7 +42,7 @@ if ($result) {
 }
 
 
-$sql = 'SELECT name, type FROM content_type;';
+$sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 
 if ($result) {
@@ -46,6 +62,7 @@ $layout_content = include_template('layout.php', [
     'is_auth' => $is_auth,
     'user_name' => $user_name]);
 print($layout_content);
+
 
 ?>
 
