@@ -10,33 +10,32 @@ $user_name = 'Кирилл';
 if (!$connection) {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
-} else {
-    $sql = 'SELECT * FROM posts' .
-        ' JOIN users u ON posts.user_id = u.id' .
-        ' JOIN content_type ct ON posts.content_type_id = ct.id'  .
-        ' ORDER BY views DESC;';
-    $result = mysqli_query($connection, $sql);
-    if ($result) {
-        $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        $error = mysqli_error($connection);
-        $page_content = include_template('error.php', ['error' => $error]);
-    }
 }
 
-if (!$connection) {
+$sql = 'SELECT * FROM posts' .
+    ' JOIN users u ON posts.user_id = u.id' .
+    ' JOIN content_type ct ON posts.content_type_id = ct.id' .
+    ' ORDER BY views DESC;';
+$result = mysqli_query($connection, $sql);
+
+if ($result) {
+    $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
-} else {
-    $sql = 'SELECT name, type FROM content_type;';
-    $result = mysqli_query($connection, $sql);
-    if ($result) {
-        $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        $error = mysqli_error($connection);
-        $page_content = include_template('error.php', ['error' => $error]);
-    }
 }
+
+
+$sql = 'SELECT name, type FROM content_type;';
+$result = mysqli_query($connection, $sql);
+
+if ($result) {
+    $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $error = mysqli_error($connection);
+    $page_content = include_template('error.php', ['error' => $error]);
+}
+
 
 $page_content = include_template('main.php', [
     'posts' => $posts,
