@@ -14,7 +14,7 @@
                 echo include_template('post-types/post-quote.php', ['post' => $post]);
                 break;
             case 'post-text':
-                echo cut_text(htmlspecialchars($post['text']));
+                echo include_template('post-types/post-text.php', ['post' => $post]);
                 break;
             case 'post-link':
                 echo include_template('post-types/post-link.php', ['post' => $post]);

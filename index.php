@@ -53,6 +53,8 @@ if ($result) {
 }
 
 
+
+
 $page_content = include_template('main.php', [
     'posts' => $posts,
     'content_types' => $content_types]);

@@ -39,21 +39,31 @@
                     <?php
                     print include_template('/filters/filter-all.php');
                     foreach ($content_types as $type) {
+                        $params = $_GET;
+                        $params['tab'] = $type['id'];
+                        $query = http_build_query($params);
+                        $url = '/' . 'project/index.php' . '?' . $query;
+                        $tab = filter_input(INPUT_GET, 'tab');
+                        if ($tab === $type['id']) {
+                            $button_active = 'filters__button--active';
+                        } else {
+                            $button_active = '';
+                        }
                         switch ($type['type']) {
                             case 'post-text':
-                                echo include_template('filters/filter-text.php', ['type' => $type]);
+                                echo include_template('filters/filter-text.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
                                 break;
                             case 'post-quote':
-                                echo include_template('filters/filter-quote.php', ['type' => $type]);
+                                echo include_template('filters/filter-quote.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
                                 break;
                             case 'post-photo':
-                                echo include_template('filters/filter-photo.php', ['type' => $type]);
+                                echo include_template('filters/filter-photo.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
                                 break;
                             case 'post-link':
-                                echo include_template('filters/filter-link.php', ['type' => $type]);
+                                echo include_template('filters/filter-link.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
                                 break;
                             case 'post-video':
-                                echo include_template('filters/filter-video.php', ['type' => $type]);
+                                echo include_template('filters/filter-video.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
                                 break;
                         }
                     } ?>
