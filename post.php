@@ -8,7 +8,7 @@ $user_name = 'Кирилл';
 
 $post_id = filter_input(INPUT_GET, 'id');
 
-$sql = 'SELECT * FROM posts p' .
+$sql = 'SELECT p.id, title, text, quote_auth, img, video, link, views, p.dt_add, login, avatar, type FROM posts p' .
     ' JOIN users u ON p.user_id = u.id' .
     ' JOIN content_type ct' .
     ' ON p.content_type_id = ct.id' .
