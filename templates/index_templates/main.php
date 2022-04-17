@@ -37,11 +37,11 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <?php
-                    print include_template('index_templates//index_filters/filter-all.php', ['tab' => $tab]);
+                    print include_template('index_templates/index_filters/filter-all.php', ['tab' => $tab]);
                     foreach ($content_types as $type) {
                         $params['tab'] = $type['id'];
                         $query = http_build_query($params);
-                        $url = '/project/index.php?' . $query;
+                        $url = 'index.php?' . $query;
                         if ($tab === $type['id']) {
                             $button_active = 'filters__button--active';
                         } else {

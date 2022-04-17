@@ -41,21 +41,22 @@ if ($result) {
 $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 
+$params = filter_input(INPUT_GET, 'id');
+
 if ($result) {
     $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $page_content = include_template('index_templates/main.php', [
+        'posts' => $posts,
+        'content_types' => $content_types,
+        'tab' => $tab,
+        'params' => $params]);
 } else {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
 }
 
-$params = $_GET;
 
 
-$page_content = include_template('index_templates/main.php', [
-    'posts' => $posts,
-    'content_types' => $content_types,
-    'tab' => $tab,
-    'params' => $params]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
