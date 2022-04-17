@@ -64,4 +64,8 @@ UPDATE posts SET posts.content_type_id = 1 WHERE id = 2;
 UPDATE posts SET posts.content_type_id = 3 WHERE id = 3;
 UPDATE posts SET posts.content_type_id = 3 WHERE id = 4;
 UPDATE posts SET posts.content_type_id = 4 WHERE id = 5;
-
+UPDATE content_type SET type = 'text' WHERE id = 1;
+UPDATE content_type SET type = 'quote' WHERE id = 2;
+UPDATE content_type SET type = 'photo' WHERE id = 3;
+UPDATE content_type SET type = 'link' WHERE id = 4;
+UPDATE content_type SET type = 'video' WHERE id = 5;

@@ -37,35 +37,39 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <?php
-                    print include_template('index_templates/index_filters/filter-all.php', ['tab' => $tab]);
-                    foreach ($content_types as $type) {
-                        $params['tab'] = $type['id'];
-                        $query = http_build_query($params);
-                        $url = 'index.php?' . $query;
-                        if ($tab === $type['id']) {
-                            $button_active = 'filters__button--active';
-                        } else {
-                            $button_active = '';
-                        }
-                        switch ($type['type']) {
-                            case 'post-text':
-                                echo include_template('index_templates/index_filters/filter-text.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
-                                break;
-                            case 'post-quote':
-                                echo include_template('index_templates/index_filters/filter-quote.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
-                                break;
-                            case 'post-photo':
-                                echo include_template('index_templates/index_filters/filter-photo.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
-                                break;
-                            case 'post-link':
-                                echo include_template('index_templates/index_filters/filter-link.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
-                                break;
-                            case 'post-video':
-                                echo include_template('index_templates/index_filters/filter-video.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
-                                break;
-                        }
-                    } ?>
+                    if (!$tab) {
+                        $button_active = 'filters__button--active';
+                    } else {
+                        $button_active = '';
+                    }
+                    ?>
+                    <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?= $button_active ?>"
+                           href="index.php">
+                            <span>Все</span>
+                        </a>
+                    </li>
+                    <?php foreach ($content_types as $type):
+                    $params['tab'] = $type['id'];
+                    $query = http_build_query($params);
+                    $url = 'index.php?' . $query;
+                    if ($tab === $type['id']) {
+                        $button_active = 'filters__button--active';
+                    } else {
+                        $button_active = '';
+                    }
+                    ?>
+                    <li class="popular__filters-item filters__item">
+                        <a class="filters__button filters__button--<?= $type['type'] ?> <?= $button_active ?>"
+                           href="<?= $url ?>">
+                            <span class="visually-hidden"><?= $type['name'] ?></span>
+                            <svg class="filters__icon" width="22" height="18">
+                                <use xlink:href="#icon-filter-<?= $type['type'] ?>"></use>
+                            </svg>
+                        </a>
+                    </li>
                 </ul>
+                <?php endforeach; ?>
             </div>
         </div>
         <div class="popular__posts">
