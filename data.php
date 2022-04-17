@@ -11,4 +11,8 @@ const SECONDS_IN_DAY = 86400;
 const SECONDS_IN_WEEK = 604800;
 const SECONDS_IN_MONTH = 2419200;
 
+$is_auth = rand(0, 1);
+
+$user_name = 'Кирилл';
+
 ?>

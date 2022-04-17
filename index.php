@@ -3,10 +3,6 @@ require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
 
-$is_auth = rand(0, 1);
-
-$user_name = 'Кирилл';
-
 if (!$connection) {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
@@ -52,12 +48,14 @@ if ($result) {
     $page_content = include_template('error.php', ['error' => $error]);
 }
 
+$params = $_GET;
 
 
-
-$page_content = include_template('main.php', [
+$page_content = include_template('index_templates/main.php', [
     'posts' => $posts,
-    'content_types' => $content_types]);
+    'content_types' => $content_types,
+    'tab' => $tab,
+    'params' => $params]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',

@@ -197,9 +197,7 @@
     </div>
 </header>
 
-<main>
-    <?= $content ?>
-</main>
+<?= $content ?>
 
 <footer class="footer">
     <div class="footer__wrapper">

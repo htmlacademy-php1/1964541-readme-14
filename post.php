@@ -2,9 +2,6 @@
 require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
-$is_auth = rand(0, 1);
-
-$user_name = 'Кирилл';
 
 $post_id = filter_input(INPUT_GET, 'id');
 
@@ -28,7 +25,7 @@ if ($result) {
 
 
 
-$page_content = include_template('post-window.php', ['post' => $post]);
+$page_content = include_template('post_templates/post-window.php', ['post' => $post]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',

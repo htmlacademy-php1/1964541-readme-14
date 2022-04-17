@@ -5,19 +5,19 @@
     <div class="post__main">
         <?php switch ($post['type']) {
             case 'post-photo':
-                echo include_template('post-types/post-photo.php', ['post' => $post]);
+                echo include_template('index_templates/index_post_types/post-photo.php', ['post' => $post]);
                 break;
             case 'post-video':
-                echo include_template('post-types/post-video.php', ['post' => $post]);
+                echo include_template('index_templates/index_post_types/post-video.php', ['post' => $post]);
                 break;
             case 'post-quote':
-                echo include_template('post-types/post-quote.php', ['post' => $post]);
+                echo include_template('index_templates/index_post_types/post-quote.php', ['post' => $post]);
                 break;
             case 'post-text':
-                echo include_template('post-types/post-text.php', ['post' => $post]);
+                echo include_template('index_templates/index_post_types/post-text.php', ['post' => $post]);
                 break;
             case 'post-link':
-                echo include_template('post-types/post-link.php', ['post' => $post]);
+                echo include_template('index_templates/index_post_types/post-link.php', ['post' => $post]);
                 break;
         }
         ?>

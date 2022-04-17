@@ -37,13 +37,11 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <?php
-                    print include_template('/filters/filter-all.php');
+                    print include_template('index_templates//index_filters/filter-all.php', ['tab' => $tab]);
                     foreach ($content_types as $type) {
-                        $params = $_GET;
                         $params['tab'] = $type['id'];
                         $query = http_build_query($params);
-                        $url = '/' . 'project/index.php' . '?' . $query;
-                        $tab = filter_input(INPUT_GET, 'tab');
+                        $url = '/project/index.php?' . $query;
                         if ($tab === $type['id']) {
                             $button_active = 'filters__button--active';
                         } else {
@@ -51,19 +49,19 @@
                         }
                         switch ($type['type']) {
                             case 'post-text':
-                                echo include_template('filters/filter-text.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
+                                echo include_template('index_templates/index_filters/filter-text.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
                                 break;
                             case 'post-quote':
-                                echo include_template('filters/filter-quote.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
+                                echo include_template('index_templates/index_filters/filter-quote.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
                                 break;
                             case 'post-photo':
-                                echo include_template('filters/filter-photo.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
+                                echo include_template('index_templates/index_filters/filter-photo.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
                                 break;
                             case 'post-link':
-                                echo include_template('filters/filter-link.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
+                                echo include_template('index_templates/index_filters/filter-link.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
                                 break;
                             case 'post-video':
-                                echo include_template('filters/filter-video.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
+                                echo include_template('index_templates/index_filters/filter-video.php', ['type' => $type, 'button_active' => $button_active, 'url' => $url]);
                                 break;
                         }
                     } ?>
@@ -72,7 +70,7 @@
         </div>
         <div class="popular__posts">
             <?php foreach ($posts as $post): ?>
-                <?= include_template('popular.php', ['post' => $post]); ?>
+                <?= include_template('index_templates/popular.php', ['post' => $post]); ?>
             <?php endforeach; ?>
         </div>
     </div>
