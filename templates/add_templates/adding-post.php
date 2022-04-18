@@ -14,7 +14,7 @@
                         <li class="adding-post__tabs-item filters__item">
                             <a class="adding-post__tabs-link filters__button filters__button--photo filters__button--active tabs__item tabs__item--active button">
                                 <svg class="filters__icon" width="22" height="18">
-                                    <use xlink:href="#icon-filter-photo"></use>
+                                    <use xlink:href="#icon-filter-<?= $types['type'] ?>"></use>
                                 </svg>
                                 <span><?= $types['name']?></span>
                             </a>
@@ -24,7 +24,11 @@
                 </div>
                 <div class="adding-post__tab-content">
                     <?php
-
+                    echo include_template('add_templates/add_forms/add-post-photo.php');
+                    echo include_template('add_templates/add_forms/add-post-text.php');
+                    echo include_template('add_templates/add_forms/add-post-link.php');
+                    echo include_template('add_templates/add_forms/add-post-video.php');
+                    echo include_template('add_templates/add_forms/add-post-quote.php');
                     ?>
                 </div>
             </div>
