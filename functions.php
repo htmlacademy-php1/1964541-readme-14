@@ -1,4 +1,6 @@
 <?php
+require_once 'helpers.php';
+
 function cut_text($text, $length = 300): string
 {
     if (mb_strlen($text) > $length) {
@@ -51,6 +53,7 @@ function validate_tag($value): ?string
         if (stristr($value, ' ')) {
             return null;
         }
+        return null;
     }
     return 'В поле должно быть одно или больше слов';
 }
@@ -70,4 +73,14 @@ function validate_photo_link($value): ?string
         }
     }
     return 'Файл загрузить не получилось';
+}
+
+function validate_video($value): ?string
+{
+    if ($value) {
+        if (check_youtube_url($value)){
+            return null;
+        }
+    }
+    return 'Видео не добавлено';
 }
