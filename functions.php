@@ -36,11 +36,38 @@ function show_past_time($time): string
         $divider = SECONDS_IN_WEEK;
         $form = ['неделя', 'недели', 'недель'];
     } else {
-        $divider= SECONDS_IN_MONTH;
+        $divider = SECONDS_IN_MONTH;
         $form = ['месяц', 'месяца', 'месяцев'];
     }
     $diff /= $divider;
     $diff = floor($diff);
 
     return $diff . ' ' . get_noun_plural_form($diff, $form[0], $form[1], $form[2]) . ' назад';
+}
+
+function validate_tag($value): ?string
+{
+    if ($value) {
+        if (stristr($value, ' ')) {
+            return null;
+        }
+    }
+    return 'В поле должно быть одно или больше слов';
+}
+
+function validate_filled($value)
+{
+    if (empty($value)) {
+        return "Это поле должно быть заполнено";
+    }
+}
+
+function validate_photo_link($value): ?string
+{
+    if ($value) {
+        if (file_get_contents($value)) {
+            return null;
+        }
+    }
+    return 'Файл загрузить не получилось';
 }

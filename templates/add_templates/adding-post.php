@@ -24,7 +24,7 @@
                 </div>
                 <div class="adding-post__tab-content">
                     <?php
-                    echo include_template('add_templates/add_forms/add-post-photo.php');
+                    echo include_template('add_templates/add_forms/add-post-photo.php', ['validation_errors' => $validation_errors]);
                     echo include_template('add_templates/add_forms/add-post-text.php');
                     echo include_template('add_templates/add_forms/add-post-link.php');
                     echo include_template('add_templates/add_forms/add-post-video.php');

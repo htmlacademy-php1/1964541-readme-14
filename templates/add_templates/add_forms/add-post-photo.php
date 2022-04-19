@@ -6,7 +6,8 @@
                 <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="photo-heading">Заголовок <span class="form__input-required">*</span></label>
                     <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="photo-heading" type="text" name="photo-heading" placeholder="Введите заголовок">
+                        <?php $classname = isset($validation_errors['title']) ? 'form__input-section--error' : ''; ?>
+                        <input class="adding-post__input form__input <?= $classname ?>" id="photo-heading" type="text" name="title" placeholder="Введите заголовок">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -17,7 +18,8 @@
                 <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
                     <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-heading" placeholder="Введите ссылку">
+                        <?php $classname = isset($validation_errors['photo-link']) ? 'form__input-section--error' : ''; ?>
+                        <input class="adding-post__input form__input <?= $classname ?>" id="photo-url" type="text" name="photo-link" placeholder="Введите ссылку">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -28,7 +30,8 @@
                 <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="photo-tags">Теги</label>
                     <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="photo-tags" type="text" name="photo-heading" placeholder="Введите теги">
+                        <?php $classname = isset($validation_errors['tags']) ? 'form__input-section--error' : ''; ?>
+                        <input class="adding-post__input form__input <?= $classname ?>" id="photo-tags" type="text" name="tags" placeholder="Введите теги">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -37,12 +40,17 @@
                     </div>
                 </div>
             </div>
+            <?php if (isset($validation_errors)): ?>
             <div class="form__invalid-block">
                 <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
                 <ul class="form__invalid-list">
-                    <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
+                    <?php
+                    foreach ($validation_errors as $value): ?>
+                    <li class="form__invalid-item"><?= $value ?></li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
+            <?php endif; ?>
         </div>
         <div class="adding-post__input-file-container form__input-container form__input-container--file">
             <div class="adding-post__input-file-wrapper form__input-file-wrapper">
