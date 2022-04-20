@@ -17,12 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         },
         'tags' => function ($value) {
             return validate_tag($value);
-        },
-        'photo-link' => function ($value) {
-            return validate_photo_link($value);
-        },
+        }
     ];
-    $required = ['title', 'tags', 'photo-link'];
+    $required = ['title', 'tags'];
     $validation_errors = [];
 
     $post = filter_input_array(INPUT_POST, [
@@ -49,15 +46,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             move_uploaded_file($tmp_name, '/uploads' . $filename);
             $post['photo-link'] = $filename;
         }
-    } else {
+    } else if (empty($post['photo-link'])) {
         $validation_errors['file'] = 'Вы не загрузили файл';
     }
 
-
-
-
-
-
+    if (!isset($_FILES['userpic-file-photo']['name'])) { //если файл с фото не добавлен, то проверяем ссылку.
+        $required[] = 'photo-link';                      //но надо добавить проверку вида контента
+        $rules['photo-link'] = function ($value) {
+            return validate_photo_link($value);
+        };
+    }
 
 
     foreach ($post as $key => $value) {
