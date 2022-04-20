@@ -93,9 +93,11 @@ function getPostVal($name) {
 }
 
 function validate_text($value, $min, $max) {
-        $len = strlen($value);
-        if ($len < $min or $len > $max) {
-            return "Значение должно быть от $min до $max символов";
+        if ($value) {
+            $len = strlen($value);
+            if ($len < $min or $len > $max) {
+                return "Значение должно быть от $min до $max символов";
+            }
         }
         return null;
 }

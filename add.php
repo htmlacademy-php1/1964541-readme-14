@@ -7,7 +7,7 @@ $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-function validate_content_type_id($value, $content_types)
+function validate_content_type_id($value, $content_types): ?string
 {
     foreach ($content_types as $type) {
         if ($type['id'] === $value) {
@@ -51,10 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'video' => FILTER_VALIDATE_URL,
         'link' => FILTER_VALIDATE_URL,
         'tags' => FILTER_DEFAULT,
-        'content_type_id' => FILTER_VALIDATE_INT], true);
+        'content_type_id' => FILTER_DEFAULT], true);
 
     // Валидация файла
-    var_dump($_FILES);
     if (!empty($_FILES['userpic-file-photo']['name'])) {
         $tmp_name = $_FILES['userpic-file-photo']['tmp-name'];
         $path = $_FILES['userpic-file-photo']['name'];
