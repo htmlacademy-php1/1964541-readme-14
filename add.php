@@ -3,6 +3,7 @@ require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
 
+
 $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -14,7 +15,10 @@ function validate_type_id($value, $content_types): ?string //Мне все та�
             return null;
         }
     }
-    return exit(header('Location: /error404/'));;;
+    if ($value === null) {
+        return header('Location: add.php?id=1');
+    }
+    return header('Location: /error404/');
 }
 
 $type_id = filter_input(INPUT_GET, 'id');
@@ -51,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'video' => FILTER_VALIDATE_URL,
         'link' => FILTER_VALIDATE_URL,
         'tags' => FILTER_DEFAULT,
-        ], true);
+    ], true);
 
 
     switch ($type_id) {
@@ -88,11 +92,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case '4':
             $required[] = 'link';
             $required['link'] = function ($value) { // не смог придумать как сделать это более элегантно
-            if ($value) { // не хотелось ради этого отдельную функцию валидации создавать, но могу, если надо
-                return null;
-            }
-            return 'Введите верный URL';
-        };
+                if ($value) { // не хотелось ради этого отдельную функцию валидации создавать, но могу, если надо
+                    return null;
+                }
+                return 'Введите верный URL';
+            };
             break;
         case '5':
             $required[] = 'video';
