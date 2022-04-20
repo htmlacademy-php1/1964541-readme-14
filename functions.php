@@ -84,3 +84,7 @@ function validate_video($value): ?string
     }
     return 'Видео не добавлено';
 }
+
+function getPostVal($name) {
+    return $_POST[$name] ?? "";
+}

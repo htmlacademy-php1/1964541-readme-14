@@ -7,7 +7,7 @@
                     <label class="adding-post__label form__label" for="photo-heading">Заголовок <span class="form__input-required">*</span></label>
                     <div class="form__input-section">
                         <?php $classname = isset($validation_errors['title']) ? 'form__input-section--error' : ''; ?>
-                        <input class="adding-post__input form__input <?= $classname ?>" id="photo-heading" type="text" name="title" placeholder="Введите заголовок">
+                        <input class="adding-post__input form__input <?= $classname ?>" id="photo-heading" type="text" name="title" value="<?= getPostVal('title') ?>" placeholder="Введите заголовок">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -19,7 +19,7 @@
                     <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
                     <div class="form__input-section">
                         <?php $classname = isset($validation_errors['photo-link']) ? 'form__input-section--error' : ''; ?>
-                        <input class="adding-post__input form__input <?= $classname ?>" id="photo-url" type="text" name="photo-link" placeholder="Введите ссылку">
+                        <input class="adding-post__input form__input <?= $classname ?>" id="photo-url" type="text" name="photo-link" value="<?= getPostVal('photo-link')?>" placeholder="Введите ссылку">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -31,7 +31,7 @@
                     <label class="adding-post__label form__label" for="photo-tags">Теги</label>
                     <div class="form__input-section">
                         <?php $classname = isset($validation_errors['tags']) ? 'form__input-section--error' : ''; ?>
-                        <input class="adding-post__input form__input <?= $classname ?>" id="photo-tags" type="text" name="tags" placeholder="Введите теги">
+                        <input class="adding-post__input form__input <?= $classname ?>" id="photo-tags" type="text" name="tags" value="<?= getPostVal('tags')?>" placeholder="Введите теги">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
