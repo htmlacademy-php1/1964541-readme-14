@@ -8,7 +8,8 @@ $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 
-$page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types]);
+$validation_errors = [];
+$page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors]);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rules = [
@@ -26,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     ];
     $required = ['title', 'tags'];
-    $validation_errors = [];
 
     $post = filter_input_array(INPUT_POST, [
         'title' => FILTER_DEFAULT,
