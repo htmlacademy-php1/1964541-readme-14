@@ -71,8 +71,9 @@ function validate_photo_link($value): ?string
         if (file_get_contents($value)) {
             return null;
         }
+        return 'Файл загрузить не получилось';
     }
-    return 'Файл загрузить не получилось';
+    return null;
 }
 
 function validate_video($value): ?string
@@ -81,8 +82,9 @@ function validate_video($value): ?string
         if (check_youtube_url($value)){
             return null;
         }
+        return 'Видео не добавлено';
     }
-    return 'Видео не добавлено';
+    return null;
 }
 
 function getPostVal($name) {

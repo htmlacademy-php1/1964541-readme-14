@@ -17,6 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         },
         'tags' => function ($value) {
             return validate_tag($value);
+        },
+        'photo-link' => function ($value) {
+            return validate_photo_link($value);
+        },
+        'video' => function($value) {
+            return validate_video($value);
         }
     ];
     $required = ['title', 'tags'];
@@ -52,9 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!isset($_FILES['userpic-file-photo']['name'])) { //если файл с фото не добавлен, то проверяем ссылку.
         $required[] = 'photo-link';                      //но надо добавить проверку вида контента
-        $rules['photo-link'] = function ($value) {
-            return validate_photo_link($value);
-        };
     }
 
 
@@ -89,7 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         unset($post['tags']);
 
-        $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, user_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, 1, 3)';
+
+        $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, user_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, 1, $content_type_id)';
         $stmt = db_get_prepare_stmt($connection, $sql, $post);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
