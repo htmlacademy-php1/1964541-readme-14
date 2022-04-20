@@ -40,17 +40,7 @@
                     </div>
                 </div>
             </div>
-            <?php if (isset($validation_errors)): ?>
-            <div class="form__invalid-block">
-                <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
-                <ul class="form__invalid-list">
-                    <?php
-                    foreach ($validation_errors as $value): ?>
-                    <li class="form__invalid-item"><?= $value ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-            <?php endif; ?>
+            <?= include_template('add_templates/add_error.php', ['validation_errors' => $validation_errors]); ?>
         </div>
         <div class="adding-post__input-file-container form__input-container form__input-container--file">
             <div class="adding-post__input-file-wrapper form__input-file-wrapper">

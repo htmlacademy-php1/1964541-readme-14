@@ -6,7 +6,8 @@
                 <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="text-heading">Заголовок <span class="form__input-required">*</span></label>
                     <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="text-heading" type="text" name="title" placeholder="Введите заголовок">
+                        <?php $classname = isset($validation_errors['title']) ? 'form__input-section--error' : ''; ?>
+                        <input class="adding-post__input form__input <?= $classname ?>" id="text-heading" type="text" name="title" placeholder="Введите заголовок">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -28,7 +29,8 @@
                 <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="post-tags">Теги</label>
                     <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="post-tags" type="text" name="tags" placeholder="Введите теги">
+                        <?php $classname = isset($validation_errors['tags']) ? 'form__input-section--error' : ''; ?>
+                        <input class="adding-post__input form__input <?= $classname ?>" id="post-tags" type="text" name="tags" placeholder="Введите теги">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -37,13 +39,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form__invalid-block">
-                <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
-                <ul class="form__invalid-list">
-                    <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
-                    <li class="form__invalid-item">Цитата. Она не должна превышать 70 знаков.</li>
-                </ul>
-            </div>
+            <?= include_template('add_templates/add_error.php', ['validation_errors' => $validation_errors]); ?>
         </div>
         <div class="adding-post__buttons">
             <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
