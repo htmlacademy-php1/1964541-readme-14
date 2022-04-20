@@ -140,6 +140,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $page_content = include_template('error.php', ['error' => $error]);
         }
+
+        $sql = "INSERT INTO posts_tags (post_id, tag_id) VALUES ($post_id, $tag_id)";
+        $result = mysqli_query($connection, $sql);
     }
 }
 
