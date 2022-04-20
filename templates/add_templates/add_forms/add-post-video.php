@@ -8,6 +8,7 @@
                     <div class="form__input-section">
                         <?php $classname = isset($validation_errors['title']) ? 'form__input-section--error' : ''; ?>
                         <input class="adding-post__input form__input <?= $classname ?>" id="video-heading" type="text" name="title" placeholder="Введите заголовок">
+                        <input type="hidden" name="content_type_id" value="5">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>

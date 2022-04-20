@@ -1,5 +1,6 @@
 <?php
 require_once 'helpers.php';
+require_once 'data.php';
 
 function cut_text($text, $length = 300): string
 {
@@ -89,4 +90,12 @@ function validate_video($value): ?string
 
 function getPostVal($name) {
     return $_POST[$name] ?? "";
+}
+
+function validate_text($value, $min, $max) {
+        $len = strlen($value);
+        if ($len < $min or $len > $max) {
+            return "Значение должно быть от $min до $max символов";
+        }
+        return null;
 }

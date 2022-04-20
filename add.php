@@ -7,6 +7,15 @@ $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+function validate_content_type_id($value, $content_types)
+{
+    foreach ($content_types as $type) {
+        if ($type['id'] === $value) {
+            return null;
+        }
+    }
+    return 'Тип контента не существует';
+}
 
 $validation_errors = [];
 $page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors]);
@@ -22,8 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'photo-link' => function ($value) {
             return validate_photo_link($value);
         },
-        'video' => function($value) {
+        'video' => function ($value) {
             return validate_video($value);
+        },
+        'quote_auth' => function ($value) {
+            return validate_text($value, 10, 128);
+        },
+        'content_type_id' => function ($value) use ($content_types) {
+            return validate_content_type_id($value, $content_types);
         }
     ];
     $required = ['title', 'tags'];
@@ -35,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'photo-link' => FILTER_VALIDATE_URL,
         'video' => FILTER_VALIDATE_URL,
         'link' => FILTER_VALIDATE_URL,
-        'tags' => FILTER_DEFAULT,], true);
+        'tags' => FILTER_DEFAULT,
+        'content_type_id' => FILTER_VALIDATE_INT], true);
 
     // Валидация файла
     var_dump($_FILES);
@@ -93,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($post['tags']);
 
 
-        $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, user_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, 1, $content_type_id)';
+        $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, 1)';
         $stmt = db_get_prepare_stmt($connection, $sql, $post);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
