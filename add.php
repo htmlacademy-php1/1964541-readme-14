@@ -7,7 +7,7 @@ $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-function validate_content_type_id($value, $content_types): ?string
+function validate_content_type_id($value, $content_types): ?string //Мне все таки кажется будет красивее, если закинуть ее в functions.php
 {
     foreach ($content_types as $type) {
         if ($type['id'] === $value) {
@@ -18,6 +18,7 @@ function validate_content_type_id($value, $content_types): ?string
 }
 
 $validation_errors = [];
+$required = ['title', 'tags'];
 $page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors]);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -41,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             return validate_content_type_id($value, $content_types);
         }
     ];
-    $required = ['title', 'tags'];
 
     $post = filter_input_array(INPUT_POST, [
         'title' => FILTER_DEFAULT,
@@ -53,28 +53,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'tags' => FILTER_DEFAULT,
         'content_type_id' => FILTER_DEFAULT], true);
 
-    // Валидация файла
-    if (!empty($_FILES['userpic-file-photo']['name'])) {
-        $tmp_name = $_FILES['userpic-file-photo']['tmp-name'];
-        $path = $_FILES['userpic-file-photo']['name'];
-        $filename = uniqid() . '.jpg';
 
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_type = finfo_file($finfo, $tmp_name);
-        if ($file_type !== 'image/gif' || $file_type !== 'image/jpeg' || $file_type !== 'image/png') {
-            $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
-        } else {
-            move_uploaded_file($tmp_name, '/uploads' . $filename);
-            $post['photo-link'] = $filename;
-        }
-    } else if (empty($post['photo-link'])) {
-        $validation_errors['file'] = 'Вы не загрузили файл';
+    switch ($post['content_type_id']) {
+        case '1':
+            $required[] = 'text';
+            break;
+        case '2':
+            $required[] = 'quote-auth';
+            $required[] = 'text';
+            break;
+        case '3':
+            // Валидация файла
+            if (!empty($_FILES['userpic-file-photo']['name'])) {
+                $tmp_name = $_FILES['userpic-file-photo']['tmp-name'];
+                $path = $_FILES['userpic-file-photo']['name'];
+                $filename = uniqid() . '.jpg';
+
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $file_type = finfo_file($finfo, $tmp_name);
+                if ($file_type !== 'image/gif' || $file_type !== 'image/jpeg' || $file_type !== 'image/png') {
+                    $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
+                } else {
+                    move_uploaded_file($tmp_name, '/uploads' . $filename);
+                    $post['photo-link'] = $filename;
+                }
+            } else if (empty($post['photo-link'])) {
+                $validation_errors['file'] = 'Вы не загрузили файл и не добавили ссылку';
+            }
+
+            if (!isset($_FILES['userpic-file-photo']['name'])) { //если файл с фото не добавлен, то проверяем ссылку.
+                $required[] = 'photo-link';
+            }
+            break;
+        case '4':
+            $required[] = 'link';
+            $required['link'] = function ($value) { // не смог придумать как сделать это более элегантно
+            if ($value) { // не хотелось ради этого отдельную функцию валидации создавать, но могу, если надо
+                return null;
+            }
+            return 'Введите верный URL';
+        };
+            break;
+        case '5':
+            $required[] = 'video';
+            break;
     }
-
-    if (!isset($_FILES['userpic-file-photo']['name'])) { //если файл с фото не добавлен, то проверяем ссылку.
-        $required[] = 'photo-link';                      //но надо добавить проверку вида контента
-    }
-
 
     foreach ($post as $key => $value) {
         if (isset($rules[$key])) {
