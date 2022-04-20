@@ -1,6 +1,6 @@
-<section class="adding-post__link tabs__content">
+<section class="adding-post__link tabs__content--active">
     <h2 class="visually-hidden">Форма добавления ссылки</h2>
-    <form class="adding-post__form form" action="add.php" method="post">
+    <form class="adding-post__form form" action="add.php?id=4" method="post">
         <div class="form__text-inputs-wrapper">
             <div class="form__text-inputs">
                 <div class="adding-post__input-wrapper form__input-wrapper">

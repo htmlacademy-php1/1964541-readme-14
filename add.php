@@ -7,19 +7,22 @@ $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-function validate_content_type_id($value, $content_types): ?string //Мне все таки кажется будет красивее, если закинуть ее в functions.php
+function validate_type_id($value, $content_types): ?string //Мне все таки кажется будет красивее, если закинуть ее в functions.php
 {
     foreach ($content_types as $type) {
         if ($type['id'] === $value) {
             return null;
         }
     }
-    return 'Тип контента не существует';
+    return exit(header('Location: /error404/'));;;
 }
+
+$type_id = filter_input(INPUT_GET, 'id');
+validate_type_id($type_id, $content_types);
 
 $validation_errors = [];
 $required = ['title', 'tags'];
-$page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors]);
+$page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'type_id' => $type_id]);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rules = [
@@ -37,9 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         },
         'quote_auth' => function ($value) {
             return validate_text($value, 10, 128);
-        },
-        'content_type_id' => function ($value) use ($content_types) {
-            return validate_content_type_id($value, $content_types);
         }
     ];
 
@@ -51,15 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'video' => FILTER_VALIDATE_URL,
         'link' => FILTER_VALIDATE_URL,
         'tags' => FILTER_DEFAULT,
-        'content_type_id' => FILTER_DEFAULT], true);
+        ], true);
 
 
-    switch ($post['content_type_id']) {
+    switch ($type_id) {
         case '1':
             $required[] = 'text';
             break;
         case '2':
-            $required[] = 'quote-auth';
+            $required[] = 'quote_auth';
             $required[] = 'text';
             break;
         case '3':
@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validation_errors = array_diff($validation_errors, array(''));
 
     if ($validation_errors) {
-        $page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors]);
+        $page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'type_id' => $type_id]);
     } else {
         $sql = 'INSERT INTO tags (name) VALUE (?)';
         $stmt = mysqli_prepare($connection, $sql);
@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($post['tags']);
 
 
-        $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, 1)';
+        $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ' . (int)$type_id . ', 1)';
         $stmt = db_get_prepare_stmt($connection, $sql, $post);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
