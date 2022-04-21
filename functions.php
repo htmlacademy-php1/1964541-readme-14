@@ -59,11 +59,12 @@ function validate_tag($value): ?string
     return 'В поле должно быть одно или больше слов';
 }
 
-function validate_filled($value)
+function validate_filled($value): ?string
 {
     if (empty($value)) {
         return "Это поле должно быть заполнено";
     }
+    return null;
 }
 
 function validate_photo_link($value): ?string
@@ -88,11 +89,13 @@ function validate_video($value): ?string
     return null;
 }
 
-function getPostVal($name) {
+function getPostVal($name): ?string
+{
     return $_POST[$name] ?? "";
 }
 
-function validate_text($value, $min, $max) {
+function validate_text($value, $min, $max): ?int
+{
         if ($value) {
             $len = strlen($value);
             if ($len < $min or $len > $max) {
@@ -100,4 +103,17 @@ function validate_text($value, $min, $max) {
             }
         }
         return null;
+}
+
+function validate_type_id($value, $content_types): ?int
+{
+    foreach ($content_types as $type) {
+        if ($type['id'] === $value) {
+            return 0;
+        }
+    }
+    if ($value === null) {
+        return 1;
+    }
+    return 2;
 }

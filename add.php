@@ -8,24 +8,23 @@ $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-function validate_type_id($value, $content_types): ?string //Мне все таки кажется будет красивее, если закинуть ее в functions.php
-{
-    foreach ($content_types as $type) {
-        if ($type['id'] === $value) {
-            return null;
-        }
-    }
-    if ($value === null) {
-        return header('Location: add.php?id=1');
-    }
-    return header('Location: /error404/');
-}
 
 $type_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 $validation_errors = [];
 $required = ['title', 'tags'];
 $page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'type_id' => $type_id]);
+
+
+switch (validate_type_id($type_id, $content_types)) {
+    case 1:
+        header('Location: add.php?id=1');
+        break;
+    case 2:
+        // здесь надо добавить переадресацию на ошибку
+        break;
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rules = [
@@ -46,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     ];
 
+
     $post = filter_input_array(INPUT_POST, [
         'title' => FILTER_DEFAULT,
         'text' => FILTER_DEFAULT,
@@ -54,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'video' => FILTER_VALIDATE_URL,
         'link' => FILTER_VALIDATE_URL,
         'tags' => FILTER_DEFAULT,
+        'content_type_id' => $type_id
     ], true);
 
 
@@ -145,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($post['tags']);
 
 
-        $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ' . (int)$type_id . ', 1)';
+        $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, 1)';
         $stmt = db_get_prepare_stmt($connection, $sql, $post);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {

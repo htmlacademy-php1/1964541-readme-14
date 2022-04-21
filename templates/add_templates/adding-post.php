@@ -26,7 +26,7 @@
                     <?php
                     switch ($type_id) {
                         case '3':
-                            echo include_template('add_templates/add_forms/add-post-photo.php', ['validation_errors' => $validation_errors]);
+                            echo include_template('add_templates/add_forms/add-post-photo.php', ['validation_errors' => $validation_errors, 'types' => $types]);
                             break;
                         case '1':
                             echo include_template('add_templates/add_forms/add-post-text.php', ['validation_errors' => $validation_errors]);
