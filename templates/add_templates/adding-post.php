@@ -26,19 +26,19 @@
                     <?php
                     switch ($type_id) {
                         case '3':
-                            echo include_template('add_templates/add_forms/add-post-photo.php', ['validation_errors' => $validation_errors, 'types' => $types]);
+                            echo include_template('add_templates/add_forms/add-post-photo.php', ['validation_errors' => $validation_errors, 'type_id' => $type_id]);
                             break;
                         case '1':
-                            echo include_template('add_templates/add_forms/add-post-text.php', ['validation_errors' => $validation_errors]);
+                            echo include_template('add_templates/add_forms/add-post-text.php', ['validation_errors' => $validation_errors, 'type_id' => $type_id]);
                             break;
                         case '4':
-                            echo include_template('add_templates/add_forms/add-post-link.php', ['validation_errors' => $validation_errors]);
+                            echo include_template('add_templates/add_forms/add-post-link.php', ['validation_errors' => $validation_errors, 'type_id' => $type_id]);
                             break;
                         case '5':
-                            echo include_template('add_templates/add_forms/add-post-video.php', ['validation_errors' => $validation_errors]);
+                            echo include_template('add_templates/add_forms/add-post-video.php', ['validation_errors' => $validation_errors, 'type_id' => $type_id]);
                             break;
                         case '2':
-                            echo include_template('add_templates/add_forms/add-post-quote.php', ['validation_errors' => $validation_errors]);
+                            echo include_template('add_templates/add_forms/add-post-quote.php', ['validation_errors' => $validation_errors, 'type_id' => $type_id]);
                             break;
                     }
                     ?>
