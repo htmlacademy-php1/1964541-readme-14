@@ -69,7 +69,7 @@ UPDATE content_type SET type = 'quote' WHERE id = 2;
 UPDATE content_type SET type = 'photo' WHERE id = 3;
 UPDATE content_type SET type = 'link' WHERE id = 4;
 UPDATE content_type SET type = 'video' WHERE id = 5;
-SELECT * FROM posts;
+SELECT * FROM posts_tags;
 DELETE FROM posts WHERE id > 5; #удалил тестовые добавления
 DELETE FROM tags WHERE id > 0; # удалил тестовые тэги
 ALTER TABLE posts AUTO_INCREMENT = 1;

@@ -20,7 +20,7 @@ switch (validate_type_id($type_id, $content_types)) {
         header('Location: add.php?id=1');
         break;
     case 2:
-        header('Location: error.php');
+        header('Location: error.php?code=404');
         break;
 }
 
