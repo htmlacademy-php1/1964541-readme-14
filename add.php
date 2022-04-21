@@ -58,14 +58,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     switch ($type_id) {
-        case '1':
+        case 1:
             $required[] = 'text';
             break;
-        case '2':
+        case 2:
             $required[] = 'quote_auth';
             $required[] = 'text';
             break;
-        case '3':
+        case 3:
             // Валидация файла
             if (!empty($_FILES['userpic-file-photo']['name'])) {
                 $tmp_name = $_FILES['userpic-file-photo']['tmp-name'];
@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $required[] = 'photo-link';
             }
             break;
-        case '4':
+        case 4:
             $required[] = 'link';
             $required['link'] = function ($value) { // не смог придумать как сделать это более элегантно
                 if ($value) { // не хотелось ради этого отдельную функцию валидации создавать, но могу, если надо
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 return 'Введите верный URL';
             };
             break;
-        case '5':
+        case 5:
             $required[] = 'video';
             break;
     }
