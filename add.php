@@ -21,8 +21,7 @@ function validate_type_id($value, $content_types): ?string //Мне все та�
     return header('Location: /error404/');
 }
 
-$type_id = filter_input(INPUT_GET, 'id');
-validate_type_id($type_id, $content_types);
+$type_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 $validation_errors = [];
 $required = ['title', 'tags'];
@@ -43,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             return validate_video($value);
         },
         'quote_auth' => function ($value) {
-            return validate_text($value, 10, 128);
+            return validate_text($value, QUOTE_AUF_MIN_LENGTH, QUOTE_AUF_MAX_LENGTH);
         }
     ];
 
@@ -71,11 +70,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!empty($_FILES['userpic-file-photo']['name'])) {
                 $tmp_name = $_FILES['userpic-file-photo']['tmp-name'];
                 $path = $_FILES['userpic-file-photo']['name'];
-                $filename = uniqid() . '.jpg';
-
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 $file_type = finfo_file($finfo, $tmp_name);
-                if ($file_type !== 'image/gif' || $file_type !== 'image/jpeg' || $file_type !== 'image/png') {
+                $filename = uniqid();
+
+                switch ($file_type) {
+                    case 'image/gif':
+                        $filename .= '.gif';
+                        break;
+                    case 'image/jpeg':
+                        $filename .= '.jpg';
+                        break;
+                    case 'image/png':
+                        $filename .= '.png';
+                }
+
+                if ($file_type !== 'image/gif' || $file_type !== 'image/jpg' || $file_type !== 'image/png') {
                     $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
                 } else {
                     move_uploaded_file($tmp_name, '/uploads' . $filename);
