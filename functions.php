@@ -108,7 +108,7 @@ function validate_text($value, $min, $max): ?int
 function validate_type_id($value, $content_types): ?int
 {
     foreach ($content_types as $type) {
-        if ($type['id'] === $value) {
+        if ((int)$type['id'] === $value) {
             return 0;
         }
     }

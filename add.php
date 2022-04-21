@@ -15,13 +15,12 @@ $validation_errors = [];
 $required = ['title', 'tags'];
 $page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'type_id' => $type_id]);
 
-
 switch (validate_type_id($type_id, $content_types)) {
     case 1:
         header('Location: add.php?id=1');
         break;
     case 2:
-        // здесь надо добавить переадресацию на ошибку
+        header('Location: error.php');
         break;
 }
 
