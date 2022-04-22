@@ -1,4 +1,10 @@
-<section class="adding-post__link tabs__content--active">
+<?php
+$form_status = '';
+if ((int)$content_types['3']['id'] === $type_id) {
+    $form_status = '--active';
+}
+?>
+<section class="adding-post__link tabs__content<?= $form_status ?>">
     <h2 class="visually-hidden">Форма добавления ссылки</h2>
     <form class="adding-post__form form" action="add.php?id=<?= $type_id ?>" method="post">
         <div class="form__text-inputs-wrapper">
