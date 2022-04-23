@@ -8,6 +8,9 @@ $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+$sql = 'SELECT name FROM tags;';
+$result = mysqli_query($connection, $sql);
+$db_tags = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 $type_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
@@ -15,14 +18,16 @@ $validation_errors = [];
 $required = ['title', 'tags'];
 $page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'type_id' => $type_id]);
 
-switch (validate_type_id($type_id, $content_types)) {
-    case 1:
+if (validate_type_id($type_id, $content_types)) {
+    if ($type_id === null) {
         header('Location: add.php?id=1');
-        break;
-    case 2:
-        header('Location: error.php?code=404');
-        break;
+        exit;
+    }
+} else {
+    header('Location: error.php?code=404');
+    exit;
 }
+
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -40,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             return validate_video($value);
         },
         'quote_auth' => function ($value) {
-            return validate_text($value, QUOTE_AUF_MIN_LENGTH, QUOTE_AUF_MAX_LENGTH);
+            return validate_text($value, QUOTE_AUTHOR_MIN_LENGTH, QUOTE_AUTHOR_MAX_LENGTH);
         }
     ];
 
@@ -48,21 +53,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post = filter_input_array(INPUT_POST, [
         'title' => FILTER_DEFAULT,
         'text' => FILTER_DEFAULT,
-        'quote_auth' => FILTER_DEFAULT,
+        'quote-auth' => FILTER_DEFAULT,
         'photo-link' => FILTER_VALIDATE_URL,
         'video' => FILTER_VALIDATE_URL,
         'link' => FILTER_VALIDATE_URL,
         'tags' => FILTER_DEFAULT,
-        'content_type_id' => $type_id
+        'content_type_id' => $type_id,
     ], true);
-
+    $post['user_id'] = 1;
 
     switch ($type_id) {
         case 1:
             $required[] = 'text';
             break;
         case 2:
-            $required[] = 'quote_auth';
+            $required[] = 'quote-auth';
             $required[] = 'text';
             break;
         case 3:
@@ -83,12 +88,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         break;
                     case 'image/png':
                         $filename .= '.png';
+                        break;
                 }
 
                 if ($file_type !== 'image/gif' || $file_type !== 'image/jpg' || $file_type !== 'image/png') {
                     $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
                 } else {
-                    move_uploaded_file($tmp_name, '/uploads' . $filename);
+                    move_uploaded_file($tmp_name, 'uploads' . $filename);
                     $post['photo-link'] = $filename;
                 }
             } else if (empty($post['photo-link'])) {
@@ -127,9 +133,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($validation_errors) {
         $page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'type_id' => $type_id]);
     } else {
-        $sql = 'INSERT INTO tags (name) VALUE (?)';
+        $sql = 'INSERT INTO tags (name) VALUE (?);';
         $stmt = mysqli_prepare($connection, $sql);
         mysqli_stmt_bind_param($stmt, 's', $tag);
+
         if (stristr($post['tags'], ' ')) {
             $tags = explode(' ', $post['tags']);
             foreach ($tags as $tag) {
@@ -145,8 +152,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($post['tags']);
 
 
-        $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, 1)';
-        $stmt = db_get_prepare_stmt($connection, $sql, $post);
+
+
+
+        $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        $stmt = db_get_prepare_stmt($connection, $sql, [$post['title'], $post['text'], $post['quote_auth'], $post['photo-link'], $post['video'], $post['link'], $post['content_type_id'], $post['user_id']]);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
             $post_id = mysqli_insert_id($connection);
@@ -157,6 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $sql = "INSERT INTO posts_tags (post_id, tag_id) VALUES ($post_id, $tag_id)";
         $result = mysqli_query($connection, $sql);
+
     }
 }
 

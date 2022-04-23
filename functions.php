@@ -105,15 +105,12 @@ function validate_text($value, $min, $max): ?int
         return null;
 }
 
-function validate_type_id($value, $content_types): ?int
+function validate_type_id($value, $content_types): bool
 {
     foreach ($content_types as $type) {
-        if ((int)$type['id'] === $value) {
-            return 0;
+        if ((int)$type['id'] === $value || $value === null) {
+            return true;
         }
     }
-    if ($value === null) {
-        return 1;
-    }
-    return 2;
+    return false;
 }
