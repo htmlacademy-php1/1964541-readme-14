@@ -117,3 +117,39 @@ function validate_type_id($value, $content_types): ?int
     }
     return 2;
 }
+
+function validate_email($value, $users): ?string
+{
+    if($value) {
+        foreach ($users as $user) {
+            if(!$user['email'] === $value) {
+                return null;
+            }
+        }
+        return 'Пользователь с таким email уже существует';
+    }
+    return 'Введите корректный email';
+}
+
+function validate_password($password, $repeat_pass): ?string
+{
+    if ($password === $repeat_pass) {
+        return null;
+    }
+    return 'Пароли не совпадают';
+}
+
+function full_form_validation ($form, $rules, $required): array
+{
+    $validation_errors = [];
+    foreach ($form as $key => $value) {
+        if(isset($rule[$key])) {
+            $rule = $rules[$key];
+            $validation_errors[$key] = $rule($value);
+        }
+        if(in_array($key, $required) && empty($value)) {
+            $validation_errors[$key] = 'Поле ' . $key . ' надо заполнить';
+        }
+    }
+    return array_diff($validation_errors, array(''));
+}

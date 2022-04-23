@@ -12,6 +12,8 @@ const SECONDS_IN_WEEK = 604800;
 const SECONDS_IN_MONTH = 2419200;
 const QUOTE_AUF_MIN_LENGTH = 10;
 const QUOTE_AUF_MAX_LENGTH = 128;
+const LOGIN_MIN_LENGTH = 6;
+const LOGIN_MAX_LENGTH = 320;
 
 
 $is_auth = rand(0, 1);
