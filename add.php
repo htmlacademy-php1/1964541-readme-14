@@ -8,10 +8,6 @@ $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$sql = 'SELECT name FROM tags;';
-$result = mysqli_query($connection, $sql);
-$db_tags = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
 $type_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 $validation_errors = [];
@@ -53,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post = filter_input_array(INPUT_POST, [
         'title' => FILTER_DEFAULT,
         'text' => FILTER_DEFAULT,
-        'quote-auth' => FILTER_DEFAULT,
+        'quote_auth' => FILTER_DEFAULT,
         'photo-link' => FILTER_VALIDATE_URL,
         'video' => FILTER_VALIDATE_URL,
         'link' => FILTER_VALIDATE_URL,
@@ -137,6 +133,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = mysqli_prepare($connection, $sql);
         mysqli_stmt_bind_param($stmt, 's', $tag);
 
+        $sql = 'SELECT id, name FROM tags;';
+        $result = mysqli_query($connection, $sql);
+        $db_tags = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
         if (stristr($post['tags'], ' ')) {
             $tags = explode(' ', $post['tags']);
             foreach ($tags as $tag) {
@@ -146,9 +146,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } else {
             $tag = $post['tags'];
+            foreach ($db_tags as $db_tag) {
+                if ($db_tag['name'] === $tag) {
+                    $same_tag = $tag;
+                    $tag_id = $db_tag['id'];
+                }
+            }
+            if (!$same_tag) {
             mysqli_stmt_execute($stmt);
             $tag_id = mysqli_insert_id($connection);
         }
+        }
+
         unset($post['tags']);
 
 
@@ -160,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
             $post_id = mysqli_insert_id($connection);
-            header('Location: post.php?id=' . $post_id);
+            //header('Location: post.php?id=' . $post_id);
         } else {
             $page_content = include_template('error.php', ['error' => $error]);
         }
