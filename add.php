@@ -33,9 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'tags' => function ($value) {
             return validate_tag($value);
         },
-        'photo-link' => function ($value) {
-            return validate_photo_link($value);
-        },
         'video' => function ($value) {
             return validate_video($value);
         },
@@ -68,12 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
         case 'photo':
             if (!empty($_FILES['userpic-file-photo']['name'])) {
-                $tmp_name = $_FILES['userpic-file-photo']['tmp-name'];
+                $tmp_name = $_FILES['userpic-file-photo']['tmp_name'];
                 $path = $_FILES['userpic-file-photo']['name'];
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 $file_type = finfo_file($finfo, $tmp_name);
                 $filename = uniqid();
-
                 switch ($file_type) {
                     case 'image/gif':
                         $filename .= '.gif';
@@ -86,11 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         break;
                 }
 
-                if ($file_type !== 'image/gif' || $file_type !== 'image/jpg' || $file_type !== 'image/png') {
-                    $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
-                } else {
-                    move_uploaded_file($tmp_name, 'uploads' . $filename);
+                if ($file_type === 'image/gif' || $file_type === 'image/jpeg' || $file_type === 'image/png') {
+                    move_uploaded_file($tmp_name, 'uploads/' . $filename);
                     $post['photo-link'] = $filename;
+                } else {
+                    $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
                 }
             } else if (empty($post['photo-link'])) {
                 $validation_errors['file'] = 'Вы не загрузили файл и не добавили ссылку';
@@ -98,6 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (!isset($_FILES['userpic-file-photo']['name'])) {
                 $required[] = 'photo-link';
+                $rules['photo-link'] = function ($value) {
+                    return validate_photo_link($value);
+                };
             }
             break;
         case 'link':
@@ -118,8 +117,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 's', $form_type);
     mysqli_stmt_execute($stmt);
-    $type_id = mysqli_stmt_get_result($stmt);
-    $post['content_type_id'] = $type_id;
+    $type_result = mysqli_stmt_get_result($stmt);
+    $type_row = mysqli_fetch_array($type_result, MYSQLI_ASSOC);
+    $post['content_type_id'] = $type_row['id'];
 
     foreach ($post as $key => $value) {
         if (isset($rules[$key])) {
@@ -159,9 +159,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             if (!$same_tag) {
-            mysqli_stmt_execute($stmt);
-            $tag_id = mysqli_insert_id($connection);
-        }
+                mysqli_stmt_execute($stmt);
+                $tag_id = mysqli_insert_id($connection);
+            }
         }
         unset($post['tags']);
 

@@ -58,4 +58,3 @@ VALUE (2, 1);
 #Лариса подписалась на Владика
 INSERT INTO subscribes (follower_id, follow_id)
 VALUE (2, 3);
-
