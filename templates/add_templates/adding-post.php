@@ -10,7 +10,7 @@
                         <ul class="adding-post__tabs-list filters__list tabs__list">
                             <li class="adding-post__tabs-item filters__item">
                                 <a class="adding-post__tabs-link filters__button filters__button--<?= $types['type'] ?> filters__button--active tabs__item tabs__item--active button"
-                                   href="add.php?id=<?= $types['id'] ?>">
+                                   href="add.php?type=<?= $types['type'] ?>">
                                     <svg class="filters__icon" width="22" height="18">
                                         <use xlink:href="#icon-filter-<?= $types['type'] ?>"></use>
                                     </svg>
@@ -22,11 +22,9 @@
                 </div>
                 <div class="adding-post__tab-content">
                     <?php
-                    echo include_template('add_templates/add_forms/add-post-photo.php', ['validation_errors' => $validation_errors, 'type_id' => $type_id, 'content_types' => $content_types]);
-                    echo include_template('add_templates/add_forms/add-post-text.php', ['validation_errors' => $validation_errors, 'type_id' => $type_id, 'content_types' => $content_types]);
-                    echo include_template('add_templates/add_forms/add-post-link.php', ['validation_errors' => $validation_errors, 'type_id' => $type_id, 'content_types' => $content_types]);
-                    echo include_template('add_templates/add_forms/add-post-video.php', ['validation_errors' => $validation_errors, 'type_id' => $type_id, 'content_types' => $content_types]);
-                    echo include_template('add_templates/add_forms/add-post-quote.php', ['validation_errors' => $validation_errors, 'type_id' => $type_id, 'content_types' => $content_types]);
+                    foreach ($form_templates as $form_template) {
+                        echo include_template($form_template, ['validation_errors' => $validation_errors, 'form_type' => $form_type, 'content_types' => $content_types]);
+                    }
                     ?>
                 </div>
             </div>

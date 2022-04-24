@@ -1,12 +1,12 @@
 <?php
 $form_status = '';
-if ((int)$content_types['2']['id'] === $type_id) {
+if ($content_types['2']['type'] === $form_type) {
     $form_status = '--active';
 }
 ?>
 <section class="adding-post__photo tabs__content tabs__content<?= $form_status ?>">
     <h2 class="visually-hidden">Форма добавления фото</h2>
-    <form class="adding-post__form form" action="add.php?id=<?= $type_id ?>" method="post" enctype="multipart/form-data">
+    <form class="adding-post__form form" action="add.php?type=<?= $form_type ?>" method="post" enctype="multipart/form-data">
         <div class="form__text-inputs-wrapper">
             <div class="form__text-inputs">
                 <div class="adding-post__input-wrapper form__input-wrapper">

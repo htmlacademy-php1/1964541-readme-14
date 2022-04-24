@@ -105,17 +105,14 @@ function validate_text($value, $min, $max): ?int
         return null;
 }
 
-function validate_type_id($value, $content_types): ?int
+function validate_form_type($value, $content_types): bool
 {
     foreach ($content_types as $type) {
-        if ((int)$type['id'] === $value) {
-            return 0;
+        if ($type['type'] === $value || $value === null) {
+            return true;
         }
     }
-    if ($value === null) {
-        return 1;
-    }
-    return 2;
+    return false;
 }
 
 function validate_email($value, $users): ?string

@@ -1,12 +1,12 @@
 <?php
 $form_status = '';
-if ((int)$content_types['0']['id'] === $type_id) {
+if ($content_types['0']['type'] === $form_type) {
     $form_status = '--active';
 }
 ?>
 <section class="adding-post__text tabs__content<?= $form_status ?>">
     <h2 class="visually-hidden">Форма добавления текста</h2>
-    <form class="adding-post__form form" action="add.php?id=<?= $type_id ?>" method="post">
+    <form class="adding-post__form form" action="add.php?type=<?= $form_type ?>" method="post">
         <div class="form__text-inputs-wrapper">
             <div class="form__text-inputs">
                 <div class="adding-post__input-wrapper form__input-wrapper">
