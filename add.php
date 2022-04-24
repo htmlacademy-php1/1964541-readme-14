@@ -57,19 +57,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ], true);
     $post['user_id'] = 1;
 
+
     switch ($form_type) {
         case 'text':
             $required[] = 'text';
-            $post['content_type_id'] = 1;
             break;
         case 'quote':
             $required[] = 'quote_auth';
             $required[] = 'text';
-            $post['content_type_id'] = 2;
             break;
         case 'photo':
-            $post['content_type_id'] = 3;
-            // Валидация файла
             if (!empty($_FILES['userpic-file-photo']['name'])) {
                 $tmp_name = $_FILES['userpic-file-photo']['tmp-name'];
                 $path = $_FILES['userpic-file-photo']['name'];
@@ -99,25 +96,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $validation_errors['file'] = 'Вы не загрузили файл и не добавили ссылку';
             }
 
-            if (!isset($_FILES['userpic-file-photo']['name'])) { //если файл с фото не добавлен, то проверяем ссылку.
+            if (!isset($_FILES['userpic-file-photo']['name'])) {
                 $required[] = 'photo-link';
             }
             break;
         case 'link':
-            $post['content_type_id'] = 4;
             $required[] = 'link';
-            $required['link'] = function ($value) { // не смог придумать как сделать это более элегантно
-                if ($value) { // не хотелось ради этого отдельную функцию валидации создавать, но могу, если надо
+            $required['link'] = function ($value) {
+                if ($value) {
                     return null;
                 }
                 return 'Введите верный URL';
             };
             break;
         case 'video':
-            $post['content_type_id'] = 5;
             $required[] = 'video';
             break;
     }
+
+    $sql = 'SELECT id FROM content_type WHERE type = ?';
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 's', $form_type);
+    mysqli_stmt_execute($stmt);
+    $type_id = mysqli_stmt_get_result($stmt);
+    $post['content_type_id'] = $type_id;
 
     foreach ($post as $key => $value) {
         if (isset($rules[$key])) {
@@ -161,11 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tag_id = mysqli_insert_id($connection);
         }
         }
-
         unset($post['tags']);
-
-
-
 
 
         $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
