@@ -8,22 +8,21 @@ $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$type_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+$form_type = filter_input(INPUT_GET, 'type', FILTER_DEFAULT);
 
 $validation_errors = [];
 $required = ['title', 'tags'];
-$page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'type_id' => $type_id]);
+$page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'form_type' => $form_type, 'form_templates' => $form_templates]);
 
-if (validate_type_id($type_id, $content_types)) {
-    if ($type_id === null) {
-        header('Location: add.php?id=1');
+if (validate_form_type($form_type, $content_types)) {
+    if ($form_type === null) {
+        header('Location: add.php?type=text');
         exit;
     }
 } else {
     header('Location: error.php?code=404');
     exit;
 }
-
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -54,19 +53,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'video' => FILTER_VALIDATE_URL,
         'link' => FILTER_VALIDATE_URL,
         'tags' => FILTER_DEFAULT,
-        'content_type_id' => $type_id,
+        'content_type_id' => $form_type,
     ], true);
     $post['user_id'] = 1;
 
-    switch ($type_id) {
-        case 1:
+    switch ($form_type) {
+        case 'text':
             $required[] = 'text';
+            $post['content_type_id'] = 1;
             break;
-        case 2:
-            $required[] = 'quote-auth';
+        case 'quote':
+            $required[] = 'quote_auth';
             $required[] = 'text';
+            $post['content_type_id'] = 2;
             break;
-        case 3:
+        case 'photo':
+            $post['content_type_id'] = 3;
             // Валидация файла
             if (!empty($_FILES['userpic-file-photo']['name'])) {
                 $tmp_name = $_FILES['userpic-file-photo']['tmp-name'];
@@ -101,7 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $required[] = 'photo-link';
             }
             break;
-        case 4:
+        case 'link':
+            $post['content_type_id'] = 4;
             $required[] = 'link';
             $required['link'] = function ($value) { // не смог придумать как сделать это более элегантно
                 if ($value) { // не хотелось ради этого отдельную функцию валидации создавать, но могу, если надо
@@ -110,7 +113,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 return 'Введите верный URL';
             };
             break;
-        case 5:
+        case 'video':
+            $post['content_type_id'] = 5;
             $required[] = 'video';
             break;
     }
@@ -127,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validation_errors = array_diff($validation_errors, array(''));
 
     if ($validation_errors) {
-        $page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'type_id' => $type_id]);
+        $page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'form_type' => $form_type, 'form_templates' => $form_templates]);
     } else {
         $sql = 'INSERT INTO tags (name) VALUE (?);';
         $stmt = mysqli_prepare($connection, $sql);
@@ -169,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
             $post_id = mysqli_insert_id($connection);
-            //header('Location: post.php?id=' . $post_id);
+            header('Location: post.php?id=' . $post_id);
         } else {
             $page_content = include_template('error.php', ['error' => $error]);
         }
