@@ -94,7 +94,7 @@ function getPostVal($name): ?string
     return $_POST[$name] ?? "";
 }
 
-function validate_text($value, $min, $max): ?int
+function validate_text($value, $min, $max): ?string
 {
         if ($value) {
             $len = strlen($value);
@@ -119,11 +119,11 @@ function validate_email($value, $users): ?string
 {
     if($value) {
         foreach ($users as $user) {
-            if(!$user['email'] === $value) {
-                return null;
+            if($user['email'] === $value) {
+                return 'Пользователь с таким email уже существует';
             }
         }
-        return 'Пользователь с таким email уже существует';
+        return null;
     }
     return 'Введите корректный email';
 }

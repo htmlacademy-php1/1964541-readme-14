@@ -64,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($validation_errors) {
         $page_content = include_template('registration_templates/reg-form.php', ['validation_errors' => $validation_errors]);
     } else {
+        $user['password'] = password_hash($user['password'], PASSWORD_DEFAULT);
         $sql = 'INSERT INTO users (email, password, login, avatar) VALUES (?, ?, ?, ?)';
         $stmt = db_get_prepare_stmt($connection, $sql, [$user['email'], $user['password'], $user['login'], $user['avatar']]);
         $result = mysqli_stmt_execute($stmt);
