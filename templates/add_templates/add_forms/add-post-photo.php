@@ -36,7 +36,7 @@ if ($content_types['2']['type'] === $form_type) {
                 </div>
                 <?= include_template('add_templates/add_tags.php', ['validation_errors' => $validation_errors]); ?>
             </div>
-            <?= include_template('add_templates/add_error.php', ['validation_errors' => $validation_errors]); ?>
+            <?= include_template('validation_error.php', ['validation_errors' => $validation_errors]); ?>
         </div>
         <div class="adding-post__input-file-container form__input-container form__input-container--file">
             <div class="adding-post__input-file-wrapper form__input-file-wrapper">

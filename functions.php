@@ -138,9 +138,8 @@ function validate_password($password, $repeat_pass): ?string
 
 function full_form_validation ($form, $rules, $required): array
 {
-    $validation_errors = [];
     foreach ($form as $key => $value) {
-        if(isset($rule[$key])) {
+        if(isset($rules[$key])) {
             $rule = $rules[$key];
             $validation_errors[$key] = $rule($value);
         }

@@ -5,23 +5,12 @@ require_once 'data.php';
 
 $sql = 'SELECT email, login, password FROM users';
 $result = mysqli_query($connection, $sql);
-$users = mysqli_fetch_assoc($result, MYSQLI_ASSOC);
+$users = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 $validation_errors = [];
 $required = ['email', 'login', 'password', 'password-repeat'];
 $page_content = include_template('registration_templates/reg-form.php', ['validation_errors' => $validation_errors]);
 
-$rules = [
-    'email' => function ($value) use ($users) {
-        return validate_email($value, $users);
-    },
-    'login' => function ($value) {
-        return validate_text($value, LOGIN_MIN_LENGTH, LOGIN_MAX_LENGTH);
-    },
-    'password' => function ($value) use ($repeat_pass) {
-        return validate_password($value, $repeat_pass);
-    }
-];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = filter_input_array(INPUT_POST, [
@@ -30,6 +19,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'password' => FILTER_DEFAULT,
         'password-repeat' => FILTER_DEFAULT
     ], true);
+    $repeat_pass = $user['password-repeat'];
+
+    $rules = [
+        'email' => function ($value) use ($users) {
+            return validate_email($value, $users);
+        },
+        'login' => function ($value) {
+            return validate_text($value, LOGIN_MIN_LENGTH, LOGIN_MAX_LENGTH);
+        },
+        'password' => function ($value) use ($repeat_pass) {
+            return validate_password($value, $repeat_pass);
+        }
+    ];
 
     if (!empty($_FILES['userpic-file']['name'])) {
         $tmp_name = $_FILES['userpic-file']['tmp-name'];
@@ -59,6 +61,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $validation_errors = full_form_validation($user, $rules, $required);
 
+    if ($validation_errors) {
+        $page_content = include_template('registration_templates/reg-form.php', ['validation_errors' => $validation_errors]);
+    } else {
+        $sql = 'INSERT INTO users (email, password, login, avatar) VALUES (?, ?, ?, ?)';
+        $stmt = db_get_prepare_stmt($connection, $sql, [$user['email'], $user['password'], $user['login'], $user['avatar']]);
+        $result = mysqli_stmt_execute($stmt);
+        if ($result) {
+            header('Location: index.php');
+        } else {
+            $page_content = include_template('error.php', ['error' => $error]);
+        }
+    }
 }
 
 

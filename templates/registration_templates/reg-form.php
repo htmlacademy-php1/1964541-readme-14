@@ -52,7 +52,7 @@
                         </div>
                     </div>
                 </div>
-                <?= include_template('registration_templates/reg-error.php', ['validation_errors' => $validation_errors]) ?>
+                <?= include_template('validation_error.php', ['validation_errors' => $validation_errors]) ?>
             </div>
             <div class="registration__input-file-container form__input-container form__input-container--file">
                 <div class="registration__input-file-wrapper form__input-file-wrapper">
