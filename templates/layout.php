@@ -122,7 +122,7 @@
         </form>
         <div class="header__nav-wrapper">
             <?php
-            if ($_SERVER['PHP_SELF'] === '/registration.php'):?>
+            if (!isset($_SESSION['user'])) :?>
                 <nav class="header__nav">
                     <ul class="header__user-nav">
                         <li class="header__authorization">
@@ -160,7 +160,10 @@
                                 </div>
                                 <div class="header__profile-name">
                                 <span>
-                                    <?= $user_name ?>
+                                    <?php if (isset($_SESSION['user'])) {
+                                        print $user_name = $_SESSION['user'];
+                                    }
+                                    ?>
                                 </span>
                                     <svg class="header__link-arrow" width="10" height="6">
                                         <use xlink:href="#icon-arrow-right-ad"></use>
