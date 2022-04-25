@@ -14,7 +14,7 @@ if (isset($_SESSION['user'])) {
             'login' => FILTER_DEFAULT,
             'password' => FILTER_DEFAULT]);
 
-        $sql = 'SELECT login, password, avatar FROM users WHERE login = ?';
+        $sql = 'SELECT id, login, password, avatar FROM users WHERE login = ?';
         $stmt = mysqli_prepare($connection, $sql);
         mysqli_stmt_bind_param($stmt, 's', $user['login']);
         mysqli_stmt_execute($stmt);
@@ -24,8 +24,9 @@ if (isset($_SESSION['user'])) {
         if ($db_user) {
             if (password_verify($user['password'], $db_user['password'])) {
                 session_start();
-                $_SESSION['user'] = $user['login'];
-                $_SESSION['avatar'] = $user['avatar'];
+                $_SESSION['user_id'] = $db_user['id'];
+                $_SESSION['user'] = $db_user['login'];
+                $_SESSION['avatar'] = $db_user['avatar'];
                 header('Location: feed.php');
             } else {
                 $validation_errors['password'] = 'Пароли не совпадают';
