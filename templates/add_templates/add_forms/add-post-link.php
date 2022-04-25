@@ -1,6 +1,6 @@
 <?php
 $form_status = '';
-if ($content_types['3']['type'] === $form_type) {
+if ('link' === $form_type) {
     $form_status = '--active';
 }
 ?>

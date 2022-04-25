@@ -1,6 +1,6 @@
 <?php
 $form_status = '';
-if ($content_types['0']['type'] === $form_type) {
+if ('text' === $form_type) {
     $form_status = '--active';
 }
 ?>
