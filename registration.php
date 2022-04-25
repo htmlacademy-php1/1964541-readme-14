@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 
     if (!empty($_FILES['userpic-file']['name'])) {
-        $tmp_name = $_FILES['userpic-file']['tmp-name'];
+        $tmp_name = $_FILES['userpic-file']['tmp_name'];
         $path = $_FILES['userpic-file']['name'];
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $tmp_name);
@@ -51,11 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $filename .= '.png';
         }
 
-        if ($file_type !== 'image/gif' || $file_type !== 'image/jpg' || $file_type !== 'image/png') {
-            $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
-        } else {
-            move_uploaded_file($tmp_name, '/uploads' . $filename);
+        if ($file_type === 'image/gif' || $file_type === 'image/jpeg' || $file_type === 'image/png') {
+            move_uploaded_file($tmp_name, 'uploads/' . $filename);
             $user['avatar'] = $filename;
+        } else {
+            $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
         }
     }
 

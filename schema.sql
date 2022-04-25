@@ -32,7 +32,7 @@ CREATE TABLE posts (
                      views INT DEFAULT 0,
                      original_id INT DEFAULT NULL,
                      user_id INT NOT NULL,
-                     content_type_id INT,
+                     content_type_id INT NOT NULL,
                      dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                      FOREIGN KEY (content_type_id) REFERENCES content_type(id),
                      FOREIGN KEY (user_id) REFERENCES users (id),
@@ -88,7 +88,3 @@ CREATE TABLE subscribes (
                           FOREIGN KEY (follow_id) REFERENCES users (id),
                           CONSTRAINT subscribes PRIMARY KEY (follower_id, follow_id)
 );
-
-
-
-
