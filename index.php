@@ -31,7 +31,7 @@ if (isset($_SESSION['user'])) {
         } else {
             $validation_errors['login'] = 'Пользователь не существует';
         }
-        var_dump($validation_errors);
+        $anon_layout_content = include_template('anon_layout.php', ['validation_errors' => $validation_errors]);
     }
 }
 print $anon_layout_content;
