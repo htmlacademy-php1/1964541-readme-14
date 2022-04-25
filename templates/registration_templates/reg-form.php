@@ -14,8 +14,8 @@
                             <input class="registration__input form__input" id="registration-email" type="email" name="email" value="<?= getPostVal('email') ?>" placeholder="Укажите эл.почту">
                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                             <div class="form__error-text">
-                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                                <h3 class="form__error-title">Почта</h3>
+                                <p class="form__error-desc"><?= $validation_errors['email'] ?></p>
                             </div>
                         </div>
                     </div>
@@ -26,8 +26,8 @@
                             <input class="registration__input form__input" id="registration-login" type="text" name="login" value="<?= getPostVal('login') ?>" placeholder="Укажите логин">
                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                             <div class="form__error-text">
-                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                                <h3 class="form__error-title">Логин</h3>
+                                <p class="form__error-desc"><?= $validation_errors['login'] ?></p>
                             </div>
                         </div>
                     </div>
@@ -38,8 +38,8 @@
                             <input class="registration__input form__input" id="registration-password" type="password" name="password"  placeholder="Придумайте пароль">
                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                             <div class="form__error-text">
-                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                                <h3 class="form__error-title">Пароль</h3>
+                                <p class="form__error-desc"><?= $validation_errors['password'] ?></p>
                             </div>
                         </div>
                     </div>
@@ -50,8 +50,8 @@
                             <input class="registration__input form__input" id="registration-password-repeat" type="password" name="password-repeat" placeholder="Повторите пароль">
                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                             <div class="form__error-text">
-                                <h3 class="form__error-title">Заголовок сообщения</h3>
-                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                                <h3 class="form__error-title">Повтор пароля</h3>
+                                <p class="form__error-desc"><?= $validation_errors['password-repeat'] ?></p>
                             </div>
                         </div>
                     </div>
