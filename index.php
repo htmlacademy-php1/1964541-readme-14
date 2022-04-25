@@ -5,7 +5,7 @@ require_once 'data.php';
 
 $validation_errors = [];
 $anon_layout_content = include_template('anon_layout.php', ['validation_errors' => $validation_errors]);
-
+session_start();
 if (isset($_SESSION['user'])) {
     header('Location: feed.php');
 } else {
@@ -14,7 +14,7 @@ if (isset($_SESSION['user'])) {
             'login' => FILTER_DEFAULT,
             'password' => FILTER_DEFAULT]);
 
-        $sql = 'SELECT login, password FROM users WHERE login = ?';
+        $sql = 'SELECT login, password, avatar FROM users WHERE login = ?';
         $stmt = mysqli_prepare($connection, $sql);
         mysqli_stmt_bind_param($stmt, 's', $user['login']);
         mysqli_stmt_execute($stmt);
@@ -25,9 +25,8 @@ if (isset($_SESSION['user'])) {
             if (password_verify($user['password'], $db_user['password'])) {
                 session_start();
                 $_SESSION['user'] = $user['login'];
-                var_dump($_SESSION);
-                header('Location: popular.php');
-                // здесь будет открытие сессии
+                $_SESSION['avatar'] = $user['avatar'];
+                header('Location: feed.php');
             } else {
                 $validation_errors['password'] = 'Пароли не совпадают';
             }
