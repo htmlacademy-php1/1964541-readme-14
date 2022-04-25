@@ -1,6 +1,6 @@
 <?php
 $form_status = '';
-if ($content_types['4']['type'] === $form_type) {
+if ('video' === $form_type) {
     $form_status = '--active';
 }
 ?>

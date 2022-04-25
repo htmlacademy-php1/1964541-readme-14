@@ -52,7 +52,7 @@
                     <?php foreach ($content_types as $type):
                     $params['tab'] = $type['id'];
                     $query = http_build_query($params);
-                    $url = 'index.php?' . $query;
+                    $url = 'popular.php?' . $query;
                     if ($tab === $type['id']) {
                         $button_active = 'filters__button--active';
                     } else {
