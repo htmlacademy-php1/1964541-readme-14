@@ -30,7 +30,7 @@
                 </p>
                 <ul class="header__user-nav">
                     <li>
-                        <a class="header__user-button header__register-button button button--transparent" href="../registration.html">Регистрация</a>
+                        <a class="header__user-button header__register-button button button--transparent" href="/registration.php">Регистрация</a>
                     </li>
                 </ul>
             </nav>
@@ -59,14 +59,15 @@
         </section>
         <section class="authorization">
             <h2 class="visually-hidden">Авторизация</h2>
-            <form class="authorization__form form" action="#" method="post">
+            <form class="authorization__form form" action="index.php" method="post">
                 <div class="authorization__input-wrapper form__input-wrapper">
-                    <input class="authorization__input authorization__input--login form__input" type="text" name="login" placeholder="Логин">
+                    <input class="authorization__input authorization__input--login form__input" type="text" name="login" value="<?= getPostVal('login') ?>" placeholder="Логин">
                     <svg class="form__input-icon" width="19" height="18">
                         <use xlink:href="#icon-input-user"></use>
                     </svg>
                     <label class="visually-hidden">Логин</label>
-                    <span class="form__error-label form__error-label--login">Неверный логин</span>
+                    <?php $classname = isset($validation_errors['login']) ? '--active' : ''; ?>
+                    <span class="form__error-label form__error-label--login">Логин не существует</span>
                 </div>
                 <div class="authorization__input-wrapper form__input-wrapper">
                     <input class="authorization__input authorization__input--password form__input" type="password" name="password" placeholder="Пароль">
@@ -74,7 +75,8 @@
                         <use xlink:href="#icon-input-password"></use>
                     </svg>
                     <label class="visually-hidden">Пароль</label>
-                    <span class="form__error-label">Пароли не совпадают</span>
+                    <?php $classname = isset($validation_errors['password']) ? '' : '--active'; ?>
+                    <span class="form__error-label<?= $classname; ?>">Пароли не совпадают</span>
                 </div>
                 <a class="authorization__recovery" href="#">Восстановить пароль</a>
                 <button class="authorization__submit button button--main" type="submit">Войти</button>
