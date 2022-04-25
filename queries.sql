@@ -62,11 +62,4 @@ VALUE (2, 3);
 INSERT INTO subscribes (follower_id, follow_id)
 VALUE (5, 3);
 
-SELECT title, text, quote_auth, img, video, id, title, text, quote_auth, img, video, link, views, user_id, content_type_id, dt_add FROM posts p
-JOIN subscribes s ON p.user_id = s.follow_id WHERE follower_id = 5;
 
-SELECT title, text, quote_auth, img, video, title, text, quote_auth, img, video, link, views, user_id, content_type_id, p.dt_add, login, avatar FROM posts p
-JOIN subscribes s ON p.user_id = s.follow_id
-JOIN users u on p.user_id = u.id
-WHERE follower_id = 5
-ORDER BY dt_add ASC;
