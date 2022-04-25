@@ -3,6 +3,11 @@ require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
 
+session_start();
+if (!$_SESSION['user']) {
+    header('Location: index.php');
+}
+
 $post_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
 $sql = 'SELECT p.id, title, text, quote_auth, img, video, link, views, p.dt_add, login, avatar, type FROM posts p' .

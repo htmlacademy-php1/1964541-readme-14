@@ -23,6 +23,9 @@ if (isset($_SESSION['user'])) {
 
         if ($db_user) {
             if (password_verify($user['password'], $db_user['password'])) {
+                session_start();
+                $_SESSION['user'] = $user['login'];
+                var_dump($_SESSION);
                 header('Location: popular.php');
                 // здесь будет открытие сессии
             } else {

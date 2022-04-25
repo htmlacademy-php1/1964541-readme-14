@@ -3,6 +3,11 @@ require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
 
+session_start();
+if (!$_SESSION['user']) {
+    header('Location: index.php');
+}
+
 if (!$connection) {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
