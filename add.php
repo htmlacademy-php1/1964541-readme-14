@@ -121,16 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $type_row = mysqli_fetch_array($type_result, MYSQLI_ASSOC);
     $post['content_type_id'] = $type_row['id'];
 
-    foreach ($post as $key => $value) {
-        if (isset($rules[$key])) {
-            $rule = $rules[$key];
-            $validation_errors[$key] = $rule($value);
-        }
-        if (in_array($key, $required) && empty($value)) {
-            $validation_errors[$key] = 'Поле ' . $key . ' надо заполнить';
-        }
-    }
-    $validation_errors = array_diff($validation_errors, array(''));
+    $validation_errors = full_form_validation($post, $rules, $required);
 
     if ($validation_errors) {
         $page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'form_type' => $form_type, 'form_templates' => $form_templates]);

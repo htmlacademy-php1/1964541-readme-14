@@ -121,8 +121,18 @@
             </div>
         </form>
         <div class="header__nav-wrapper">
-            <?php if ($is_auth === 1): ?>
+            <?php
+            if ($_SERVER['PHP_SELF'] === '/registration.php'):?>
                 <nav class="header__nav">
+                    <ul class="header__user-nav">
+                        <li class="header__authorization">
+                            <a class="header__user-button header__authorization-button button" href="login.html">Вход</a>
+                        </li>
+                        <li>
+                            <a class="header__user-button header__user-button--active header__register-button button">Регистрация</a>
+                        </li>
+                    </ul>
+                    <?php else: ?>
                     <ul class="header__my-nav">
                         <li class="header__my-page header__my-page--popular">
                             <a class="header__page-link header__page-link--active" title="Популярный контент">

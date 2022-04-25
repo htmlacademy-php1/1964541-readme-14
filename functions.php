@@ -94,7 +94,7 @@ function getPostVal($name): ?string
     return $_POST[$name] ?? "";
 }
 
-function validate_text($value, $min, $max): ?int
+function validate_text($value, $min, $max): ?string
 {
         if ($value) {
             $len = strlen($value);
@@ -113,4 +113,37 @@ function validate_form_type($value, $content_types): bool
         }
     }
     return false;
+}
+
+function validate_email($value, $email): ?string
+{
+    if($value) {
+            if($email) {
+                return 'Пользователь с таким email уже существует';
+            }
+        return null;
+    }
+    return 'Введите корректный email';
+}
+
+function validate_password($password, $repeat_pass): ?string
+{
+    if ($password === $repeat_pass) {
+        return null;
+    }
+    return 'Пароли не совпадают';
+}
+
+function full_form_validation ($form, $rules, $required): array
+{
+    foreach ($form as $key => $value) {
+        if(isset($rules[$key])) {
+            $rule = $rules[$key];
+            $validation_errors[$key] = $rule($value);
+        }
+        if(in_array($key, $required) && empty($value)) {
+            $validation_errors[$key] = 'Поле ' . $key . ' надо заполнить';
+        }
+    }
+    return array_diff($validation_errors, array(''));
 }

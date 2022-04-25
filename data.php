@@ -12,7 +12,8 @@ const SECONDS_IN_WEEK = 604800;
 const SECONDS_IN_MONTH = 2419200;
 const QUOTE_AUTHOR_MIN_LENGTH = 10;
 const QUOTE_AUTHOR_MAX_LENGTH = 128;
-
+const LOGIN_MIN_LENGTH = 3;
+const LOGIN_MAX_LENGTH = 320;
 $form_templates = [
     'photo' => 'add_templates/add_forms/add-post-photo.php',
     'text' => 'add_templates/add_forms/add-post-text.php',
@@ -20,7 +21,6 @@ $form_templates = [
     'video' => 'add_templates/add_forms/add-post-video.php',
     'quote' => 'add_templates/add_forms/add-post-quote.php'
 ];
-
 
 $is_auth = rand(0, 1);
 

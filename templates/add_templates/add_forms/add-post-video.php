@@ -1,6 +1,6 @@
 <?php
 $form_status = '';
-if ($content_types['4']['type'] === $form_type) {
+if ('video' === $form_type) {
     $form_status = '--active';
 }
 ?>
@@ -36,7 +36,7 @@ if ($content_types['4']['type'] === $form_type) {
                 </div>
                 <?= include_template('add_templates/add_tags.php', ['validation_errors' => $validation_errors]); ?>
             </div>
-            <?= include_template('add_templates/add_error.php', ['validation_errors' => $validation_errors]); ?>
+            <?= include_template('validation_error.php', ['validation_errors' => $validation_errors]); ?>
         </div>
 
         <div class="adding-post__buttons">
