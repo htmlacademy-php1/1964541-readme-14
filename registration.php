@@ -3,15 +3,9 @@ require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
 
-$sql = 'SELECT email, login, password FROM users';
-$result = mysqli_query($connection, $sql);
-$users = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
 $validation_errors = [];
 $required = ['email', 'login', 'password', 'password-repeat'];
 $page_content = include_template('registration_templates/reg-form.php', ['validation_errors' => $validation_errors]);
-
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = filter_input_array(INPUT_POST, [
@@ -22,9 +16,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ], true);
     $repeat_pass = $user['password-repeat'];
 
+    $sql = 'SELECT email FROM users WHERE email=?';
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 's', $user['email']);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $email = mysqli_num_rows($result);
+
     $rules = [
-        'email' => function ($value) use ($users) {
-            return validate_email($value, $users);
+        'email' => function ($value) use ($email) {
+            return validate_email($value, $email);
         },
         'login' => function ($value) {
             return validate_text($value, LOGIN_MIN_LENGTH, LOGIN_MAX_LENGTH);
@@ -63,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validation_errors = full_form_validation($user, $rules, $required);
 
     if ($validation_errors) {
-        $page_content = include_template('registration_templates/reg-form.php', ['validation_errors' => $validation_errors]);
+        $page_content = include_template('registration_templates/reg-form.php', ['validation_errors' => $validation_errors, 'user' => $user]);
     } else {
         $user['password'] = password_hash($user['password'], PASSWORD_DEFAULT);
         $sql = 'INSERT INTO users (email, password, login, avatar) VALUES (?, ?, ?, ?)';
