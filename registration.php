@@ -12,6 +12,7 @@ $required = ['email', 'login', 'password', 'password-repeat'];
 $page_content = include_template('registration_templates/reg-form.php', ['validation_errors' => $validation_errors]);
 
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = filter_input_array(INPUT_POST, [
         'email' => FILTER_VALIDATE_EMAIL,
