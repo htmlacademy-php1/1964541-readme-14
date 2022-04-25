@@ -1,22 +1,22 @@
-<article class="popular__post post <?= $post['type'] ?>">
+<article class="popular__post post post-<?= $post['type'] ?>">
     <header class="post__header">
         <h2><a href="post.php?id=<?= $post['id'] ?>"><?= htmlspecialchars($post['title']) ?></a></h2>
     </header>
     <div class="post__main">
         <?php switch ($post['type']) {
-            case 'post-photo':
+            case 'photo':
                 echo include_template('index_templates/index_post_types/post-photo.php', ['post' => $post]);
                 break;
-            case 'post-video':
+            case 'video':
                 echo include_template('index_templates/index_post_types/post-video.php', ['post' => $post]);
                 break;
-            case 'post-quote':
+            case 'quote':
                 echo include_template('index_templates/index_post_types/post-quote.php', ['post' => $post]);
                 break;
-            case 'post-text':
+            case 'text':
                 echo include_template('index_templates/index_post_types/post-text.php', ['post' => $post]);
                 break;
-            case 'post-link':
+            case 'link':
                 echo include_template('index_templates/index_post_types/post-link.php', ['post' => $post]);
                 break;
         }

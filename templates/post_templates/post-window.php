@@ -6,19 +6,19 @@
             <div class="post-details__wrapper post-photo">
                 <div class="post-details__main-block post post--details">
                     <?php switch ($post['type']) {
-                        case 'post-photo':
+                        case 'photo':
                             echo include_template('post_templates/post_window_types/post-photo.php', ['post' => $post]);
                             break;
-                        case 'post-video':
+                        case 'video':
                             echo include_template('post_templates/post_window_types/post-video.php', ['post' => $post]);
                             break;
-                        case 'post-quote':
+                        case 'quote':
                             echo include_template('post_templates/post_window_types/post-quote.php', ['post' => $post]);
                             break;
-                        case 'post-text':
+                        case 'text':
                             echo include_template('post_templates/post_window_types/post-text.php', ['post' => $post]);
                             break;
-                        case 'post-link':
+                        case 'link':
                             echo include_template('post_templates/post_window_types/post-link.php', ['post' => $post]);
                             break;
                     }

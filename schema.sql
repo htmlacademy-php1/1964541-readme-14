@@ -14,6 +14,13 @@ CREATE TABLE users (
                      UNIQUE INDEX UI_login (login)
 );
 
+CREATE TABLE content_type (
+                            id INT AUTO_INCREMENT PRIMARY KEY,
+                            name CHAR(64) NOT NULL,
+                            type CHAR(64) NOT NULL,
+                            UNIQUE INDEX UI_type (type)
+);
+
 CREATE TABLE posts (
                      id INT AUTO_INCREMENT PRIMARY KEY,
                      title VARCHAR(128) NOT NULL,
@@ -25,8 +32,9 @@ CREATE TABLE posts (
                      views INT DEFAULT 0,
                      original_id INT DEFAULT NULL,
                      user_id INT NOT NULL,
-                     content_type ENUM('post-text', 'post-quote', 'post-photo', 'post-video', 'post-link') NOT NULL,
+                     content_type_id INT,
                      dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                     FOREIGN KEY (content_type_id) REFERENCES content_type(id),
                      FOREIGN KEY (user_id) REFERENCES users (id),
                      FOREIGN KEY (original_id) REFERENCES posts (id)
 );
@@ -81,13 +89,6 @@ CREATE TABLE subscribes (
                           CONSTRAINT subscribes PRIMARY KEY (follower_id, follow_id)
 );
 
-CREATE TABLE content_type (
-                           id INT AUTO_INCREMENT PRIMARY KEY,
-                           name CHAR(64) NOT NULL,
-                           type CHAR(64) NOT NULL
-);
 
-ALTER TABLE posts DROP content_type;
-ALTER TABLE posts ADD content_type_id INT, ADD
-FOREIGN KEY (content_type_id) REFERENCES content_type(id);
-ALTER TABLE content_type ADD UNIQUE INDEX UI_type (type);
+
+

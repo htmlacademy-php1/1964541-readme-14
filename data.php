@@ -10,6 +10,17 @@ const SECONDS_IN_HOUR = 3600;
 const SECONDS_IN_DAY = 86400;
 const SECONDS_IN_WEEK = 604800;
 const SECONDS_IN_MONTH = 2419200;
+const QUOTE_AUTHOR_MIN_LENGTH = 10;
+const QUOTE_AUTHOR_MAX_LENGTH = 128;
+
+$form_templates = [
+    'photo' => 'add_templates/add_forms/add-post-photo.php',
+    'text' => 'add_templates/add_forms/add-post-text.php',
+    'link' => 'add_templates/add_forms/add-post-link.php',
+    'video' => 'add_templates/add_forms/add-post-video.php',
+    'quote' => 'add_templates/add_forms/add-post-quote.php'
+];
+
 
 $is_auth = rand(0, 1);
 
