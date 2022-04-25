@@ -327,5 +327,6 @@
                 </li>
             </ul>
         </section>
+        <?= include_template('feed_templates/commercial.php') ?>
     </div>
 </main>
