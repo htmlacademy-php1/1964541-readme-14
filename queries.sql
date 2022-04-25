@@ -59,4 +59,3 @@ VALUE (2, 1);
 INSERT INTO subscribes (follower_id, follow_id)
 VALUE (2, 3);
 
-SELECT * FROM users;
