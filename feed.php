@@ -36,7 +36,11 @@ if ($tab) {
     mysqli_stmt_bind_param($stmt, 'i', $user_id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    if ($result) {
+        $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        $posts['type'] = 'empty';
+    }
 }
 
 

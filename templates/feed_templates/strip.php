@@ -36,6 +36,8 @@
                             case 'link':
                                 echo include_template('post_templates/post_window_types/post-link.php', ['post' => $post]);
                                 break;
+                            case 'empty':
+                                print ('<div class="feed__wrapper"></div>');
                         }
                         ?>
                         <footer class="post__footer post__indicators">
