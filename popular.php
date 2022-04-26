@@ -46,7 +46,7 @@ $params = filter_input(INPUT_GET, 'id');
 
 if ($result) {
     $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    $page_content = include_template('index_templates/main.php', [
+    $page_content = include_template('popular_templates/main.php', [
         'posts' => $posts,
         'content_types' => $content_types,
         'tab' => $tab,

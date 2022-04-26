@@ -45,7 +45,7 @@
                     ?>
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
                         <a class="filters__button filters__button--ellipse filters__button--all <?= $button_active ?>"
-                           href="index.php">
+                           href="popular.php">
                             <span>Все</span>
                         </a>
                     </li>
@@ -74,7 +74,7 @@
         </div>
         <div class="popular__posts">
             <?php foreach ($posts as $post): ?>
-                <?= include_template('index_templates/popular.php', ['post' => $post]); ?>
+                <?= include_template('popular_templates/popular.php', ['post' => $post]); ?>
             <?php endforeach; ?>
         </div>
     </div>

@@ -11,12 +11,12 @@ if (isset($_SESSION['user'])) {
 } else {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = filter_input_array(INPUT_POST, [
-            'login' => FILTER_DEFAULT,
+            'email' => FILTER_DEFAULT,
             'password' => FILTER_DEFAULT]);
 
-        $sql = 'SELECT id, login, password, avatar FROM users WHERE login = ?';
+        $sql = 'SELECT id, email, login, password, avatar FROM users WHERE email = ?';
         $stmt = mysqli_prepare($connection, $sql);
-        mysqli_stmt_bind_param($stmt, 's', $user['login']);
+        mysqli_stmt_bind_param($stmt, 's', $user['email']);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $db_user = mysqli_fetch_assoc($result);
@@ -32,7 +32,7 @@ if (isset($_SESSION['user'])) {
                 $validation_errors['password'] = 'Пароли не совпадают';
             }
         } else {
-            $validation_errors['login'] = 'Пользователь не существует';
+            $validation_errors['email'] = 'Пользователь не существует';
         }
         $anon_layout_content = include_template('anon_layout.php', ['validation_errors' => $validation_errors]);
     }

@@ -3,10 +3,6 @@ require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
 
-session_start();
-if (!$_SESSION['user']) {
-    header('Location: index.php');
-}
 
 $post_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 

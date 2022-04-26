@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>readme: блог, каким он должен быть</title>
-    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body class="page page--main">
@@ -17,7 +17,7 @@
     <div class="header__wrapper page__header-wrapper container">
         <div class="header__logo-wrapper page__logo-wrapper">
             <a class="header__logo-link header__logo-link--active">
-                <img class="header__logo" src="../img/logo.svg" alt="Логотип readme" width="172" height="32">
+                <img class="header__logo" src="img/logo.svg" alt="Логотип readme" width="172" height="32">
             </a>
             <p class="header__topic page__header-topic">
                 micro blogging
@@ -61,26 +61,26 @@
             <h2 class="visually-hidden">Авторизация</h2>
             <form class="authorization__form form" action="index.php" method="post">
                 <div class="authorization__input-wrapper form__input-wrapper">
-                    <?php $classname = isset($validation_errors['login']) ? '--error' : ''; ?>
+                    <?php $classname = isset($validation_errors['email']) ? '--error' : ''; ?>
                     <div class="form__input-section form__input-section<?=$classname ?>">
-                        <input class="authorization__input authorization__input--login form__input" type="text" name="login" value="<?= getPostVal('login') ?>" placeholder="Логин">
+                        <input class="authorization__input authorization__input--login form__input" type="text" name="email" value="<?= getPostVal('email') ?>" placeholder="Почта">
                         <svg class="form__input-icon" width="19" height="18">
                             <use xlink:href="#icon-input-user"></use>
                         </svg>
-                        <label class="visually-hidden">Логин</label>
+                        <label class="visually-hidden">Email</label>
                     </div>
-                    <span class="form__error-label form__error-label--login">Неверный логин</span>
+                    <span class="form__error-label form__error-label--login"><?php isset($validation_errors['email']) ? print $validation_errors['email'] : '' ?></span>
                 </div>
+                <?php $classname = isset($validation_errors['password']) ? '--error' : ''; ?>
                 <div class="authorization__input-wrapper form__input-wrapper">
-                    <?php $classname = isset($validation_errors['password']) ? '--error' : ''; ?>
-                    <div class="form__input-section form__input-section<?=$classname ?>">
+                    <div class="form__input-section form__input-section<?= $classname ?>">
                         <input class="authorization__input authorization__input--password form__input" type="password" name="password" placeholder="Пароль">
                         <svg class="form__input-icon" width="16" height="20">
                             <use xlink:href="#icon-input-password"></use>
                         </svg>
                         <label class="visually-hidden">Пароль</label>
                     </div>
-                    <span class="form__error-label">Пароли не совпадают</span>
+                    <span class="form__error-label"><?php isset($validation_errors['password']) ? print $validation_errors['password'] : '' ?></span>
                 </div>
                 <a class="authorization__recovery" href="#">Восстановить пароль</a>
                 <button class="authorization__submit button button--main" type="submit">Войти</button>
@@ -122,10 +122,10 @@
             <div class="footer__my-info">
                 <ul class="footer__my-pages">
                     <li class="footer__my-page footer__my-page--feed">
-                        <a class="footer__page-link" href="../feed.html">Моя лента</a>
+                        <a class="footer__page-link" href="/feed.php">Моя лента</a>
                     </li>
                     <li class="footer__my-page footer__my-page--popular">
-                        <a class="footer__page-link" href="../popular.html">Популярный контент</a>
+                        <a class="footer__page-link" href="/popular.php">Популярный контент</a>
                     </li>
                     <li class="footer__my-page footer__my-page--messages">
                         <a class="footer__page-link" href="../messages.html">Личные сообщения</a>

@@ -135,12 +135,12 @@
                     <?php else: ?>
                     <ul class="header__my-nav">
                         <li class="header__my-page header__my-page--popular">
-                            <a class="header__page-link header__page-link--active" title="Популярный контент">
+                            <a class="header__page-link header__page-link--active" href="popular.php" title="Популярный контент">
                                 <span class="visually-hidden">Популярный контент</span>
                             </a>
                         </li>
                         <li class="header__my-page header__my-page--feed">
-                            <a class="header__page-link" href="feed.html" title="Моя лента">
+                            <a class="header__page-link" href="feed.php" title="Моя лента">
                                 <span class="visually-hidden">Моя лента</span>
                             </a>
                         </li>
@@ -155,7 +155,7 @@
                         <li class="header__profile">
                             <a class="header__profile-link" href="#">
                                 <div class="header__avatar-wrapper">
-                                    <img class="header__profile-avatar" src="<?= $_SESSION['avatar'] ?>"
+                                    <img class="header__profile-avatar" src="img/userpic-medium.jpg"
                                          alt="Аватар профиля">
                                 </div>
                                 <div class="header__profile-name">
