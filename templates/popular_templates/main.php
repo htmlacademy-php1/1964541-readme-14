@@ -50,10 +50,10 @@
                         </a>
                     </li>
                     <?php foreach ($content_types as $type):
-                    $params['tab'] = $type['id'];
+                    $params['tab'] = $type['type'];
                     $query = http_build_query($params);
                     $url = 'popular.php?' . $query;
-                    if ($tab === $type['id']) {
+                    if ($tab === $type['type']) {
                         $button_active = 'filters__button--active';
                     } else {
                         $button_active = '';

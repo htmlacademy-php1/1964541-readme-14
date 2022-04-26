@@ -17,10 +17,10 @@ if ($tab) {
         ' JOIN subscribes s ON p.user_id = s.follow_id' .
         ' JOIN users u ON p.user_id = u.id' .
         ' JOIN content_type ct ON p.content_type_id = ct.id' .
-        ' WHERE follower_id = ? && content_type_id = ?' .
+        ' WHERE follower_id = ? && type = ?' .
         ' ORDER BY dt_add ASC;';
     $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'ii', $user_id, $tab);
+    mysqli_stmt_bind_param($stmt, 'is', $user_id, $tab);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);

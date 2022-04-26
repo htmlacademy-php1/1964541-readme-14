@@ -86,10 +86,10 @@
                     </a>
                 </li>
                 <?php foreach($content_types as $content_type):
-                    $params['tab'] = $content_type['id'];
+                    $params['tab'] = $content_type['type'];
                     $query = http_build_query($params);
                     $url = 'feed.php?' . $query;
-                    if ($tab === $content_type['id']) {
+                    if ($tab === $content_type['type']) {
                         $button_active = 'filters__button--active';
                     } else {
                         $button_active = '';
