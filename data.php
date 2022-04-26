@@ -6,6 +6,10 @@ session_start();
 if (empty($_SESSION['user']) && $_SERVER['PHP_SELF'] !== '/index.php') {
     header('Location: index.php');
 }
+if (isset($_SESSION['user'])) {
+    $user_name = $_SESSION['user'];
+}
+
 
 $connection = mysqli_connect('localhost', 'root', '', 'readme');
 mysqli_set_charset($connection, 'utf8');
@@ -29,6 +33,5 @@ $form_templates = [
 
 $is_auth = rand(0, 1);
 
-$user_name = 'Кирилл';
 
 ?>
