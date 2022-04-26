@@ -3,10 +3,6 @@ require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
 
-session_start();
-if (!$_SESSION['user']) {
-    header('Location: index.php');
-}
 
 $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);

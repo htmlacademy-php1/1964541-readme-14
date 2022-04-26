@@ -3,10 +3,7 @@ require_once 'functions.php';
 require_once 'helpers.php';
 require_once 'data.php';
 
-session_start();
-if (!$_SESSION['user']) {
-    header('Location: index.php');
-}
+
 $user_id = $_SESSION['user_id'];
 
 $sql = 'SELECT id, name, type FROM content_type;';

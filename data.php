@@ -2,6 +2,11 @@
 date_default_timezone_set("Europe/Moscow");
 setlocale(LC_ALL, 'ru_RU');
 
+session_start();
+if (empty($_SESSION['user']) && $_SERVER['PHP_SELF'] !== '/index.php') {
+    header('Location: index.php');
+}
+
 $connection = mysqli_connect('localhost', 'root', '', 'readme');
 mysqli_set_charset($connection, 'utf8');
 

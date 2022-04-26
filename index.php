@@ -5,7 +5,7 @@ require_once 'data.php';
 
 $validation_errors = [];
 $anon_layout_content = include_template('anon_layout.php', ['validation_errors' => $validation_errors]);
-session_start();
+
 if (isset($_SESSION['user'])) {
     header('Location: feed.php');
 } else {
