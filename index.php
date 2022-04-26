@@ -3,6 +3,7 @@ require_once 'functions.php';
 require_once 'helpers.php';
 require_once 'data.php';
 
+
 $validation_errors = [];
 $anon_layout_content = include_template('anon_layout.php', ['validation_errors' => $validation_errors]);
 
@@ -32,7 +33,7 @@ if (isset($_SESSION['user'])) {
                 $validation_errors['password'] = 'Пароли не совпадают';
             }
         } else {
-            $validation_errors['email'] = 'Пользователь не существует';
+            $validation_errors['email'] = 'Неверный пользователь и/или пароль';
         }
         $anon_layout_content = include_template('anon_layout.php', ['validation_errors' => $validation_errors]);
     }

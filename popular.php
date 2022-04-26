@@ -2,6 +2,7 @@
 require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
+require_once 'session.php';
 
 
 if (!$connection) {
@@ -42,15 +43,13 @@ if ($result) {
 $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 
-$params = filter_input(INPUT_GET, 'id');
 
 if ($result) {
     $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
     $page_content = include_template('popular_templates/main.php', [
         'posts' => $posts,
         'content_types' => $content_types,
-        'tab' => $tab,
-        'params' => $params]);
+        'tab' => $tab]);
 } else {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
@@ -61,7 +60,6 @@ if ($result) {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
-    'is_auth' => $is_auth,
     'user_name' => $user_name]);
 print($layout_content);
 
