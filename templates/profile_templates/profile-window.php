@@ -8,8 +8,8 @@
                         <img class="profile__picture user__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
                     </div>
                     <div class="profile__name-wrapper user__name-wrapper">
-                        <span class="profile__name user__name"><?= $user_name ?>></span>
-                        <time class="profile__user-time user__time" datetime="2014-03-20">5 лет на сайте</time>
+                        <span class="profile__name user__name"><?= $user['user'] ?></span>
+                        <time class="profile__user-time user__time" datetime="2014-03-20"><?= show_past_time($user['dt_add']) ?></time>
                     </div>
                 </div>
                 <div class="profile__rating user__rating">
