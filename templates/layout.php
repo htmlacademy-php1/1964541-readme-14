@@ -122,7 +122,7 @@
         </form>
         <div class="header__nav-wrapper">
             <?php
-            if (!$user_name) :?>
+            if (!$user) :?>
                 <nav class="header__nav">
                     <ul class="header__user-nav">
                         <li class="header__authorization">
@@ -160,7 +160,7 @@
                                 </div>
                                 <div class="header__profile-name">
                                 <span>
-                                    <?= $user_name ?>
+                                    <?= $user['user'] ?>
                                 </span>
                                     <svg class="header__link-arrow" width="10" height="6">
                                         <use xlink:href="#icon-arrow-right-ad"></use>
@@ -171,7 +171,7 @@
                                 <div class="header__profile-tooltip">
                                     <ul class="header__profile-nav">
                                         <li class="header__profile-nav-item">
-                                            <a class="header__profile-nav-link" href="#">
+                                            <a class="header__profile-nav-link" href="profile.php">
                           <span class="header__profile-nav-text">
                             Мой профиль
                           </span>

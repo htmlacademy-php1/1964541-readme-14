@@ -1,7 +1,10 @@
 <?php
 session_start();
-if (empty($_SESSION['user']) && $_SERVER['PHP_SELF'] !== '/index.php' && $_SERVER['PHP_SELF'] !== '/registration.php') {
+if (empty($_SESSION['user'])) {
     header('Location: index.php');
+} else {
+    foreach ($_SESSION as $key => $value) {
+        $user[$key] = $value;
+    }
 }
 
-$user_name = $_SESSION['user'] ?? null;

@@ -30,5 +30,5 @@ if ($result) {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
-    'user_name' => $user_name]);
+    'user' => $user]);
 print($layout_content);
