@@ -47,15 +47,31 @@
                 <div class="profile__tab-content">
                     <section class="profile__posts tabs__content tabs__content--active">
                         <h2 class="visually-hidden">Публикации</h2>
+                        <?php foreach ($posts as $post): ?>
                         <article class="profile__post post post-photo">
                             <header class="post__header">
-                                <h2><a href="#">Наконец, обработал фотки!</a></h2>
+                                <h2><a href="post.php?id=<?= $post['id'] ?>"><?= $post['title'] ?></a></h2>
                             </header>
-                            <div class="post__main">
-                                <div class="post-photo__image-wrapper">
-                                    <img src="img/rock.jpg" alt="Фото от пользователя" width="760" height="396">
-                                </div>
-                            </div>
+                            <?php switch ($post['type']) {
+                                case 'photo':
+                                    echo include_template('post_templates/post_window_types/post-photo.php', ['post' => $post]);
+                                    break;
+                                case 'video':
+                                    echo include_template('post_templates/post_window_types/post-video.php', ['post' => $post]);
+                                    break;
+                                case 'quote':
+                                    echo include_template('post_templates/post_window_types/post-quote.php', ['post' => $post]);
+                                    break;
+                                case 'text':
+                                    echo include_template('post_templates/post_window_types/post-text.php', ['post' => $post]);
+                                    break;
+                                case 'link':
+                                    echo include_template('post_templates/post_window_types/post-link.php', ['post' => $post]);
+                                    break;
+                                case null:
+                                    print ('<div class="feed__wrapper"></div>');
+                            }
+                            ?>
                             <footer class="post__footer">
                                 <div class="post__indicators">
                                     <div class="post__buttons">
@@ -77,7 +93,7 @@
                                             <span class="visually-hidden">количество репостов</span>
                                         </a>
                                     </div>
-                                    <time class="post__time" datetime="2019-01-30T23:41">15 минут назад</time>
+                                    <time class="post__time" datetime="2019-01-30T23:41"><?= show_past_time($post['dt_add'])?></time>
                                 </div>
                                 <ul class="post__tags">
                                     <li><a href="#">#nature</a></li>
@@ -92,6 +108,7 @@
                                 <a class="comments__button button" href="#">Показать комментарии</a>
                             </div>
                         </article>
+                        <?php endforeach; ?>
                     </section>
 
                     <section class="profile__likes tabs__content">
