@@ -14,11 +14,11 @@
                 </div>
                 <div class="profile__rating user__rating">
                     <p class="profile__rating-item user__rating-item user__rating-item--publications">
-                        <span class="user__rating-amount">КОЛ-ВО П</span>
+                        <span class="user__rating-amount"><?= $user_info['posts_count'] ?></span>
                         <span class="profile__rating-text user__rating-text">публикаций</span>
                     </p>
                     <p class="profile__rating-item user__rating-item user__rating-item--subscribers">
-                        <span class="user__rating-amount">1856</span>
+                        <span class="user__rating-amount"><?= $user_info['subscribers_count']?></span>
                         <span class="profile__rating-text user__rating-text">подписчиков</span>
                     </p>
                 </div>

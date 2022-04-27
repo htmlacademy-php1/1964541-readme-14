@@ -104,6 +104,18 @@ SELECT u.id, login, avatar, u.dt_add,
         WHERE p.user_id = u.id)
         AS posts_count
 FROM posts p
-       JOIN users u ON u.id = p.user_id
+JOIN users u ON u.id = p.user_id
 WHERE u.id = 3;
 
+SELECT (SELECT COUNT(p.id)
+  FROM posts p
+  WHERE p.user_id = u.id)
+       AS posts_count,
+       (SELECT COUNT(follower_id)
+         FROM subscribes s
+         WHERE s.follow_id = u.id)
+AS subscribers_count
+FROM posts p
+JOIN users u ON p.user_id = u.id
+WHERE u.id = 5
+GROUP BY posts_count, subscribers_count;

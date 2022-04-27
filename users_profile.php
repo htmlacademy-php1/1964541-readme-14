@@ -25,14 +25,32 @@ if ($this_user) {
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    $sql = 'SELECT (SELECT COUNT(p.id)' .
+        ' FROM posts p' .
+        ' WHERE p.user_id = u.id)' .
+        ' AS posts_count,' .
+        '(SELECT COUNT(follower_id)' .
+        ' FROM subscribes s' .
+        ' WHERE s.follow_id = u.id)' .
+        ' AS subscribers_count' .
+        ' FROM posts p' .
+        ' JOIN users u ON p.user_id = u.id' .
+        ' WHERE u.id = ?' .
+        ' GROUP BY posts_count, subscribers_count;';
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $user_info = mysqli_fetch_assoc($result);
+
 } else {
     header('Location: error.php?code=404');
     exit;
 }
 
 
-
-$page_content = include_template('profile_templates/users-profile-window.php', ['this_user' => $this_user, 'posts' => $posts]);
+$page_content = include_template('profile_templates/users-profile-window.php', ['this_user' => $this_user, 'posts' => $posts, 'user_info' => $user_info]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
