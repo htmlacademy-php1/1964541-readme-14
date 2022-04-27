@@ -9,6 +9,7 @@ $anon_layout_content = include_template('anon_layout.php', ['validation_errors' 
 
 if (isset($_SESSION['user'])) {
     header('Location: feed.php');
+    exit;
 } else {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = filter_input_array(INPUT_POST, [
@@ -29,6 +30,7 @@ if (isset($_SESSION['user'])) {
                 $_SESSION['user'] = $db_user['login'];
                 $_SESSION['avatar'] = $db_user['avatar'];
                 header('Location: feed.php');
+                exit;
             } else {
                 $validation_errors['password'] = 'Пароли не совпадают';
             }

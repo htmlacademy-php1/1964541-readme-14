@@ -71,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
             header('Location: popular.php');
+            exit;
         } else {
             $page_content = include_template('error.php', ['error' => $error]);
         }
