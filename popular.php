@@ -5,13 +5,12 @@ require_once 'data.php';
 require_once 'session.php';
 
 
-if (!$connection) {
-    $error = mysqli_error($connection);
-    $page_content = include_template('error.php', ['error' => $error]);
-}
+
 
 $tab  = filter_input(INPUT_GET, 'tab');
 $params = filter_input(INPUT_GET, 'tab');
+$is_type = [];
+
 if ($tab) {
     $sql = 'SELECT posts.id, title, text, quote_auth, img, video, link, views, posts.dt_add, login, avatar, type FROM posts' .
         ' JOIN users u ON posts.user_id = u.id' .
@@ -46,6 +45,15 @@ $result = mysqli_query($connection, $sql);
 
 if ($result) {
     $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    foreach ($content_types as $content_type) { //проверка на тип контента
+        if ($content_type['type'] === $tab) {
+            $is_type = 'Есть тип';
+        }
+    }
+    if (!$is_type && !empty($tab)) {
+        header('Location: error.php?code=404');
+        exit;
+    }
     $page_content = include_template('popular_templates/main.php', [
         'posts' => $posts,
         'content_types' => $content_types,
