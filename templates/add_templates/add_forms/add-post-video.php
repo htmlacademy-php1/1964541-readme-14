@@ -13,7 +13,7 @@ if ('video' === $form_type) {
                     <label class="adding-post__label form__label" for="video-heading">Заголовок <span class="form__input-required">*</span></label>
                     <div class="form__input-section">
                         <?php $classname = isset($validation_errors['title']) ? 'form__input-section--error' : ''; ?>
-                        <input class="adding-post__input form__input <?= $classname ?>" id="video-heading" type="text" name="title" placeholder="Введите заголовок">
+                        <input class="adding-post__input form__input <?= $classname ?>" id="video-heading" type="text" name="title" value="<?= getPostVal('title')?>" placeholder="Введите заголовок">
                         <input type="hidden" name="content_type_id" value="5">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
@@ -26,7 +26,7 @@ if ('video' === $form_type) {
                     <label class="adding-post__label form__label" for="video-url">Ссылка youtube <span class="form__input-required">*</span></label>
                     <div class="form__input-section">
                         <?php $classname = isset($validation_errors['video']) ? 'form__input-section--error' : ''; ?>
-                        <input class="adding-post__input form__input <?= $classname ?>" id="video-url" type="text" name="video" placeholder="Введите ссылку">
+                        <input class="adding-post__input form__input <?= $classname ?>" id="video-url" type="text" name="video" value="<?= getPostVal('video')?>" placeholder="Введите ссылку">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Заголовок сообщения</h3>
