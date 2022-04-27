@@ -11,6 +11,17 @@ $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 $tab  = filter_input(INPUT_GET, 'tab');
+$is_type = null;
+
+foreach ($content_types as $content_type) { //проверка на тип контента
+    if ($content_type['type'] === $tab) {
+        $is_type = 'Есть тип';
+    }
+}
+if (!$is_type && !empty($tab)) {
+    header('Location: error.php?code=404');
+    exit;
+}
 
 if ($tab) {
     $sql = 'SELECT title, text, quote_auth, img, video, title, text, quote_auth, img, video, link, views, user_id, type, p.dt_add, login, avatar FROM posts p' .
@@ -38,8 +49,6 @@ if ($tab) {
     $result = mysqli_stmt_get_result($stmt);
     if ($result) {
         $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        $posts['type'] = 'empty';
     }
 }
 
