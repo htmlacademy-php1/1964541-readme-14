@@ -61,3 +61,13 @@ VALUE (2, 3);
 
 INSERT INTO subscribes (follower_id, follow_id)
 VALUE (5, 3);
+
+SELECT DISTINCT p.id, title, text, quote_auth, img, video, title, text, quote_auth, img, video, link, views, user_id, p.dt_add, login, type, avatar,
+       (SELECT COUNT(p.id)
+       FROM posts p
+       WHERE p.user_id = u.id)
+AS posts_count
+FROM posts p
+JOIN users u ON u.id = p.user_id
+JOIN content_type ct ON p.content_type_id = ct.id
+WHERE u.id = 5;

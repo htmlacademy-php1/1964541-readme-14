@@ -14,7 +14,7 @@
                 </div>
                 <div class="profile__rating user__rating">
                     <p class="profile__rating-item user__rating-item user__rating-item--publications">
-                        <span class="user__rating-amount">556</span>
+                        <span class="user__rating-amount"><?= $user['posts_count'] ?></span>
                         <span class="profile__rating-text user__rating-text">публикаций</span>
                     </p>
                     <p class="profile__rating-item user__rating-item user__rating-item--subscribers">
