@@ -6,7 +6,7 @@ require_once 'session.php';
 
 $post_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
-$sql = 'SELECT p.id, title, text, quote_auth, img, video, link, views, p.dt_add, login, avatar, type FROM posts p' .
+$sql = 'SELECT p.id, title, text, quote_auth, img, video, link, views, p.dt_add, user_id, login, avatar, type FROM posts p' .
     ' JOIN users u ON p.user_id = u.id' .
     ' JOIN content_type ct' .
     ' ON p.content_type_id = ct.id' .

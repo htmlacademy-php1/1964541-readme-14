@@ -13,7 +13,7 @@ if (!$connection) {
 $tab  = filter_input(INPUT_GET, 'tab');
 $params = filter_input(INPUT_GET, 'tab');
 if ($tab) {
-    $sql = 'SELECT posts.id, title, text, quote_auth, img, video, link, views, posts.dt_add, login, avatar, type FROM posts' .
+    $sql = 'SELECT posts.id, title, text, quote_auth, img, video, link, views, user_id, posts.dt_add, login, avatar, type FROM posts' .
         ' JOIN users u ON posts.user_id = u.id' .
         ' JOIN content_type ct' .
         ' ON posts.content_type_id = ct.id' .
@@ -24,7 +24,7 @@ if ($tab) {
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 } else {
-    $sql = 'SELECT posts.id, title, text, quote_auth, img, video, link, views, posts.dt_add, login, avatar, type FROM posts' .
+    $sql = 'SELECT posts.id, title, text, quote_auth, img, video, link, views, posts.dt_add, login, avatar, user_id, type FROM posts' .
         ' JOIN users u ON posts.user_id = u.id' .
         ' JOIN content_type ct' .
         ' ON posts.content_type_id = ct.id' .

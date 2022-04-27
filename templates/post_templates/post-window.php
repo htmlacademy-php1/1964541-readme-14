@@ -130,7 +130,7 @@
                             </a>
                         </div>
                         <div class="post-details__name-wrapper user__name-wrapper">
-                            <a class="post-details__name user__name" href="#">
+                            <a class="post-details__name user__name" href="users_profile.php?id=<?= $post['user_id'] ?>">
                                 <span><?= $post['login'] ?></span>
                             </a>
                             <time class="post-details__time user__time" datetime="2014-03-20">5 лет на сайте</time>
