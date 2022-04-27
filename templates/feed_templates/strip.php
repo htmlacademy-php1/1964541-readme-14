@@ -12,7 +12,7 @@
                         <header class="post__header post__author">
                             <a class="post__author-link" href="#" title="<?= $post['login'] ?>">
                                 <div class="post__avatar-wrapper">
-                                    <img class="post__author-avatar" src="img/<?= $post['avatar'] ?>" alt="Аватар пользователя" width="60" height="60">
+                                    <img class="post__author-avatar" src="uploads/<?= $post['avatar'] ?>" alt="Аватар пользователя" width="60" height="60">
                                 </div>
                                 <div class="post__info">
                                     <b class="post__author-name"><?= $post['login'] ?></b>
@@ -36,7 +36,7 @@
                             case 'link':
                                 echo include_template('post_templates/post_window_types/post-link.php', ['post' => $post]);
                                 break;
-                            case 'empty':
+                            case null:
                                 print ('<div class="feed__wrapper"></div>');
                         }
                         ?>
