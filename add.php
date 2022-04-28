@@ -164,6 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result) {
             $post_id = mysqli_insert_id($connection);
             header('Location: post.php?id=' . $post_id);
+            exit;
         } else {
             $page_content = include_template('error.php', ['error' => $error]);
         }
