@@ -2,8 +2,15 @@
 date_default_timezone_set("Europe/Moscow");
 setlocale(LC_ALL, 'ru_RU');
 
+
+
 $connection = mysqli_connect('localhost', 'root', '', 'readme');
 mysqli_set_charset($connection, 'utf8');
+
+if (!$connection) {
+    $error = mysqli_error($connection);
+    $page_content = include_template('error.php', ['error' => $error]);
+}
 
 const SECONDS_IN_MIN = 60;
 const SECONDS_IN_HOUR = 3600;
@@ -22,8 +29,6 @@ $form_templates = [
     'quote' => 'add_templates/add_forms/add-post-quote.php'
 ];
 
-$is_auth = rand(0, 1);
 
-$user_name = 'Кирилл';
 
 ?>

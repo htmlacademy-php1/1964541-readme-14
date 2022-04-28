@@ -122,7 +122,7 @@
         </form>
         <div class="header__nav-wrapper">
             <?php
-            if ($_SERVER['PHP_SELF'] === '/registration.php'):?>
+            if (!$user_name) :?>
                 <nav class="header__nav">
                     <ul class="header__user-nav">
                         <li class="header__authorization">
@@ -135,12 +135,12 @@
                     <?php else: ?>
                     <ul class="header__my-nav">
                         <li class="header__my-page header__my-page--popular">
-                            <a class="header__page-link header__page-link--active" title="Популярный контент">
+                            <a class="header__page-link header__page-link--active" href="popular.php" title="Популярный контент">
                                 <span class="visually-hidden">Популярный контент</span>
                             </a>
                         </li>
                         <li class="header__my-page header__my-page--feed">
-                            <a class="header__page-link" href="feed.html" title="Моя лента">
+                            <a class="header__page-link" href="feed.php" title="Моя лента">
                                 <span class="visually-hidden">Моя лента</span>
                             </a>
                         </li>
@@ -187,7 +187,7 @@
                                         </li>
 
                                         <li class="header__profile-nav-item">
-                                            <a class="header__profile-nav-link" href="#">
+                                            <a class="header__profile-nav-link" href="logout.php">
                           <span class="header__profile-nav-text">
                             Выход
                           </span>
@@ -198,7 +198,7 @@
                             </div>
                         </li>
                         <li>
-                            <a class="header__post-button button button--transparent" href="adding-post.html">Пост</a>
+                            <a class="header__post-button button button--transparent" href="add.php">Пост</a>
                         </li>
                     </ul>
                 </nav>
@@ -244,10 +244,10 @@
             <div class="footer__my-info">
                 <ul class="footer__my-pages">
                     <li class="footer__my-page footer__my-page--feed">
-                        <a class="footer__page-link" href="feed.html">Моя лента</a>
+                        <a class="footer__page-link" href="feed.php">Моя лента</a>
                     </li>
                     <li class="footer__my-page footer__my-page--popular">
-                        <a class="footer__page-link" href="popular.html">Популярный контент</a>
+                        <a class="footer__page-link" href="popular.php">Популярный контент</a>
                     </li>
                     <li class="footer__my-page footer__my-page--messages">
                         <a class="footer__page-link" href="messages.html">Личные сообщения</a>

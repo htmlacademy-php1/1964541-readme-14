@@ -45,15 +45,15 @@
                     ?>
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
                         <a class="filters__button filters__button--ellipse filters__button--all <?= $button_active ?>"
-                           href="index.php">
+                           href="popular.php">
                             <span>Все</span>
                         </a>
                     </li>
                     <?php foreach ($content_types as $type):
-                    $params['tab'] = $type['id'];
+                    $params['tab'] = $type['type'];
                     $query = http_build_query($params);
-                    $url = 'index.php?' . $query;
-                    if ($tab === $type['id']) {
+                    $url = 'popular.php?' . $query;
+                    if ($tab === $type['type']) {
                         $button_active = 'filters__button--active';
                     } else {
                         $button_active = '';
@@ -74,7 +74,7 @@
         </div>
         <div class="popular__posts">
             <?php foreach ($posts as $post): ?>
-                <?= include_template('index_templates/popular.php', ['post' => $post]); ?>
+                <?= include_template('popular_templates/popular.php', ['post' => $post]); ?>
             <?php endforeach; ?>
         </div>
     </div>

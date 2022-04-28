@@ -2,6 +2,7 @@
 require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
+require_once 'session.php';
 
 
 $sql = 'SELECT id, name, type FROM content_type;';
@@ -163,6 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result) {
             $post_id = mysqli_insert_id($connection);
             header('Location: post.php?id=' . $post_id);
+            exit;
         } else {
             $page_content = include_template('error.php', ['error' => $error]);
         }
@@ -177,7 +179,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
-    'is_auth' => $is_auth,
     'user_name' => $user_name]);
 print($layout_content);
 

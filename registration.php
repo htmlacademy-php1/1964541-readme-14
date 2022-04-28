@@ -71,7 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = db_get_prepare_stmt($connection, $sql, [$user['email'], $user['password'], $user['login'], $user['avatar']]);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
-            header('Location: index.php');
+            header('Location: popular.php');
+            exit;
         } else {
             $page_content = include_template('error.php', ['error' => $error]);
         }
