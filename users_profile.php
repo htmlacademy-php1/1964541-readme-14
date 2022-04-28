@@ -26,6 +26,8 @@ if ($this_user) {
     $result = mysqli_stmt_get_result($stmt);
     $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+    $sql =
+
     $sql = 'SELECT (SELECT COUNT(p.id)' .
         ' FROM posts p' .
         ' WHERE p.user_id = u.id)' .

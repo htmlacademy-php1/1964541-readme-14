@@ -98,14 +98,7 @@ FROM posts p
        JOIN content_type ct ON p.content_type_id = ct.id
 WHERE u.id = 5;
 
-SELECT u.id, login, avatar, u.dt_add,
-       (SELECT COUNT(p.id)
-        FROM posts p
-        WHERE p.user_id = u.id)
-        AS posts_count
-FROM posts p
-JOIN users u ON u.id = p.user_id
-WHERE u.id = 3;
+DELETE FROM subscribes WHERE follower_id = 5 && follow_id = 2;
 
 SELECT (SELECT COUNT(p.id)
   FROM posts p
@@ -119,14 +112,3 @@ FROM posts p
 JOIN users u ON p.user_id = u.id
 WHERE u.id = 5
 GROUP BY posts_count, subscribers_count;
-
-SELECT posts.id, title, text, quote_auth, img, video, link, views, user_id, posts.dt_add, login, avatar, type,
-    (SELECT COUNT(post_id)
-    FROM likes
-      WHERE likes.post_id = posts.id)
-AS likes
-FROM posts
-JOIN users u ON posts.user_id = u.id
-JOIN content_type ct
-ON posts.content_type_id = ct.id
-ORDER BY likes DESC;
