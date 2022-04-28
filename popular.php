@@ -10,25 +10,43 @@ if (!$connection) {
     $page_content = include_template('error.php', ['error' => $error]);
 }
 
-$tab  = filter_input(INPUT_GET, 'tab');
+$tab = filter_input(INPUT_GET, 'tab');
 $params = filter_input(INPUT_GET, 'tab');
+$get_sort = filter_input(INPUT_GET, 'sort');
+
+if ($get_sort === 'likes' || $get_sort === 'views' || $get_sort === 'dt_add') {
+    $sort = $get_sort;
+} else {
+    $sort = 'views';
+}
+
 if ($tab) {
-    $sql = 'SELECT posts.id, title, text, quote_auth, img, video, link, views, user_id, posts.dt_add, login, avatar, type FROM posts' .
+    $sql = 'SELECT posts.id, title, text, quote_auth, img, video, link, views, user_id, posts.dt_add, login, avatar, type,' .
+        ' (SELECT COUNT(post_id)' .
+        ' FROM likes' .
+        ' WHERE likes.post_id = posts.id)' .
+        ' AS likes' .
+        ' FROM posts' .
         ' JOIN users u ON posts.user_id = u.id' .
         ' JOIN content_type ct' .
         ' ON posts.content_type_id = ct.id' .
         ' WHERE ct.type = ?' .
-        ' ORDER BY views DESC;';
+        " ORDER BY $sort DESC;";
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 's', $tab);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 } else {
-    $sql = 'SELECT posts.id, title, text, quote_auth, img, video, link, views, posts.dt_add, login, avatar, user_id, type FROM posts' .
+    $sql = 'SELECT posts.id, title, text, quote_auth, img, video, link, views, posts.dt_add, login, avatar, user_id, type,' .
+        ' (SELECT COUNT(post_id)' .
+        ' FROM likes' .
+        ' WHERE likes.post_id = posts.id)' .
+        ' AS likes' .
+        ' FROM posts' .
         ' JOIN users u ON posts.user_id = u.id' .
         ' JOIN content_type ct' .
         ' ON posts.content_type_id = ct.id' .
-        ' ORDER BY views DESC;';
+        " ORDER BY $sort DESC;";
     $result = mysqli_query($connection, $sql);
 }
 
@@ -49,12 +67,12 @@ if ($result) {
     $page_content = include_template('popular_templates/main.php', [
         'posts' => $posts,
         'content_types' => $content_types,
-        'tab' => $tab]);
+        'tab' => $tab,
+        'sort' => $sort]);
 } else {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
 }
-
 
 
 $layout_content = include_template('layout.php', [
