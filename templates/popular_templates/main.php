@@ -8,7 +8,12 @@
                 <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
                 <ul class="popular__sorting-list sorting__list">
                     <li class="sorting__item sorting__item--popular">
-                        <?php $classname = $sort === 'views' ? '--active' : ''; ?>
+                        <?php
+                        $params['tab'] = $tab;
+                        $params['sort'] = $sort;
+                        $query = http_build_query($params);
+                        $url = 'popular.php?' . $query;
+                        $classname = $sort === 'views' ? '--active' : ''; ?>
                         <a class="sorting__link sorting__link<?= $classname ?>" href="popular.php?sort=views">
                             <span>Популярность</span>
                             <svg class="sorting__icon" width="10" height="12">
