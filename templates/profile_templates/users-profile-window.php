@@ -23,7 +23,7 @@
                     </p>
                 </div>
                 <div class="profile__user-buttons user__buttons">
-                    <a href="subscribe.php?id=<?= $this_user['id'] ?>" class="profile__user-button user__button user__button--subscription button button--main" >Подписаться</a>
+                    <a href="subscribe.php?id=<?= $this_user['id'] ?>" class="profile__user-button user__button user__button--subscription button <?= $button['class'] ?>" ><?= $button['name'] ?></a>
                     <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
                 </div>
             </div>
