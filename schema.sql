@@ -90,5 +90,3 @@ CREATE TABLE subscribes (
 );
 
 CREATE FULLTEXT INDEX posts_title_text_search ON posts(title, text);
-CREATE FULLTEXT INDEX posts_text_search ON posts(text);
-CREATE FULLTEXT INDEX posts_title_search ON posts(title);

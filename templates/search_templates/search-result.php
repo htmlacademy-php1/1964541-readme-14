@@ -5,7 +5,7 @@
         <div class="search__query-wrapper">
             <div class="search__query container">
                 <span>Вы искали:</span>
-                <span class="search__query-text"><?= $request ?></span>
+                <span class="search__query-text"><?= htmlspecialchars($request); ?></span>
             </div>
         </div>
         <div class="search__results-wrapper">
@@ -74,7 +74,7 @@
                         </article>
                     <?php endforeach;
                     else:
-                        echo include_template('search_templates/no-results.php', ['request' => $request]);
+                        echo include_template('search_templates/no-results.php', ['request' => $request, 'back' => $back]);
                     endif; ?>
 
                 </div>
