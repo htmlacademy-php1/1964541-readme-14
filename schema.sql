@@ -88,3 +88,5 @@ CREATE TABLE subscribes (
                           FOREIGN KEY (follow_id) REFERENCES users (id),
                           CONSTRAINT subscribes PRIMARY KEY (follower_id, follow_id)
 );
+
+CREATE FULLTEXT INDEX posts_title_text_search ON posts(title, text);
