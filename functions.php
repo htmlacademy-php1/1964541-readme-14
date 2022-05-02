@@ -115,14 +115,12 @@ function validate_form_type($value, $content_types): bool
     return false;
 }
 
-function validate_email($value, $users): ?string
+function validate_email($value, $email): ?string
 {
     if($value) {
-        foreach ($users as $user) {
-            if($user['email'] === $value) {
+            if($email) {
                 return 'Пользователь с таким email уже существует';
             }
-        }
         return null;
     }
     return 'Введите корректный email';

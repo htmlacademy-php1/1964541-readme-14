@@ -7,6 +7,11 @@ setlocale(LC_ALL, 'ru_RU');
 $connection = mysqli_connect('localhost', 'root', '', 'readme');
 mysqli_set_charset($connection, 'utf8');
 
+if (!$connection) {
+    $error = mysqli_error($connection);
+    $page_content = include_template('error.php', ['error' => $error]);
+}
+
 const SECONDS_IN_MIN = 60;
 const SECONDS_IN_HOUR = 3600;
 const SECONDS_IN_DAY = 86400;

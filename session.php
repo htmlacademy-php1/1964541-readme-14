@@ -6,4 +6,3 @@ if (empty($_SESSION['user'])) {
 } else {
     $user = $_SESSION;
 }
-

@@ -5,13 +5,11 @@ require_once 'data.php';
 require_once 'session.php';
 
 
-if (!$connection) {
-    $error = mysqli_error($connection);
-    $page_content = include_template('error.php', ['error' => $error]);
-}
+
 
 $tab = filter_input(INPUT_GET, 'tab');
 $params = filter_input(INPUT_GET, 'tab');
+
 $get_sort = filter_input(INPUT_GET, 'sort');
 
 if ($get_sort === 'likes' || $get_sort === 'views' || $get_sort === 'dt_add') {
@@ -19,6 +17,7 @@ if ($get_sort === 'likes' || $get_sort === 'views' || $get_sort === 'dt_add') {
 } else {
     $sort = 'views';
 }
+
 
 if ($tab) {
     $sql = 'SELECT posts.id, title, text, quote_auth, img, video, link, views, user_id, posts.dt_add, login, avatar, type,' .
@@ -64,6 +63,15 @@ $result = mysqli_query($connection, $sql);
 
 if ($result) {
     $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    foreach ($content_types as $content_type) { //проверка на тип контента
+        if ($content_type['type'] === $tab) {
+            $is_type = 'Есть тип';
+        }
+    }
+    if (!$is_type && !empty($tab)) {
+        header('Location: error.php?code=404');
+        exit;
+    }
     $page_content = include_template('popular_templates/main.php', [
         'posts' => $posts,
         'content_types' => $content_types,
