@@ -20,9 +20,8 @@ if ($result) {
     $result = mysqli_stmt_get_result($stmt);
     $result = mysqli_fetch_assoc($result);
 
-    if (!$result) {
-        $sql = 'INSERT INTO subscribes (follow_id, follower_id)' .
-            ' VALUES (?, ?)';
+    if ($result) {
+        $sql = 'DELETE FROM subscribes WHERE follow_id = ? AND follower_id = ?;';
     }
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt,'ii', $follow_id, $follower_id);
@@ -34,4 +33,3 @@ if ($result) {
     header('Location: error.php?code=404');
     exit;
 }
-

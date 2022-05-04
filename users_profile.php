@@ -29,17 +29,15 @@ if ($this_user) {
     $follow_id = $this_user['id'];
     $follower_id = $user['user_id'];
     $sql = 'SELECT * FROM subscribes' .
-        ' WHERE follow_id = ? && follower_id = ?;';
+        ' WHERE follow_id = ? AND follower_id = ?;';
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt,'ii', $follow_id, $follower_id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $result = mysqli_fetch_assoc($result);
-    $button['class'] = 'button--main';
-    $button['name'] = 'Подписаться';
+    $is_subscribe = true;
     if ($result) {
-        $button['class'] = 'button--quartz';
-        $button['name'] = 'Отписаться';
+        $is_subscribe = false;
     }
 
     $sql = 'SELECT (SELECT COUNT(p.id)' .
@@ -66,7 +64,7 @@ if ($this_user) {
 }
 
 
-$page_content = include_template('profile_templates/users-profile-window.php', ['this_user' => $this_user, 'posts' => $posts, 'user_info' => $user_info, 'button' => $button]);
+$page_content = include_template('profile_templates/users-profile-window.php', ['this_user' => $this_user, 'posts' => $posts, 'user_info' => $user_info, 'is_subscribe' => $is_subscribe]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',

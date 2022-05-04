@@ -157,8 +157,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         unset($post['tags']);
 
-        var_dump($post);
-
         $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         $stmt = db_get_prepare_stmt($connection, $sql, [$post['title'], $post['text'], $post['quote_auth'], $post['photo-link'], $post['video'], $post['link'], $post['content_type_id'], $post['user_id']]);
         $result = mysqli_stmt_execute($stmt);
