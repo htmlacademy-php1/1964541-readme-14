@@ -9,6 +9,7 @@ require_once 'session.php';
 
 $tab = filter_input(INPUT_GET, 'tab');
 $params = filter_input(INPUT_GET, 'tab');
+$is_type = null;
 
 $get_sort = filter_input(INPUT_GET, 'sort');
 
