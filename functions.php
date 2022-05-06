@@ -212,7 +212,7 @@ function validate_comment ($value, $min): ?string
 function validate_post_id ($db_connection, $post_id): ?string
 {
     $sql = 'SELECT * FROM posts' .
-        ' WHERE id = ?';
+        ' WHERE post.id = ?';
     $stmt = mysqli_prepare($db_connection, $sql);
     mysqli_stmt_bind_param($stmt,'i', $post_id);
     mysqli_stmt_execute($stmt);

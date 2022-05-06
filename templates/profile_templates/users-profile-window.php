@@ -69,7 +69,7 @@
                     if ($tab === 'posts' || $tab === 'likes') {
                         echo include_template('profile_templates/users-window-types/users-posts.php', ['posts' => $posts]);
                     } else {
-                        echo include_template('profile_templates/users-window-types/users-subscribes.php', ['posts' => $posts]);
+                        echo include_template('profile_templates/users-window-types/users-subscribes.php', ['posts' => $posts, 'user' => $user, 'is_subscribe' => $is_subscribe]);
                     }
                     ?>
                 </div>

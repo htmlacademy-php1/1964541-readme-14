@@ -27,7 +27,19 @@
                 </p>
             </div>
             <div class="post-mini__user-buttons user__buttons">
-                <button class="post-mini__user-button user__button user__button--subscription button button--main" type="button">Подписаться</button>
+                <?php
+                if ($is_subscribe) {
+                    $button['class'] = 'button--main';
+                    $button['name'] = 'Подписаться';
+                    $button['subscription'] = 'subscribe';
+                } else {
+                    $button['class'] = 'button--quartz';
+                    $button['name'] = 'Отписаться';
+                    $button['subscription'] = 'unsubscribe';
+                }
+                ?>
+                <a href="<?= $button['subscription'] ?>.php?id=<?= $post['id'] ?>"
+                   class="profile__user-button user__button user__button--subscription button <?= $button['class'] ?>"><?= $button['name'] ?></a>
             </div>
         </li>
         <?php endforeach; ?>
