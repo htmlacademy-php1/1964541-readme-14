@@ -61,17 +61,18 @@
                         <li><a href="#">#щикарныйвид</a></li>
                     </ul>
                     <div class="comments">
-                        <form class="comments__form form" action="comment.php" method="post">
+                        <form class="comments__form form" action="post.php?id=<?= $post['id'] ?>" method="post">
                             <div class="comments__my-avatar">
                                 <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
                             </div>
-                            <div class="form__input-section form__input-section--error">
-                                <textarea class="comments__textarea form__textarea form__input" value="<?= getPostVal('text')?>" placeholder="Ваш комментарий"></textarea>
+                            <?php $classname = isset($validation_errors['comment']) ? '--error' : ''; ?>
+                            <div class="form__input-section form__input-section<?= $classname ?>">
+                                <textarea class="comments__textarea form__textarea form__input" name="comment" value="<?= getPostVal('text')?>" placeholder="Ваш комментарий"></textarea>
                                 <label class="visually-hidden">Ваш комментарий</label>
                                 <button class="form__error-button button" type="button">!</button>
                                 <div class="form__error-text">
                                     <h3 class="form__error-title">Ошибка валидации</h3>
-                                    <p class="form__error-desc">Это поле обязательно к заполнению</p>
+                                    <p class="form__error-desc"><?= $validation_errors['comment'] ?></p>
                                 </div>
                             </div>
                             <input value="<?= $post['id'] ?>" name="post_id" class="visually-hidden">

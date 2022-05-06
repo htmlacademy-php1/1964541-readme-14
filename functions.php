@@ -201,10 +201,11 @@ function validate_comment ($value, $min): ?string
 {
     if ($value) {
         $value = trim($value);
-        if ($value > $min) {
+        if (strlen($value) < $min) {
+            return 'Комментарий должен быть больше 3 символов';
+        } else {
             return null;
         }
-        return 'Комментарий должен быть больше 4 символов';
     }
     return null;
 }
@@ -212,7 +213,7 @@ function validate_comment ($value, $min): ?string
 function validate_post_id ($db_connection, $post_id): ?string
 {
     $sql = 'SELECT * FROM posts' .
-        ' WHERE post.id = ?';
+        ' WHERE id = ?';
     $stmt = mysqli_prepare($db_connection, $sql);
     mysqli_stmt_bind_param($stmt,'i', $post_id);
     mysqli_stmt_execute($stmt);
