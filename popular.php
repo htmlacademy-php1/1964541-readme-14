@@ -24,6 +24,7 @@ if ($get_sort === 'likes' || $get_sort === 'views' || $get_sort === 'dt_add') {
     $sort = 'views';
 }
 
+$offset = ($page - 1) * 6;
 
 if ($tab) {
     $sql = 'SELECT posts.id, title, text, quote_auth, img, video, link, views, user_id, posts.dt_add, login, avatar, type,' .
@@ -37,7 +38,7 @@ if ($tab) {
         ' ON posts.content_type_id = ct.id' .
         ' WHERE ct.type = ?' .
         " ORDER BY $sort DESC" .
-        " LIMIT 6 OFFSET $page";
+        " LIMIT 6 OFFSET $offset";
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 's', $tab);
     mysqli_stmt_execute($stmt);
@@ -53,7 +54,7 @@ if ($tab) {
         ' JOIN content_type ct' .
         ' ON posts.content_type_id = ct.id' .
         " ORDER BY $sort DESC" .
-        " LIMIT 6 OFFSET $page;";
+        " LIMIT 6 OFFSET $offset;";
     $result = mysqli_query($connection, $sql);
 }
 
