@@ -83,7 +83,7 @@
         </div>
         <div class="popular__page-links">
             <a class="popular__page-link popular__page-link--prev button button--gray" href="popular.php?tab=<?= $tab ?>&sort=<?= $sort ?>&page=<?= $page -= 1; ?>">Предыдущая страница</a>
-            <a class="popular__page-link popular__page-link--next button button--gray" href="popular.php?tab=<?= $tab ?>&sort=<?= $sort ?>&page=<?= $page += 1; ?>">Следующая страница</a>
+            <a class="popular__page-link popular__page-link--next button button--gray" href="popular.php?tab=<?= $tab ?>&sort=<?= $sort ?>&page=<?= $page += 2; ?>">Следующая страница</a>
         </div>
     </div>
 </section>
