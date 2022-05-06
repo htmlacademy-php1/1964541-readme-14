@@ -61,7 +61,7 @@
                         <li><a href="#">#щикарныйвид</a></li>
                     </ul>
                     <div class="comments">
-                        <form class="comments__form form" action="post.php" method="post">
+                        <form class="comments__form form" action="comment.php" method="post">
                             <div class="comments__my-avatar">
                                 <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
                             </div>
@@ -79,6 +79,7 @@
                         </form>
                         <div class="comments__list-wrapper">
                             <ul class="comments__list">
+                                <?php foreach ($comments as $comment): ?>
                                 <li class="comments__item user">
                                     <div class="comments__avatar">
                                         <a class="user__avatar-link" href="#">
@@ -88,33 +89,16 @@
                                     <div class="comments__info">
                                         <div class="comments__name-wrapper">
                                             <a class="comments__user-name" href="#">
-                                                <span>Лариса Роговая</span>
+                                                <span><?= $comment['login'] ?></span>
                                             </a>
-                                            <time class="comments__time" datetime="2019-03-20">1 ч назад</time>
+                                            <time class="comments__time" datetime="2019-03-20"><?= show_past_time($comment['dt_add']) ?></time>
                                         </div>
                                         <p class="comments__text">
-                                            Красота!!!1!
+                                            <?= $comment['content'] ?>
                                         </p>
                                     </div>
                                 </li>
-                                <li class="comments__item user">
-                                    <div class="comments__avatar">
-                                        <a class="user__avatar-link" href="#">
-                                            <img class="comments__picture" src="img/userpic-larisa.jpg" alt="Аватар пользователя">
-                                        </a>
-                                    </div>
-                                    <div class="comments__info">
-                                        <div class="comments__name-wrapper">
-                                            <a class="comments__user-name" href="#">
-                                                <span>Лариса Роговая</span>
-                                            </a>
-                                            <time class="comments__time" datetime="2019-03-18">2 дня назад</time>
-                                        </div>
-                                        <p class="comments__text">
-                                            Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                                        </p>
-                                    </div>
-                                </li>
+                                <?php endforeach; ?>
                             </ul>
                             <a class="comments__more-link" href="#">
                                 <span>Показать все комментарии</span>
