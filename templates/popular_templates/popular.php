@@ -38,7 +38,7 @@
         </div>
         <div class="post__indicators">
             <div class="post__buttons">
-                <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?= $post['id']?>" title="Лайк">
                     <svg class="post__indicator-icon" width="20" height="17">
                         <use xlink:href="#icon-heart"></use>
                     </svg>
@@ -46,10 +46,10 @@
                          height="17">
                         <use xlink:href="#icon-heart-active"></use>
                     </svg>
-                    <span>0</span>
+                    <span><?= $post['likes'] ?></span>
                     <span class="visually-hidden">количество лайков</span>
                 </a>
-                <a class="post__indicator post__indicator--comments button" href="#"
+                <a class="post__indicator post__indicator--comments button" href="feed.php"
                    title="Комментарии">
                     <svg class="post__indicator-icon" width="19" height="17">
                         <use xlink:href="#icon-comment"></use>

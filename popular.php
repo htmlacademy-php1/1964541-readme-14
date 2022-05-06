@@ -12,6 +12,11 @@ $params = filter_input(INPUT_GET, 'tab');
 $is_type = null;
 
 $get_sort = filter_input(INPUT_GET, 'sort');
+$page = filter_input(INPUT_GET, 'page');
+
+if (!$page) {
+    $page = 1;
+}
 
 if ($get_sort === 'likes' || $get_sort === 'views' || $get_sort === 'dt_add') {
     $sort = $get_sort;
@@ -31,7 +36,8 @@ if ($tab) {
         ' JOIN content_type ct' .
         ' ON posts.content_type_id = ct.id' .
         ' WHERE ct.type = ?' .
-        " ORDER BY $sort DESC;";
+        " ORDER BY $sort DESC" .
+        " LIMIT 6 OFFSET $page";
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 's', $tab);
     mysqli_stmt_execute($stmt);
@@ -46,7 +52,8 @@ if ($tab) {
         ' JOIN users u ON posts.user_id = u.id' .
         ' JOIN content_type ct' .
         ' ON posts.content_type_id = ct.id' .
-        " ORDER BY $sort DESC;";
+        " ORDER BY $sort DESC" .
+        " LIMIT 6 OFFSET $page;";
     $result = mysqli_query($connection, $sql);
 }
 
@@ -77,7 +84,8 @@ if ($result) {
         'posts' => $posts,
         'content_types' => $content_types,
         'tab' => $tab,
-        'sort' => $sort]);
+        'sort' => $sort,
+        'page' => $page]);
 } else {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
