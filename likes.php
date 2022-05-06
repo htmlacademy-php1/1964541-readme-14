@@ -18,5 +18,6 @@ if ($result) {
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 'ii', $user_id, $post_id);
     mysqli_stmt_execute($stmt);
-
+    header($_SERVER['HTTP_REFERER']);
+    exit;
 }
