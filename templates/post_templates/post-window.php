@@ -126,28 +126,40 @@
                     <div class="post-details__user-info user__info">
                         <div class="post-details__avatar user__avatar">
                             <a class="post-details__avatar-link user__avatar-link" href="#">
-                                <img class="post-details__picture user__picture" src="img/<?= $post['avatar'] ?>" alt="Аватар пользователя">
+                                <img class="post-details__picture user__picture" src="img/<?= $this_user['avatar'] ?>" alt="Аватар пользователя">
                             </a>
                         </div>
                         <div class="post-details__name-wrapper user__name-wrapper">
-                            <a class="post-details__name user__name" href="users_profile.php?id=<?= $post['user_id'] ?>">
-                                <span><?= $post['login'] ?></span>
+                            <a class="post-details__name user__name" href="users_profile.php?id=<?= $this_user['id'] ?>">
+                                <span><?= $this_user['login'] ?></span>
                             </a>
-                            <time class="post-details__time user__time" datetime="2014-03-20">5 лет на сайте</time>
+                            <time class="post-details__time user__time" datetime="2014-03-20"><?= show_past_time($this_user['dt_add']) ?></time>
                         </div>
                     </div>
                     <div class="post-details__rating user__rating">
                         <p class="post-details__rating-item user__rating-item user__rating-item--subscribers">
-                            <span class="post-details__rating-amount user__rating-amount">1856</span>
+                            <span class="post-details__rating-amount user__rating-amount"><?= $user_info['subscribers_count'] ?></span>
                             <span class="post-details__rating-text user__rating-text">подписчиков</span>
                         </p>
                         <p class="post-details__rating-item user__rating-item user__rating-item--publications">
-                            <span class="post-details__rating-amount user__rating-amount">556</span>
+                            <span class="post-details__rating-amount user__rating-amount"><?= $user_info['posts_count'] ?></span>
                             <span class="post-details__rating-text user__rating-text">публикаций</span>
                         </p>
                     </div>
                     <div class="post-details__user-buttons user__buttons">
-                        <button class="user__button user__button--subscription button button--main" type="button">Подписаться</button>
+                        <?php
+                        if ($is_subscribe) {
+                            $button['class'] = 'button--main';
+                            $button['name'] = 'Подписаться';
+                            $button['subscription'] = 'subscribe';
+                        } else {
+                            $button['class'] = 'button--quartz';
+                            $button['name'] = 'Отписаться';
+                            $button['subscription'] = 'unsubscribe';
+                        }
+                        ?>
+                        <a href="<?= $button['subscription'] ?>.php?id=<?= $this_user['id'] ?>"
+                           class="profile__user-button user__button user__button--subscription button <?= $button['class'] ?>"><?= $button['name'] ?></a>
                         <a class="user__button user__button--writing button button--green" href="#">Сообщение</a>
                     </div>
                 </div>

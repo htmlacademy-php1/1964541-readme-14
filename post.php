@@ -6,7 +6,7 @@ require_once 'session.php';
 
 $post_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
-$sql = 'SELECT p.id, title, text, quote_auth, img, video, link, views, p.dt_add, user_id, login, avatar, type FROM posts p' .
+$sql = 'SELECT p.id, title, text, quote_auth, img, video, link, views, p.dt_add, user_id, type FROM posts p' .
     ' JOIN users u ON p.user_id = u.id' .
     ' JOIN content_type ct' .
     ' ON p.content_type_id = ct.id' .
@@ -19,12 +19,14 @@ $result = mysqli_stmt_get_result($stmt);
 
 if ($result) {
     $post = mysqli_fetch_assoc($result);
-    $page_content = include_template('post_templates/post-window.php', ['post' => $post]);
+    $user_info = get_user_info($connection, $post['user_id']);
+    $this_user = get_user($connection, $post['user_id']);
+    $is_subscribe = check_subscription($connection, $this_user['id'], $user['user_id']);
+    $page_content = include_template('post_templates/post-window.php', ['post' => $post, 'user_info' => $user_info, 'this_user' => $this_user, 'is_subscribe' => $is_subscribe]);
 } else {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
 }
-
 
 
 $layout_content = include_template('layout.php', [

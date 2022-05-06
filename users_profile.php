@@ -5,14 +5,8 @@ require_once 'data.php';
 require_once 'session.php';
 
 $user_id = filter_input(INPUT_GET, 'id');
-$sql = 'SELECT id, login, avatar, dt_add' .
-    ' FROM users u' .
-    ' WHERE id = ?;';
-$stmt = mysqli_prepare($connection, $sql);
-mysqli_stmt_bind_param($stmt, 'i', $user_id);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-$this_user = mysqli_fetch_assoc($result);
+
+$this_user = get_user($connection, $user_id);
 
 if ($this_user) {
     $sql = 'SELECT DISTINCT p.id, title, text, quote_auth, img, video, title, text, quote_auth, img, video, link, views, user_id, p.dt_add, login, type, avatar' .
@@ -26,37 +20,9 @@ if ($this_user) {
     $result = mysqli_stmt_get_result($stmt);
     $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-    $follow_id = $this_user['id'];
-    $follower_id = $user['user_id'];
-    $sql = 'SELECT * FROM subscribes' .
-        ' WHERE follow_id = ? AND follower_id = ?;';
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt,'ii', $follow_id, $follower_id);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $result = mysqli_fetch_assoc($result);
-    $is_subscribe = true;
-    if ($result) {
-        $is_subscribe = false;
-    }
+    $is_subscribe = check_subscription($connection, $this_user['id'], $user['user_id']);
 
-    $sql = 'SELECT (SELECT COUNT(p.id)' .
-        ' FROM posts p' .
-        ' WHERE p.user_id = u.id)' .
-        ' AS posts_count,' .
-        '(SELECT COUNT(follower_id)' .
-        ' FROM subscribes s' .
-        ' WHERE s.follow_id = u.id)' .
-        ' AS subscribers_count' .
-        ' FROM posts p' .
-        ' JOIN users u ON p.user_id = u.id' .
-        ' WHERE u.id = ?' .
-        ' GROUP BY posts_count, subscribers_count;';
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $user_id);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $user_info = mysqli_fetch_assoc($result);
+    $user_info = get_user_info($connection, $user_id);
 
 } else {
     header('Location: error.php?code=404');
