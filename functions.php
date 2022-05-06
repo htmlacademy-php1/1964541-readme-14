@@ -196,3 +196,30 @@ function check_subscription ($db_connection, $follow_id, $follower_id): bool
         return true;
     }
 }
+
+function validate_comment ($value, $min): ?string
+{
+    if ($value) {
+        $value = trim($value);
+        if ($value > $min) {
+            return null;
+        }
+        return 'Комментарий должен быть больше 4 символов';
+    }
+    return null;
+}
+
+function validate_post_id ($db_connection, $post_id): ?string
+{
+    $sql = 'SELECT * FROM posts' .
+        ' WHERE id = ?';
+    $stmt = mysqli_prepare($db_connection, $sql);
+    mysqli_stmt_bind_param($stmt,'i', $post_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $result = mysqli_fetch_row($result);
+    if ($result) {
+        return null;
+    }
+    return 'Такого поста не существует';
+}

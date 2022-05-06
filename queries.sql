@@ -71,4 +71,3 @@ INSERT INTO subscribes (follower_id, follow_id)
 INSERT INTO subscribes (follower_id, follow_id)
   VALUE (5, 3);
 
-

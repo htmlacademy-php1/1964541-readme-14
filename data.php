@@ -19,8 +19,10 @@ const SECONDS_IN_WEEK = 604800;
 const SECONDS_IN_MONTH = 2419200;
 const QUOTE_AUTHOR_MIN_LENGTH = 5;
 const QUOTE_AUTHOR_MAX_LENGTH = 128;
+const COMMENT_MIN_LENGTH = 4;
 const LOGIN_MIN_LENGTH = 3;
 const LOGIN_MAX_LENGTH = 320;
+
 $form_templates = [
     'photo' => 'add_templates/add_forms/add-post-photo.php',
     'text' => 'add_templates/add_forms/add-post-text.php',

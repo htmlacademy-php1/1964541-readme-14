@@ -25,14 +25,14 @@
                     ?>
                     <div class="post__indicators">
                         <div class="post__buttons">
-                            <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                            <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?= $post['id'] ?>" title="Лайк">
                                 <svg class="post__indicator-icon" width="20" height="17">
                                     <use xlink:href="#icon-heart"></use>
                                 </svg>
                                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                     <use xlink:href="#icon-heart-active"></use>
                                 </svg>
-                                <span>250</span>
+                                <span><?= $post['likes'] ?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
                             <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
@@ -61,12 +61,12 @@
                         <li><a href="#">#щикарныйвид</a></li>
                     </ul>
                     <div class="comments">
-                        <form class="comments__form form" action="#" method="post">
+                        <form class="comments__form form" action="post.php" method="post">
                             <div class="comments__my-avatar">
                                 <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
                             </div>
                             <div class="form__input-section form__input-section--error">
-                                <textarea class="comments__textarea form__textarea form__input" placeholder="Ваш комментарий"></textarea>
+                                <textarea class="comments__textarea form__textarea form__input" value="<?= getPostVal('text')?>" placeholder="Ваш комментарий"></textarea>
                                 <label class="visually-hidden">Ваш комментарий</label>
                                 <button class="form__error-button button" type="button">!</button>
                                 <div class="form__error-text">
@@ -74,6 +74,7 @@
                                     <p class="form__error-desc">Это поле обязательно к заполнению</p>
                                 </div>
                             </div>
+                            <input value="<?= $post['id'] ?>" name="post_id" class="visually-hidden">
                             <button class="comments__submit button button--green" type="submit">Отправить</button>
                         </form>
                         <div class="comments__list-wrapper">
