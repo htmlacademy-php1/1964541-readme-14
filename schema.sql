@@ -74,6 +74,7 @@ CREATE TABLE messages (
 );
 
 CREATE TABLE likes (
+                     dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                      user_id INT NOT NULL,
                      FOREIGN KEY (user_id) REFERENCES users (id),
                      post_id INT NOT NULL,
