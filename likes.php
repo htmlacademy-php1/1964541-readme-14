@@ -4,7 +4,7 @@ require_once 'functions.php';
 require_once 'data.php';
 require_once 'session.php';
 
-$user_id = $user['id'];
+$user_id = $user['user_id'];
 $post_id = filter_input(INPUT_GET, 'id');
 
 $sql = 'SELECT ? FROM posts;';
