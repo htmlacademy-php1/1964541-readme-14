@@ -62,7 +62,7 @@
                 </ul>
             </footer>
             <div class="comments">
-                <a class="comments__button button" href="#">Показать комментарии</a>
+                <a class="comments__button button" href="post.php?id=<?= $post['id'] ?>">Показать комментарии</a>
             </div>
         </article>
     <?php endforeach; ?>
