@@ -53,7 +53,6 @@ if ($this_user) {
 
     $is_subscribe = check_subscription($connection, $this_user['id'], $user['user_id']);
 
-
     $user_info = get_user_info($connection, $user_id);
 
 } else {
@@ -62,7 +61,7 @@ if ($this_user) {
 }
 
 
-$page_content = include_template('profile_templates/users-profile-window.php', ['this_user' => $this_user, 'tab' => $tab, 'posts' => $posts, 'user_info' => $user_info, 'is_subscribe' => $is_subscribe, 'user' => $user]);
+$page_content = include_template('profile_templates/users-profile-window.php', ['this_user' => $this_user, 'tab' => $tab, 'posts' => $posts, 'user_info' => $user_info, 'is_subscribe' => $is_subscribe, 'user' => $user, 'connection' => $connection]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',

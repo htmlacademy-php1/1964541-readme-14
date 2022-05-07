@@ -28,6 +28,7 @@
             </div>
             <div class="post-mini__user-buttons user__buttons">
                 <?php
+                $is_subscribe = check_subscription($connection, $post['id'], $user['user_id']);
                 if ($is_subscribe) {
                     $button['class'] = 'button--main';
                     $button['name'] = 'Подписаться';
