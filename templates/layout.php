@@ -126,10 +126,10 @@
                 <nav class="header__nav">
                     <ul class="header__user-nav">
                         <li class="header__authorization">
-                            <a class="header__user-button header__authorization-button button" href="login.html">Вход</a>
+                            <a class="header__user-button header__authorization-button button" href="login.php">Вход</a>
                         </li>
                         <li>
-                            <a class="header__user-button header__user-button--active header__register-button button">Регистрация</a>
+                            <a class="header__user-button header__user-button--active header__register-button button" href="registration.php">Регистрация</a>
                         </li>
                     </ul>
                     <?php else: ?>
