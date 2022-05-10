@@ -22,6 +22,7 @@ const QUOTE_AUTHOR_MAX_LENGTH = 128;
 const COMMENT_MIN_LENGTH = 4;
 const LOGIN_MIN_LENGTH = 3;
 const LOGIN_MAX_LENGTH = 320;
+const PAGE_POST_LIMIT = 6;
 
 $form_templates = [
     'photo' => 'add_templates/add_forms/add-post-photo.php',
