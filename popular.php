@@ -5,8 +5,6 @@ require_once 'data.php';
 require_once 'session.php';
 
 
-
-
 $tab = filter_input(INPUT_GET, 'tab');
 $params = filter_input(INPUT_GET, 'tab');
 $is_type = null;
@@ -86,7 +84,8 @@ if ($result) {
         'content_types' => $content_types,
         'tab' => $tab,
         'sort' => $sort,
-        'page' => $page]);
+        'page' => $page
+    ]);
 } else {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
@@ -96,7 +95,8 @@ if ($result) {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
-    'user' => $user]);
+    'user' => $user
+]);
 print($layout_content);
 
 

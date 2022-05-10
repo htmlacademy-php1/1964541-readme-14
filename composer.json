@@ -1,0 +1,7 @@
+{
+    "name": "vendor/readme",
+    "description": "Учебный проект",
+    "type": "project",
+    "license": "MIT",
+    "require": {}
+}
