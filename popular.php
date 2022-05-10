@@ -14,7 +14,7 @@ $is_type = null;
 $get_sort = filter_input(INPUT_GET, 'sort');
 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
 
-if ($page < 0) {
+if ($page <= 0) {
     $page = 1;
 }
 
