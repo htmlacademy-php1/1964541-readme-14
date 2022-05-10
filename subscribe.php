@@ -5,7 +5,7 @@ require_once 'data.php';
 require_once 'session.php';
 
 $follow_id = filter_input(INPUT_GET, 'id');
-$sql = 'SELECT ? FROM users;';
+$sql = 'SELECT id FROM users WHERE id = ?;';
 $stmt = mysqli_prepare($connection, $sql);
 mysqli_stmt_bind_param($stmt,'i', $follow_id);
 mysqli_stmt_execute($stmt);

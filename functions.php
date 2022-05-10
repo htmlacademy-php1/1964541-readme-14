@@ -97,7 +97,7 @@ function getPostVal($name): ?string
 function validate_text($value, $min, $max): ?string
 {
         if ($value) {
-            $len = strlen($value);
+            $len = mb_strlen($value);
             if ($len < $min or $len > $max) {
                 return "Значение должно быть от $min до $max символов";
             }
@@ -201,7 +201,7 @@ function validate_comment ($value, $min): ?string
 {
     if ($value) {
         $value = trim($value);
-        if (strlen($value) < $min) {
+        if (mb_strlen($value) < $min) {
             return 'Комментарий должен быть больше 3 символов';
         } else {
             return null;
@@ -218,7 +218,7 @@ function validate_post_id ($db_connection, $post_id): ?string
     mysqli_stmt_bind_param($stmt,'i', $post_id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    $result = mysqli_fetch_row($result);
+    $result = mysqli_num_rows($result);
     if ($result) {
         return null;
     }
