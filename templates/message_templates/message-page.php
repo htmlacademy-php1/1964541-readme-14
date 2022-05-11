@@ -17,7 +17,9 @@
                         <button class="form__error-button button" type="button">!</button>
                         <div class="form__error-text">
                             <h3 class="form__error-title">Ошибка валидации</h3>
-                            <p class="form__error-desc"><?= $validation_errors['content'] ?></p>
+                            <?php foreach ($validation_errors as $error): ?>
+                            <p class="form__error-desc"><?= $error ?></p>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                     <button class="comments__submit button button--green" type="submit">Отправить</button>

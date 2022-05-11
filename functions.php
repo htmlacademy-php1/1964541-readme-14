@@ -406,5 +406,5 @@ function validate_recipient_id ($db_connection, $recipient_id): ?string
     if ($result) {
         return null;
     }
-    return 'Такого пользователя не существует';
+    return 'Выберите корректного получателя';
 }

@@ -35,7 +35,7 @@ $result = mysqli_stmt_get_result($stmt);
 $messages = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $required = ['content', 'recipient_id'];
+    $required = ['content'];
     $rules = [
         'content' => function ($value) {
             return validate_message($value, MESSAGE_MIN_LENGTH);
