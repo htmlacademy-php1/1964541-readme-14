@@ -10,7 +10,7 @@ require_once 'data.php';
  * @return string Обрезанная строка
  */
 
-function cut_text($text, $length = 300): string
+function cut_text($text, $length = TEXT_PREVIEW_LENGTH): string
 {
     if (mb_strlen($text) > $length) {
         $text_words = explode(" ", $text);
@@ -34,7 +34,7 @@ function cut_text($text, $length = 300): string
  * @param integer $length длинна
  * @return string Образенное сообщение с точками
  */
-function cut_message($text, $length = 300): string
+function cut_message($text, $length = MESSAGE_PREVIEW_LENGTH): string
 {
     if (mb_strlen($text) > $length) {
         $text_words = explode(" ", $text);
@@ -348,6 +348,26 @@ function validate_comment ($value, $min): ?string
 }
 
 /**
+ * Валидация комментария
+ * @param string $value Значение из формы
+ * @param integer $min Минимальная длинна комментария
+ *
+ * @return string|null Ошибка, информация об ошибке|Нет ошибки
+ */
+function validate_message ($value, $min): ?string
+{
+    if ($value) {
+        $value = trim($value);
+        if (mb_strlen($value) < $min) {
+            return 'Сообщение не может быть пустым';
+        } else {
+            return null;
+        }
+    }
+    return null;
+}
+
+/**
  * Проверка на наличие поста в БД
  * @param array $db_connection Подключение к БД
  * @param integer $post_id ID поста
@@ -366,4 +386,25 @@ function validate_post_id ($db_connection, $post_id): ?string
         return null;
     }
     return 'Такого поста не существует';
+}
+
+/**
+ * Проверка наличия получателя сообщения
+ * @param array $db_connection Связь с БД
+ * @param integer $recipient_id ID получателя сообщения
+ * @return string|null Пользователь не найден|Пользователь есть
+ */
+function validate_recipient_id ($db_connection, $recipient_id): ?string
+{
+    $sql = 'SELECT * FROM users' .
+        ' WHERE id = ?';
+    $stmt = mysqli_prepare($db_connection, $sql);
+    mysqli_stmt_bind_param($stmt,'i', $recipient_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $result = mysqli_num_rows($result);
+    if ($result) {
+        return null;
+    }
+    return 'Такого пользователя не существует';
 }

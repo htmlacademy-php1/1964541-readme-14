@@ -24,6 +24,8 @@ const LOGIN_MIN_LENGTH = 3;
 const LOGIN_MAX_LENGTH = 320;
 const PAGE_POST_LIMIT = 6;
 const MESSAGE_PREVIEW_LENGTH = 4;
+const TEXT_PREVIEW_LENGTH = 300;
+const MESSAGE_MIN_LENGTH = 1;
 
 $form_templates = [
     'photo' => 'add_templates/add_forms/add-post-photo.php',
