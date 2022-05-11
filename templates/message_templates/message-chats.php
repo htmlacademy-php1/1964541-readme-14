@@ -2,7 +2,8 @@
     <ul class="messages__contacts-list tabs__list">
         <?php foreach ($chats as $chat): ?>
         <li class="messages__contacts-item">
-            <a class="messages__contacts-tab messages__contacts-tab--active tabs__item tabs__item--active" href="messages.php?chat_id=<?= $chat['id'] ?>">
+            <?php $classname = $chat['id'] === $chat_id ? '--active' : ''; ?>
+            <a class="messages__contacts-tab messages__contacts-tab<?= $classname ?> tabs__item tabs__item" href="messages.php?chat_id=<?= $chat['id'] ?>">
                 <div class="messages__avatar-wrapper">
                     <img class="messages__avatar" src="img/<?= $chat['avatar'] ?>" alt="Аватар пользователя">
                 </div>

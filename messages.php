@@ -20,7 +20,8 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $chats = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$chat_id = filter_input(INPUT_GET, 'chat_id');
+$chat_id = filter_input(INPUT_GET, 'chat_id', FILTER_VALIDATE_INT);
+
 
 
 $sql = 'SELECT u.id, content, m.dt_add, login, avatar FROM messages m' .
@@ -34,7 +35,7 @@ $result = mysqli_stmt_get_result($stmt);
 $messages = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 
-$page_content = include_template('message_templates/message-page.php', ['messages' => $messages, 'chats' => $chats]);
+$page_content = include_template('message_templates/message-page.php', ['messages' => $messages, 'chats' => $chats, 'chat_id' => $chat_id]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
