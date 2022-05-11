@@ -29,6 +29,30 @@ function cut_text($text, $length = 300): string
 }
 
 /**
+ * Режет сообщения для превью // по идее хватило бы и одной функции для обрезки, но в прошлом задании нужно было добавлять "Читать далее"
+ * @param string $text текст сообщения
+ * @param integer $length длинна
+ * @return string Образенное сообщение с точками
+ */
+function cut_message($text, $length = 300): string
+{
+    if (mb_strlen($text) > $length) {
+        $text_words = explode(" ", $text);
+        $counter = 0;
+        $i = 0;
+        while ($counter < $length) {
+            $counter += mb_strlen($text_words[$i]);
+            $i++;
+        }
+        $text = array_slice($text_words, 0, $i);
+        $final_text = implode(' ', $text) . '...';
+    } else {
+        $final_text = $text;
+    }
+    return $final_text;
+}
+
+/**
  * Показывает сколько прошло времени с события
  * @param string $time Время события
  *

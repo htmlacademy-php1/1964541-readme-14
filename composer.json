@@ -3,5 +3,7 @@
     "description": "Учебный проект",
     "type": "project",
     "license": "MIT",
-    "require": {}
+    "require": {
+        "symfony/mailer": "^6.0"
+    }
 }
