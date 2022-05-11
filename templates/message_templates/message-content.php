@@ -2,7 +2,8 @@
     <div class="messages__chat-wrapper">
         <ul class="messages__list tabs__content tabs__content--active">
             <?php foreach ($messages as $message): ?>
-                <li class="messages__item">
+                <?php $classname = $message['id'] === $user['user_id'] ? 'messages__item--my' : ''; ?>
+                <li class="messages__item <?= $classname ?>">
                     <div class="messages__info-wrapper">
                         <div class="messages__item-avatar">
                             <a class="messages__author-link" href="users_profile.php?id=<?= $message['id'] ?>">

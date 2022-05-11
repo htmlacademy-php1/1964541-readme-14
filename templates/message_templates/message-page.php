@@ -3,7 +3,7 @@
     <section class="messages tabs">
         <h2 class="visually-hidden">Сообщения</h2>
         <?= include_template('message_templates/message-chats.php', ['chats' => $chats, 'chat_id' => $chat_id]); ?>
-        <?= include_template('message_templates/message-content.php', ['messages' => $messages]); ?>
+        <?= include_template('message_templates/message-content.php', ['messages' => $messages, 'user' => $user]); ?>
             <div class="comments">
                 <form class="comments__form form" action="#" method="post">
                     <div class="comments__my-avatar">

@@ -35,7 +35,7 @@ $result = mysqli_stmt_get_result($stmt);
 $messages = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 
-$page_content = include_template('message_templates/message-page.php', ['messages' => $messages, 'chats' => $chats, 'chat_id' => $chat_id]);
+$page_content = include_template('message_templates/message-page.php', ['messages' => $messages, 'chats' => $chats, 'chat_id' => $chat_id, 'user' => $user]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
