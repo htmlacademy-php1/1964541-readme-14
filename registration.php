@@ -6,6 +6,7 @@ require_once 'data.php';
 $validation_errors = [];
 $required = ['email', 'login', 'password', 'password-repeat'];
 $page_content = include_template('registration_templates/reg-form.php', ['validation_errors' => $validation_errors]);
+$user = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = filter_input_array(INPUT_POST, [
@@ -83,6 +84,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name]);
+    'user' => $user]);
 print($layout_content);

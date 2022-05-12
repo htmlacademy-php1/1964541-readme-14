@@ -4,7 +4,6 @@ require_once 'helpers.php';
 require_once 'data.php';
 require_once 'session.php';
 
-$user_id = $_SESSION['user_id'];
 
 $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
@@ -31,7 +30,7 @@ if ($tab) {
         ' WHERE follower_id = ? && type = ?' .
         ' ORDER BY dt_add ASC;';
     $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'is', $user_id, $tab);
+    mysqli_stmt_bind_param($stmt, 'is', $user['user_id'], $tab);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -44,7 +43,7 @@ if ($tab) {
         ' WHERE follower_id = ?' .
         ' ORDER BY dt_add ASC;';
     $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    mysqli_stmt_bind_param($stmt, 'i', $user['user_id']);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     if ($result) {
@@ -58,6 +57,6 @@ $page_content = include_template('feed_templates/strip.php', ['posts' => $posts,
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
-    'user_name' => $user_name]);
+    'user' => $user]);
 print($layout_content);
 

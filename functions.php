@@ -97,7 +97,7 @@ function getPostVal($name): ?string
 function validate_text($value, $min, $max): ?string
 {
         if ($value) {
-            $len = strlen($value);
+            $len = mb_strlen($value);
             if ($len < $min or $len > $max) {
                 return "Значение должно быть от $min до $max символов";
             }
@@ -146,4 +146,81 @@ function full_form_validation ($form, $rules, $required): array
         }
     }
     return array_diff($validation_errors, array(''));
+}
+
+function get_user ($db_connection, $user_id): array
+{
+    $sql = 'SELECT id, login, avatar, dt_add' .
+        ' FROM users u' .
+        ' WHERE id = ?;';
+    $stmt = mysqli_prepare($db_connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    return mysqli_fetch_assoc($result);
+}
+
+function get_user_info ($db_connection, $user_id): array
+{
+    $sql = 'SELECT (SELECT COUNT(p.id)' .
+        ' FROM posts p' .
+        ' WHERE p.user_id = u.id)' .
+        ' AS posts_count,' .
+        '(SELECT COUNT(follower_id)' .
+        ' FROM subscribes s' .
+        ' WHERE s.follow_id = u.id)' .
+        ' AS subscribers_count' .
+        ' FROM posts p' .
+        ' JOIN users u ON p.user_id = u.id' .
+        ' WHERE u.id = ?' .
+        ' GROUP BY posts_count, subscribers_count;';
+    $stmt = mysqli_prepare($db_connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    return mysqli_fetch_assoc($result);
+}
+
+function check_subscription ($db_connection, $follow_id, $follower_id): bool
+{
+    $sql = 'SELECT * FROM subscribes' .
+        ' WHERE follow_id = ? AND follower_id = ?;';
+    $stmt = mysqli_prepare($db_connection, $sql);
+    mysqli_stmt_bind_param($stmt,'ii', $follow_id, $follower_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $result = mysqli_fetch_assoc($result);
+    if ($result) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function validate_comment ($value, $min): ?string
+{
+    if ($value) {
+        $value = trim($value);
+        if (mb_strlen($value) < $min) {
+            return 'Комментарий должен быть больше 3 символов';
+        } else {
+            return null;
+        }
+    }
+    return null;
+}
+
+function validate_post_id ($db_connection, $post_id): ?string
+{
+    $sql = 'SELECT * FROM posts' .
+        ' WHERE id = ?';
+    $stmt = mysqli_prepare($db_connection, $sql);
+    mysqli_stmt_bind_param($stmt,'i', $post_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $result = mysqli_num_rows($result);
+    if ($result) {
+        return null;
+    }
+    return 'Такого поста не существует';
 }

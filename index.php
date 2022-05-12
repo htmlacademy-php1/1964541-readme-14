@@ -16,7 +16,12 @@ if (isset($_SESSION['user'])) {
             'email' => FILTER_DEFAULT,
             'password' => FILTER_DEFAULT]);
 
-        $sql = 'SELECT id, email, login, password, avatar FROM users WHERE email = ?';
+        $sql = 'SELECT id, email, login, password, avatar, dt_add,' .
+            ' (SELECT COUNT(p.id)' .
+            ' FROM posts p' .
+            ' WHERE p.user_id = u.id)' .
+            ' AS posts_count' .
+        ' FROM users u WHERE email = ?';
         $stmt = mysqli_prepare($connection, $sql);
         mysqli_stmt_bind_param($stmt, 's', $user['email']);
         mysqli_stmt_execute($stmt);
@@ -29,6 +34,8 @@ if (isset($_SESSION['user'])) {
                 $_SESSION['user_id'] = $db_user['id'];
                 $_SESSION['user'] = $db_user['login'];
                 $_SESSION['avatar'] = $db_user['avatar'];
+                $_SESSION['dt_add'] = $db_user['dt_add'];
+                $_SESSION['posts_count'] = $db_user['posts_count'];
                 header('Location: feed.php');
                 exit;
             } else {
