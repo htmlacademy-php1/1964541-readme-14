@@ -15,7 +15,7 @@ $sql = 'SELECT u.id, login, avatar,' .
     ' WHERE u.id = m.sender_id OR u.id = m.recipient_id' .
     ' ORDER BY m.dt_add DESC LIMIT 1) AS last_message_dt_add' .
     ' FROM users u JOIN messages m ON u.id = m.recipient_id OR u.id = m.sender_id' .
-    ' WHERE (sender_id OR recipient_id = ?) AND u.id != ?' .
+    ' WHERE (m.recipient_id = ? AND m.recipient_id != u.id) OR (m.sender_id = ? AND m.sender_id != u.id)' .
     ' GROUP BY u.id;';
 $stmt = mysqli_prepare($connection, $sql);
 mysqli_stmt_bind_param($stmt, 'ii', $user['user_id'], $user['user_id']);
