@@ -126,26 +126,31 @@
                 <nav class="header__nav">
                     <ul class="header__user-nav">
                         <li class="header__authorization">
-                            <a class="header__user-button header__authorization-button button" href="login.php">Вход</a>
+                            <?php $classname = $navigation_link === 'login' ? 'header__user-button--active' : ''?>
+                            <a class="header__user-button <?= $classname ?> header__authorization-button button" href="login.php">Вход</a>
                         </li>
                         <li>
-                            <a class="header__user-button header__user-button--active header__register-button button" href="registration.php">Регистрация</a>
+                            <?php $classname = $navigation_link === 'register' ? 'header__user-button--active' : ''?>
+                            <a class="header__user-button <?= $classname ?> header__register-button button" href="registration.php">Регистрация</a>
                         </li>
                     </ul>
                     <?php else: ?>
                     <ul class="header__my-nav">
+                        <?php $classname = $navigation_link === 'popular' ? 'header__page-link--active' : ''?>
                         <li class="header__my-page header__my-page--popular">
-                            <a class="header__page-link header__page-link--active" href="popular.php" title="Популярный контент">
+                            <a class="header__page-link <?= $classname ?>" href="popular.php" title="Популярный контент">
                                 <span class="visually-hidden">Популярный контент</span>
                             </a>
                         </li>
+                        <?php $classname = $navigation_link === 'feed' ? 'header__page-link--active' : ''?>
                         <li class="header__my-page header__my-page--feed">
-                            <a class="header__page-link" href="feed.php" title="Моя лента">
+                            <a class="header__page-link <?= $classname ?>" href="feed.php" title="Моя лента">
                                 <span class="visually-hidden">Моя лента</span>
                             </a>
                         </li>
+                        <?php $classname = $navigation_link === 'messages' ? 'header__page-link--active' : ''?>
                         <li class="header__my-page header__my-page--messages">
-                            <a class="header__page-link" href="messages.php" title="Личные сообщения">
+                            <a class="header__page-link <?= $classname ?>" href="messages.php" title="Личные сообщения">
                                 <span class="visually-hidden">Личные сообщения</span>
                             </a>
                         </li>

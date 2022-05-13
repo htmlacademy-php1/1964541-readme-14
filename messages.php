@@ -5,6 +5,7 @@ require_once 'data.php';
 require_once 'session.php';
 
 $validation_errors = [];
+$navigation_link = 'messages';
 
 $sql = 'SELECT u.id, login, avatar,' .
     ' (SELECT content FROM messages m' .
@@ -58,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'chats' => $chats,
             'chat_id' => $chat_id,
             'user' => $user,
-            'validation_errors' => $validation_errors
+            'validation_errors' => $validation_errors,
         ]);
 
     } else {
@@ -78,6 +79,7 @@ $page_content = include_template('message_templates/message-page.php',
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
-    'user' => $user
+    'user' => $user,
+    'navigation_link' => $navigation_link
 ]);
 print($layout_content);

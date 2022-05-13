@@ -8,6 +8,7 @@ require_once 'session.php';
 $tab = filter_input(INPUT_GET, 'tab');
 $params = filter_input(INPUT_GET, 'tab');
 $is_type = null;
+$navigation_link = 'popular';
 
 $get_sort = filter_input(INPUT_GET, 'sort');
 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -95,7 +96,8 @@ if ($result) {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
-    'user' => $user
+    'user' => $user,
+    'navigation_link' => $navigation_link
 ]);
 print($layout_content);
 
