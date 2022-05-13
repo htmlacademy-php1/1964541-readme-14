@@ -140,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($db_tag) {
                     $tag_id[] = $db_tag['id'];
                 } else {
-                    $sql = 'INSERT INTO tags VALUE ?';
+                    $sql = 'INSERT INTO tags (name) VALUE (?)';
                     $stmt = mysqli_prepare($connection, $sql);
                     mysqli_stmt_bind_param($stmt, 's', $tag);
                     mysqli_stmt_execute($stmt);
@@ -177,11 +177,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     mysqli_stmt_bind_param($stmt, 'ii', $post_id, $item);
                     mysqli_stmt_execute($stmt);
                 }
+            } else {
+                mysqli_stmt_bind_param($stmt, 'ii', $post_id, $tag_id);
+                mysqli_stmt_execute($stmt);
             }
-            mysqli_stmt_bind_param($stmt, 'ii', $post_id, $tag_id);
-            mysqli_stmt_execute($stmt);
-            //header('Location: post.php?id=' . $post_id);
-            //exit;
+            header('Location: post.php?id=' . $post_id);
+            exit;
         } else {
             $page_content = include_template('error.php', ['error' => $error]);
         }
