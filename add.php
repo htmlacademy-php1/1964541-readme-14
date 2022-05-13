@@ -127,30 +127,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($validation_errors) {
         $page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'form_type' => $form_type, 'form_templates' => $form_templates]);
     } else {
-        $sql = 'INSERT INTO tags (name) VALUE (?);';
+        $sql = 'SELECT id, name FROM tags WHERE name = ?;';
         $stmt = mysqli_prepare($connection, $sql);
         mysqli_stmt_bind_param($stmt, 's', $tag);
-
-        $sql = 'SELECT id, name FROM tags;';
-        $result = mysqli_query($connection, $sql);
-        $db_tags = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
         if (stristr($post['tags'], ' ')) {
             $tags = explode(' ', $post['tags']);
             foreach ($tags as $tag) {
                 mysqli_stmt_execute($stmt);
-                $tags_id = [];
-                $tags_id = mysqli_insert_id($connection);
+                $result = mysqli_stmt_get_result($stmt);
+                $db_tag = mysqli_fetch_assoc($result);
+                if ($db_tag) {
+                    $tag_id[] = $db_tag['id'];
+                } else {
+                    $sql = 'INSERT INTO tags VALUE ?';
+                    $stmt = mysqli_prepare($connection, $sql);
+                    mysqli_stmt_bind_param($stmt, 's', $tag);
+                    mysqli_stmt_execute($stmt);
+                    $tag_id[] = mysqli_insert_id($connection);
+                }
             }
         } else {
             $tag = $post['tags'];
-            foreach ($db_tags as $db_tag) {
-                if ($db_tag['name'] === $tag) {
-                    $same_tag = $tag;
-                    $tag_id = $db_tag['id'];
-                }
-            }
-            if (!$same_tag) {
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            $db_tag = mysqli_fetch_assoc($result);
+            if ($db_tag) {
+                $tag_id = $db_tag['id'];
+            } else {
+                $sql = 'INSERT INTO tags (name) VALUE (?);';
+                $stmt = mysqli_prepare($connection, $sql);
+                mysqli_stmt_bind_param($stmt, 's', $tag);
                 mysqli_stmt_execute($stmt);
                 $tag_id = mysqli_insert_id($connection);
             }
@@ -162,14 +169,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
             $post_id = mysqli_insert_id($connection);
-            header('Location: post.php?id=' . $post_id);
-            exit;
+            $sql = 'INSERT INTO posts_tags (post_id, tag_id) VALUES (?, ?)';
+            $stmt = mysqli_prepare($connection, $sql);
+
+            if (is_array($tag_id)) {
+                foreach ($tag_id as $item) {
+                    mysqli_stmt_bind_param($stmt, 'ii', $post_id, $item);
+                    mysqli_stmt_execute($stmt);
+                }
+            }
+            mysqli_stmt_bind_param($stmt, 'ii', $post_id, $tag_id);
+            mysqli_stmt_execute($stmt);
+            //header('Location: post.php?id=' . $post_id);
+            //exit;
         } else {
             $page_content = include_template('error.php', ['error' => $error]);
         }
-
-        $sql = "INSERT INTO posts_tags (post_id, tag_id) VALUES ($post_id, $tag_id)";
-        $result = mysqli_query($connection, $sql);
 
     }
 }

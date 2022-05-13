@@ -125,11 +125,11 @@
                     <div class="post-details__rating user__rating">
                         <p class="post-details__rating-item user__rating-item user__rating-item--subscribers">
                             <span class="post-details__rating-amount user__rating-amount"><?= $user_info['subscribers_count'] ?></span>
-                            <span class="post-details__rating-text user__rating-text">подписчиков</span>
+                            <span class="post-details__rating-text user__rating-text"><?= get_noun_plural_form($user_info['subscribers_count'], 'подписчик', 'подписчика', 'подписчиков') ?></span>
                         </p>
                         <p class="post-details__rating-item user__rating-item user__rating-item--publications">
                             <span class="post-details__rating-amount user__rating-amount"><?= $user_info['posts_count'] ?></span>
-                            <span class="post-details__rating-text user__rating-text">публикаций</span>
+                            <span class="post-details__rating-text user__rating-text"><?= get_noun_plural_form($user_info['posts_count'], 'публикация', 'публикации', 'публикаций') ?></span>
                         </p>
                     </div>
                     <div class="post-details__user-buttons user__buttons">
