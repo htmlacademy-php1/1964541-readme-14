@@ -11,7 +11,7 @@
         <div class="search__results-wrapper">
             <div class="container">
                 <div class="search__content">
-                    <?php if (!empty($posts)): ?>
+                    <?php if (!empty($posts)):?>
                     <?php foreach($posts as $post): ?>
                         <article class="feed__post post post-<?= $post['type'] ?>">
                             <header class="post__header post__author">
