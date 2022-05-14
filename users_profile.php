@@ -27,7 +27,10 @@ if ($this_user) {
                 ' AS likes,' .
                 ' (SELECT COUNT(content) FROM comments' .
                 ' WHERE post_id = p.id)' .
-                ' AS comment_sum' .
+                ' AS comment_sum,' .
+                ' (SELECT COUNT(original_id) FROM posts' .
+                ' WHERE original_id = p.id)' .
+                ' AS reposts_sum' .
                 ' FROM posts p' .
                 ' JOIN users u ON u.id = p.user_id' .
                 ' JOIN content_type ct ON p.content_type_id = ct.id' .
