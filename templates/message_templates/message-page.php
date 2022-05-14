@@ -5,7 +5,9 @@
         <?= include_template('message_templates/message-chats.php', ['chats' => $chats, 'chat_id' => $chat_id]); ?>
         <?= include_template('message_templates/message-content.php', ['messages' => $messages, 'user' => $user]); ?>
             <div class="comments">
-                <form class="comments__form form" action="messages.php?chat_id=<?= $chat_id ?>" method="post">
+                <?php
+                $classname = empty($chat_id) ? 'visually-hidden' : '' ?>
+                <form class="comments__form form <?= $classname ?>" action="messages.php?chat_id=<?= $chat_id ?>" method="post">
                     <div class="comments__my-avatar">
                         <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
                     </div>
