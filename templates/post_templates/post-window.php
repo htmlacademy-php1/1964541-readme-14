@@ -104,7 +104,8 @@
                             <span class="post-details__rating-text user__rating-text"><?= get_noun_plural_form($user_info['posts_count'], 'публикация', 'публикации', 'публикаций') ?></span>
                         </p>
                     </div>
-                    <div class="post-details__user-buttons user__buttons">
+                    <?php $classname = $this_user['id'] === $user['user_id'] ? 'visually-hidden' : '';?>
+                    <div class="post-details__user-buttons user__buttons <?= $classname?>">
                         <?php
                         if ($is_subscribe) {
                             $button['class'] = 'button--main';
