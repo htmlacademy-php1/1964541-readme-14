@@ -13,7 +13,10 @@ $sql = 'SELECT p.id, title, text, quote_auth, img, video, link, views, p.dt_add,
     ' (SELECT COUNT(post_id)' .
     ' FROM likes' .
     ' WHERE likes.post_id = p.id)' .
-    ' AS likes' .
+    ' AS likes,' .
+    ' (SELECT COUNT(content) FROM comments' .
+    ' WHERE post_id = p.id)' .
+    ' AS comment_sum' .
     ' FROM posts p' .
     ' JOIN users u ON p.user_id = u.id' .
     ' JOIN content_type ct' .
@@ -43,7 +46,8 @@ if ($result) {
         $tags = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
-    $sql = 'SELECT content, user_id, c.dt_add, login FROM comments c' .
+    $sql = 'SELECT content, user_id, c.dt_add, login' .
+        ' FROM comments c' .
         ' JOIN users u ON c.user_id = u.id' .
         ' WHERE post_id = ?;';
     $stmt = mysqli_prepare($connection, $sql);
