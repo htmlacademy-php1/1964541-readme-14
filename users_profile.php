@@ -20,7 +20,14 @@ if ($get_tab === 'posts' || $get_tab === 'likes' || $get_tab === 'subscribes') {
 if ($this_user) {
     switch ($tab) {
         case 'posts':
-            $sql = 'SELECT DISTINCT p.id, title, text, quote_auth, img, video, title, text, quote_auth, img, video, link, views, user_id, p.dt_add, type' .
+            $sql = 'SELECT DISTINCT p.id, title, text, quote_auth, img, video, title, text, quote_auth, img, video, link, views, user_id, p.dt_add, type,' .
+                ' (SELECT COUNT(post_id)' .
+                ' FROM likes' .
+                ' WHERE likes.post_id = p.id)' .
+                ' AS likes,' .
+                ' (SELECT COUNT(content) FROM comments' .
+                ' WHERE post_id = p.id)' .
+                ' AS comment_sum' .
                 ' FROM posts p' .
                 ' JOIN users u ON u.id = p.user_id' .
                 ' JOIN content_type ct ON p.content_type_id = ct.id' .
@@ -28,11 +35,11 @@ if ($this_user) {
                 ' ORDER BY p.dt_add ASC;';
             break;
         case 'likes':
-            $sql = 'SELECT DISTINCT p.id, title, text, quote_auth, img, video, title, text, quote_auth, img, video, link, views, p.dt_add, likes.dt_add, login, type, avatar' .
+            $sql = 'SELECT DISTINCT p.id, img, likes.dt_add, likes.user_id, login, type, ct.name, avatar' .
                 ' FROM posts p' .
-                ' JOIN users u ON u.id = p.user_id' .
-                ' JOIN content_type ct ON p.content_type_id = ct.id' .
                 ' JOIN likes' .
+                ' JOIN users u ON u.id = likes.user_id' .
+                ' JOIN content_type ct ON p.content_type_id = ct.id' .
                 ' WHERE p.user_id = ? AND p.id = likes.post_id' .
                 ' ORDER BY likes.dt_add ASC';
             break;

@@ -67,10 +67,16 @@
                 </div>
                 <div class="profile__tab-content">
                     <?php
-                    if ($tab === 'posts' || $tab === 'likes') {
-                        echo include_template('profile_templates/users-window-types/users-posts.php', ['posts' => $posts]);
-                    } else {
-                        echo include_template('profile_templates/users-window-types/users-subscribes.php', ['posts' => $posts, 'user' => $user, 'connection' => $connection]);
+                    switch ($tab) {
+                        case 'posts':
+                            echo include_template('profile_templates/users-window-types/users-posts.php', ['posts' => $posts, 'connection' => $connection]);
+                            break;
+                        case 'likes':
+                            echo include_template('profile_templates/users-window-types/users-likes.php', ['posts' => $posts]);
+                            break;
+                        case 'subscribes':
+                            echo include_template('profile_templates/users-window-types/users-subscribes.php', ['posts' => $posts, 'user' => $user, 'connection' => $connection]);
+                            break;
                     }
                     ?>
                 </div>

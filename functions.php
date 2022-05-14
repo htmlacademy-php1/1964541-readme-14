@@ -408,3 +408,25 @@ function validate_recipient_id ($db_connection, $recipient_id): ?string
     }
     return 'Выберите корректного получателя';
 }
+
+/**
+ * Извлекает из БД все теги поста
+ * @param array $db_connection связь с БД
+ * @param integer $post_id ID поста
+ * @return array|null Возвращает массив с тегами | возвращает null
+ */
+function get_tags ($db_connection, $post_id): ?array
+{
+    $sql = 'SELECT name FROM tags' .
+        ' JOIN posts_tags pt on tags.id = pt.tag_id' .
+        ' WHERE post_id = ?;';
+    $stmt = mysqli_prepare($db_connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $post_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($result) {
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+    return null;
+}

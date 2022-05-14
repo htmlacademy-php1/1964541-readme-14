@@ -34,17 +34,7 @@ if ($result) {
     $this_user = get_user($connection, $post['user_id']);
     $is_subscribe = check_subscription($connection, $this_user['id'], $user['user_id']);
 
-    $sql = 'SELECT name FROM tags' .
-        ' JOIN posts_tags pt on tags.id = pt.tag_id' .
-        ' WHERE post_id = ?;';
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $post_id);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-
-    if ($result) {
-        $tags = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    }
+    $tags = get_tags($connection, $post_id);
 
     $sql = 'SELECT content, user_id, c.dt_add, login' .
         ' FROM comments c' .
