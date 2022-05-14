@@ -53,12 +53,9 @@
                         <span class="post__view"><?= $post['views'] ?></span>
                     </div>
                     <ul class="post__tags">
-                        <li><a href="#">#nature</a></li>
-                        <li><a href="#">#globe</a></li>
-                        <li><a href="#">#photooftheday</a></li>
-                        <li><a href="#">#canon</a></li>
-                        <li><a href="#">#landscape</a></li>
-                        <li><a href="#">#щикарныйвид</a></li>
+                        <?php foreach ($tags as $tag): ?>
+                        <li><a href="search.php?search=%23<?= $tag['name'] ?>">#<?= $tag['name'] ?></a></li>
+                        <?php endforeach; ?>
                     </ul>
                     <div class="comments">
                         <form class="comments__form form" action="post.php?id=<?= $post['id'] ?>" method="post">
