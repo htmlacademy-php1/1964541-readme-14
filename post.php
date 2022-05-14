@@ -16,7 +16,10 @@ $sql = 'SELECT p.id, title, text, quote_auth, img, video, link, views, p.dt_add,
     ' AS likes,' .
     ' (SELECT COUNT(content) FROM comments' .
     ' WHERE post_id = p.id)' .
-    ' AS comment_sum' .
+    ' AS comment_sum,' .
+    ' (SELECT COUNT(original_id) FROM posts' .
+    ' WHERE original_id = p.id)' .
+    ' AS reposts_sum' .
     ' FROM posts p' .
     ' JOIN users u ON p.user_id = u.id' .
     ' JOIN content_type ct' .
@@ -67,6 +70,8 @@ if ($result) {
         if ($validation_errors) {
             $page_content = include_template('post_templates/post-window.php', [
                 'post' => $post,
+                'tags' => $tags,
+                'reposts_count' => $reposts_count,
                 'user_info' => $user_info,
                 'this_user' => $this_user,
                 'is_subscribe' => $is_subscribe,

@@ -15,7 +15,7 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 if ($result) {
     $post = mysqli_fetch_assoc($result);
-    $post['original_id'] = $post['user_id'];
+    $post['original_id'] = $post['id'];
     $post['user_id'] = $user['user_id'];
 
     $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id, original_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
