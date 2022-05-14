@@ -4,6 +4,7 @@ require_once 'helpers.php';
 require_once 'data.php';
 require_once 'session.php';
 
+$navigation_link = 'users_profile';
 $user_id = filter_input(INPUT_GET, 'id');
 $subscribes = null;
 
@@ -61,10 +62,20 @@ if ($this_user) {
 }
 
 
-$page_content = include_template('profile_templates/users-profile-window.php', ['this_user' => $this_user, 'tab' => $tab, 'posts' => $posts, 'user_info' => $user_info, 'is_subscribe' => $is_subscribe, 'user' => $user, 'connection' => $connection]);
+$page_content = include_template('profile_templates/users-profile-window.php', [
+    'this_user' => $this_user,
+    'tab' => $tab,
+    'posts' => $posts,
+    'user_info' => $user_info,
+    'is_subscribe' => $is_subscribe,
+    'user' => $user,
+    'connection' => $connection
+]);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
     'this_user' => $this_user,
-    'user' => $user]);
+    'user' => $user,
+    'navigation_link' => $navigation_link
+]);
 print($layout_content);

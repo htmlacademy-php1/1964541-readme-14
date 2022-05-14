@@ -24,7 +24,8 @@
                         <span class="profile__rating-text user__rating-text"><?= get_noun_plural_form($user_info['subscribers_count'], 'подписчик', 'подписчика', 'подписчиков') ?></span>
                     </p>
                 </div>
-                <div class="profile__user-buttons user__buttons">
+                <?php $classname = $this_user['id'] === $user['user_id'] ? 'visually-hidden' : '';?>
+                <div class="profile__user-buttons user__buttons <?= $classname ?>">
                     <?php
                     if ($is_subscribe) {
                         $button['class'] = 'button--main';
