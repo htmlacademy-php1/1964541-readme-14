@@ -20,7 +20,18 @@ if (str_starts_with($request, '#')) {
     $result = mysqli_stmt_get_result($stmt);
     if ($result) {
         $post_ids = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        $sql = 'SELECT title, text, quote_auth, img, video, title, text, quote_auth, img, video, link, views, user_id, type, p.dt_add, login, avatar FROM posts p' .
+        $sql = 'SELECT p.id, title, text, quote_auth, img, video, title, text, quote_auth, img, video, link, views, user_id, type, p.dt_add, login, avatar,' .
+            ' (SELECT COUNT(post_id)' .
+            ' FROM likes' .
+            ' WHERE likes.post_id = p.id)' .
+            ' AS likes,' .
+            ' (SELECT COUNT(content) FROM comments' .
+            ' WHERE post_id = p.id)' .
+            ' AS comment_sum,' .
+            ' (SELECT COUNT(original_id) FROM posts' .
+            ' WHERE original_id = p.id)' .
+            ' AS reposts_sum' .
+            ' FROM posts p' .
             ' JOIN users u ON p.user_id = u.id' .
             ' JOIN content_type ct ON p.content_type_id = ct.id' .
             ' WHERE p.id = ?';

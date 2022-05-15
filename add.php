@@ -180,6 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $sql = 'SELECT id, name FROM tags WHERE name = ?;';
                 $stmt = mysqli_prepare($connection, $sql);
                 mysqli_stmt_bind_param($stmt, 's', $tag);
+                $post['tags'] = trim($post['tags']);
 
                 if (stristr($post['tags'], ' ')) {
                     $tags = explode(' ', $post['tags']);

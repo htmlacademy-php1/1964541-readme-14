@@ -96,7 +96,7 @@ function show_past_time($time): string
 
 function validate_tag($value): ?string
 {
-    if ($value) {
+    if (trim($value)) {
         if (stristr($value, ' ')) {
             return null;
         }
