@@ -100,7 +100,7 @@ function validate_tag($value): ?string
         if (stristr($value, ' ')) {
             return null;
         }
-        return 'Каждый тег состоит только из одного слова, слова должны быть разделены пробелом';
+        return null;
     }
     return null;
 }
