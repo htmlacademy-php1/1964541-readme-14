@@ -1,4 +1,8 @@
 <?php
+
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mime\Email;
+
 require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
@@ -189,6 +193,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
+            $sql = 'SELECT id, login, email FROM users' .
+                ' JOIN subscribes s on users.id = s.follower_id' .
+                ' WHERE follow_id = ?;';
+            $stmt = mysqli_prepare($connection, $sql);
+            mysqli_stmt_bind_param($stmt, 'i', $post['user_id']);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            if ($result) {
+                $followers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+                foreach ($followers as $follower) {
+                    $email = new Email();
+                    $email->from('readmeproject2022@gmail.com');
+                    $email->to($follower['email']);
+                    $email->subject('Новая публикация от пользователя' . $user['user']);
+                    $email->text('Здравствуйте, ' . $follower['login'] . '. Пользователь ' . $user['user'] . ' только что опубликовал новую запись ' . $post['title'] . '. Посмотрите её на странице пользователя: http://localhost:8080/users_profile.php?id=' . $user['user_id']);
+                    $mailer = new Mailer($transport);
+                    $mailer->send($email);
+                }
+            }
+
+
             $post_id = mysqli_insert_id($connection);
             $sql = 'INSERT INTO posts_tags (post_id, tag_id) VALUES (?, ?)';
             $stmt = mysqli_prepare($connection, $sql);
