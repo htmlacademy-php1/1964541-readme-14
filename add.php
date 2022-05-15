@@ -4,7 +4,7 @@ require_once 'functions.php';
 require_once 'data.php';
 require_once 'session.php';
 
-
+$navigation_link = 'add';
 $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -13,7 +13,12 @@ $form_type = filter_input(INPUT_GET, 'type', FILTER_DEFAULT);
 
 $validation_errors = [];
 $required = ['title', 'tags'];
-$page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'form_type' => $form_type, 'form_templates' => $form_templates]);
+$page_content = include_template('add_templates/adding-post.php', [
+    'content_types' => $content_types,
+    'validation_errors' => $validation_errors,
+    'form_type' => $form_type,
+    'form_templates' => $form_templates
+]);
 
 if (validate_form_type($form_type, $content_types)) {
     if ($form_type === null) {
@@ -89,8 +94,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
                 }
-            } else if (empty($post['photo-link'])) {
-                $validation_errors['file'] = 'Вы не загрузили файл и не добавили ссылку';
+            } else {
+                if (empty($post['photo-link'])) {
+                    $validation_errors['file'] = 'Вы не загрузили файл и не добавили ссылку';
+                }
             }
 
             if (!isset($_FILES['userpic-file-photo']['name'])) {
@@ -125,7 +132,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validation_errors = full_form_validation($post, $rules, $required);
 
     if ($validation_errors) {
-        $page_content = include_template('add_templates/adding-post.php', ['content_types' => $content_types, 'validation_errors' => $validation_errors, 'form_type' => $form_type, 'form_templates' => $form_templates]);
+        $page_content = include_template('add_templates/adding-post.php', [
+            'content_types' => $content_types,
+            'validation_errors' => $validation_errors,
+            'form_type' => $form_type,
+            'form_templates' => $form_templates
+        ]);
     } else {
         $sql = 'SELECT id, name FROM tags WHERE name = ?;';
         $stmt = mysqli_prepare($connection, $sql);
@@ -165,7 +177,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         unset($post['tags']);
 
         $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-        $stmt = db_get_prepare_stmt($connection, $sql, [$post['title'], $post['text'], $post['quote_auth'], $post['photo-link'], $post['video'], $post['link'], $post['content_type_id'], $post['user_id']]);
+        $stmt = db_get_prepare_stmt($connection, $sql, [
+            $post['title'],
+            $post['text'],
+            $post['quote_auth'],
+            $post['photo-link'],
+            $post['video'],
+            $post['link'],
+            $post['content_type_id'],
+            $post['user_id']
+        ]);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
             $post_id = mysqli_insert_id($connection);
@@ -194,6 +215,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
-    'user' => $user]);
+    'user' => $user,
+    'navigation_link' => $navigation_link
+]);
 print($layout_content);
 

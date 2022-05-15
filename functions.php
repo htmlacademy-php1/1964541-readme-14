@@ -264,7 +264,7 @@ function full_form_validation ($form, $rules, $required): array
  */
 function get_user ($db_connection, $user_id): array
 {
-    $sql = 'SELECT id, login, avatar, dt_add' .
+    $sql = 'SELECT id, login, email, avatar, dt_add' .
         ' FROM users u' .
         ' WHERE id = ?;';
     $stmt = mysqli_prepare($db_connection, $sql);

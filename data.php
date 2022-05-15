@@ -1,6 +1,15 @@
 <?php
+require_once 'vendor/autoload.php';
+
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
+
 date_default_timezone_set("Europe/Moscow");
 setlocale(LC_ALL, 'ru_RU');
+
+$dsn = 'smtp://readmeproject2022@gmail.com:RUS220kc@smtp.gmail.com:465?encryption=tls';
+$transport = Transport::fromDSN($dsn);
 
 
 $connection = mysqli_connect('localhost', 'root', '', 'readme');
