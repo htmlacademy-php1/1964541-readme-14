@@ -8,6 +8,13 @@ $post_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 $validation_errors = [];
 $tags = [];
 $navigation_link = 'post.php';
+$comments_offset = ' LIMIT 3;';
+
+$tab = filter_input(INPUT_GET, 'tab');
+
+if ($tab === 'comments_all') {
+    $comments_offset = ';';
+}
 
 $sql = 'SELECT p.id, title, text, quote_auth, img, video, link, views, p.dt_add, user_id, type,' .
     ' (SELECT COUNT(post_id)' .
@@ -42,7 +49,7 @@ if ($result) {
     $sql = 'SELECT content, user_id, c.dt_add, login' .
         ' FROM comments c' .
         ' JOIN users u ON c.user_id = u.id' .
-        ' WHERE post_id = ?;';
+        ' WHERE post_id = ?' . $comments_offset;
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 'i', $post_id);
     mysqli_stmt_execute($stmt);
@@ -71,6 +78,7 @@ if ($result) {
             $page_content = include_template('post_templates/post-window.php', [
                 'post' => $post,
                 'tags' => $tags,
+                'tab' => $tab,
                 'reposts_count' => $reposts_count,
                 'user_info' => $user_info,
                 'this_user' => $this_user,
@@ -92,6 +100,7 @@ if ($result) {
     $page_content = include_template('post_templates/post-window.php', [
         'post' => $post,
         'tags' => $tags,
+        'tab' => $tab,
         'comments' => $comments,
         'user_info' => $user_info,
         'this_user' => $this_user,

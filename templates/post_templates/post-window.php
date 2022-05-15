@@ -73,9 +73,10 @@
                                 </li>
                                 <?php endforeach; ?>
                             </ul>
-                            <a class="comments__more-link" href="#">
+                            <?php $classname = $post['comment_sum'] < COMMENT_OFFSET || $tab === 'comments_all' ? 'visually-hidden' : '' ?>
+                            <a class="comments__more-link <?= $classname ?>" href="post.php?id=<?= $post['id'] ?>&tab=comments_all">
                                 <span>Показать все комментарии</span>
-                                <sup class="comments__amount">45</sup>
+                                <sup class="comments__amount"><?= $post['comment_sum'] ?></sup>
                             </a>
                         </div>
                     </div>
