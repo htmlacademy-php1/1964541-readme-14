@@ -30,7 +30,10 @@ if ($tab) {
         ' (SELECT COUNT(post_id)' .
         ' FROM likes' .
         ' WHERE likes.post_id = posts.id)' .
-        ' AS likes' .
+        ' AS likes,' .
+        ' (SELECT COUNT(content) FROM comments' .
+        ' WHERE post_id = posts.id)' .
+        ' AS comment_sum' .
         ' FROM posts' .
         ' JOIN users u ON posts.user_id = u.id' .
         ' JOIN content_type ct' .
@@ -47,7 +50,10 @@ if ($tab) {
         ' (SELECT COUNT(post_id)' .
         ' FROM likes' .
         ' WHERE likes.post_id = posts.id)' .
-        ' AS likes' .
+        ' AS likes,' .
+        ' (SELECT COUNT(content) FROM comments' .
+        ' WHERE post_id = posts.id)' .
+        ' AS comment_sum' .
         ' FROM posts' .
         ' JOIN users u ON posts.user_id = u.id' .
         ' JOIN content_type ct' .
