@@ -5,11 +5,10 @@ require_once 'data.php';
 require_once 'session.php';
 
 
-
-
 $tab = filter_input(INPUT_GET, 'tab');
 $params = filter_input(INPUT_GET, 'tab');
 $is_type = null;
+$navigation_link = 'popular';
 
 $get_sort = filter_input(INPUT_GET, 'sort');
 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
@@ -31,7 +30,10 @@ if ($tab) {
         ' (SELECT COUNT(post_id)' .
         ' FROM likes' .
         ' WHERE likes.post_id = posts.id)' .
-        ' AS likes' .
+        ' AS likes,' .
+        ' (SELECT COUNT(content) FROM comments' .
+        ' WHERE post_id = posts.id)' .
+        ' AS comment_sum' .
         ' FROM posts' .
         ' JOIN users u ON posts.user_id = u.id' .
         ' JOIN content_type ct' .
@@ -48,7 +50,10 @@ if ($tab) {
         ' (SELECT COUNT(post_id)' .
         ' FROM likes' .
         ' WHERE likes.post_id = posts.id)' .
-        ' AS likes' .
+        ' AS likes,' .
+        ' (SELECT COUNT(content) FROM comments' .
+        ' WHERE post_id = posts.id)' .
+        ' AS comment_sum' .
         ' FROM posts' .
         ' JOIN users u ON posts.user_id = u.id' .
         ' JOIN content_type ct' .
@@ -86,7 +91,8 @@ if ($result) {
         'content_types' => $content_types,
         'tab' => $tab,
         'sort' => $sort,
-        'page' => $page]);
+        'page' => $page
+    ]);
 } else {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
@@ -96,7 +102,10 @@ if ($result) {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
-    'user' => $user]);
+    'user' => $user,
+    'navigation_link' => $navigation_link,
+    'message_notification' => $message_notification
+]);
 print($layout_content);
 
 

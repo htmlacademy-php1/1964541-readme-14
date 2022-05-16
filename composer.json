@@ -1,0 +1,9 @@
+{
+    "name": "vendor/readme",
+    "description": "Учебный проект",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "symfony/mailer": "^6.0"
+    }
+}

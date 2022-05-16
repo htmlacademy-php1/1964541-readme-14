@@ -24,41 +24,13 @@
                     }
                     ?>
                     <div class="post__indicators">
-                        <div class="post__buttons">
-                            <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?= $post['id'] ?>" title="Лайк">
-                                <svg class="post__indicator-icon" width="20" height="17">
-                                    <use xlink:href="#icon-heart"></use>
-                                </svg>
-                                <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
-                                    <use xlink:href="#icon-heart-active"></use>
-                                </svg>
-                                <span><?= $post['likes'] ?></span>
-                                <span class="visually-hidden">количество лайков</span>
-                            </a>
-                            <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
-                                <svg class="post__indicator-icon" width="19" height="17">
-                                    <use xlink:href="#icon-comment"></use>
-                                </svg>
-                                <span>25</span>
-                                <span class="visually-hidden">количество комментариев</span>
-                            </a>
-                            <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
-                                <svg class="post__indicator-icon" width="19" height="17">
-                                    <use xlink:href="#icon-repost"></use>
-                                </svg>
-                                <span>5</span>
-                                <span class="visually-hidden">количество репостов</span>
-                            </a>
-                        </div>
+                        <?= include_template('post_buttons.php', ['post' => $post]) ?>
                         <span class="post__view"><?= $post['views'] ?></span>
                     </div>
                     <ul class="post__tags">
-                        <li><a href="#">#nature</a></li>
-                        <li><a href="#">#globe</a></li>
-                        <li><a href="#">#photooftheday</a></li>
-                        <li><a href="#">#canon</a></li>
-                        <li><a href="#">#landscape</a></li>
-                        <li><a href="#">#щикарныйвид</a></li>
+                        <?php foreach ($tags as $tag): ?>
+                        <li><a href="search.php?search=%23<?= $tag['name'] ?>">#<?= $tag['name'] ?></a></li>
+                        <?php endforeach; ?>
                     </ul>
                     <div class="comments">
                         <form class="comments__form form" action="post.php?id=<?= $post['id'] ?>" method="post">
@@ -101,9 +73,10 @@
                                 </li>
                                 <?php endforeach; ?>
                             </ul>
-                            <a class="comments__more-link" href="#">
+                            <?php $classname = $post['comment_sum'] < COMMENT_OFFSET || $tab === 'comments_all' ? 'visually-hidden' : '' ?>
+                            <a class="comments__more-link <?= $classname ?>" href="post.php?id=<?= $post['id'] ?>&tab=comments_all">
                                 <span>Показать все комментарии</span>
-                                <sup class="comments__amount">45</sup>
+                                <sup class="comments__amount"><?= $post['comment_sum'] ?></sup>
                             </a>
                         </div>
                     </div>
@@ -125,14 +98,15 @@
                     <div class="post-details__rating user__rating">
                         <p class="post-details__rating-item user__rating-item user__rating-item--subscribers">
                             <span class="post-details__rating-amount user__rating-amount"><?= $user_info['subscribers_count'] ?></span>
-                            <span class="post-details__rating-text user__rating-text">подписчиков</span>
+                            <span class="post-details__rating-text user__rating-text"><?= get_noun_plural_form($user_info['subscribers_count'], 'подписчик', 'подписчика', 'подписчиков') ?></span>
                         </p>
                         <p class="post-details__rating-item user__rating-item user__rating-item--publications">
                             <span class="post-details__rating-amount user__rating-amount"><?= $user_info['posts_count'] ?></span>
-                            <span class="post-details__rating-text user__rating-text">публикаций</span>
+                            <span class="post-details__rating-text user__rating-text"><?= get_noun_plural_form($user_info['posts_count'], 'публикация', 'публикации', 'публикаций') ?></span>
                         </p>
                     </div>
-                    <div class="post-details__user-buttons user__buttons">
+                    <?php $classname = $this_user['id'] === $user['user_id'] ? 'visually-hidden' : '';?>
+                    <div class="post-details__user-buttons user__buttons <?= $classname?>">
                         <?php
                         if ($is_subscribe) {
                             $button['class'] = 'button--main';

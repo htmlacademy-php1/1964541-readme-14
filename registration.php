@@ -3,6 +3,7 @@ require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
 
+$navigation_link = 'register';
 $validation_errors = [];
 $required = ['email', 'login', 'password', 'password-repeat'];
 $page_content = include_template('registration_templates/reg-form.php', ['validation_errors' => $validation_errors]);
@@ -84,5 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
-    'user' => $user]);
+    'user' => $user,
+    'navigation_link' => $navigation_link
+    ]);
 print($layout_content);

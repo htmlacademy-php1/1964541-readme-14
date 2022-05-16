@@ -6,12 +6,27 @@ require_once 'session.php';
 
 $post_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 $validation_errors = [];
+$tags = [];
+$navigation_link = 'post.php';
+$comments_offset = ' LIMIT 3;';
+
+$tab = filter_input(INPUT_GET, 'tab');
+
+if ($tab === 'comments_all') {
+    $comments_offset = ';';
+}
 
 $sql = 'SELECT p.id, title, text, quote_auth, img, video, link, views, p.dt_add, user_id, type,' .
     ' (SELECT COUNT(post_id)' .
     ' FROM likes' .
     ' WHERE likes.post_id = p.id)' .
-    ' AS likes' .
+    ' AS likes,' .
+    ' (SELECT COUNT(content) FROM comments' .
+    ' WHERE post_id = p.id)' .
+    ' AS comment_sum,' .
+    ' (SELECT COUNT(original_id) FROM posts' .
+    ' WHERE original_id = p.id)' .
+    ' AS reposts_sum' .
     ' FROM posts p' .
     ' JOIN users u ON p.user_id = u.id' .
     ' JOIN content_type ct' .
@@ -29,9 +44,17 @@ if ($result) {
     $this_user = get_user($connection, $post['user_id']);
     $is_subscribe = check_subscription($connection, $this_user['id'], $user['user_id']);
 
-    $sql = 'SELECT content, user_id, c.dt_add, login FROM comments c' .
+    $sql = 'UPDATE posts SET views = views + 1 WHERE id = ?;';
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $post_id);
+    mysqli_stmt_execute($stmt);
+
+    $tags = get_tags($connection, $post_id);
+
+    $sql = 'SELECT content, user_id, c.dt_add, login' .
+        ' FROM comments c' .
         ' JOIN users u ON c.user_id = u.id' .
-        ' WHERE post_id = ?;';
+        ' WHERE post_id = ?' . $comments_offset;
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 'i', $post_id);
     mysqli_stmt_execute($stmt);
@@ -57,7 +80,17 @@ if ($result) {
         $validation_errors = full_form_validation($comment, $rules, $required);
 
         if ($validation_errors) {
-            $page_content = include_template('post_templates/post-window.php', ['post' => $post, 'user_info' => $user_info, 'this_user' => $this_user, 'is_subscribe' => $is_subscribe, 'user' => $user, 'validation_errors' => $validation_errors]);
+            $page_content = include_template('post_templates/post-window.php', [
+                'post' => $post,
+                'tags' => $tags,
+                'tab' => $tab,
+                'reposts_count' => $reposts_count,
+                'user_info' => $user_info,
+                'this_user' => $this_user,
+                'is_subscribe' => $is_subscribe,
+                'user' => $user,
+                'validation_errors' => $validation_errors
+            ]);
         } else {
             $sql = 'INSERT INTO comments (content, user_id, post_id)' .
                 ' VALUES (?, ?, ?)';
@@ -69,7 +102,17 @@ if ($result) {
         }
     }
 
-    $page_content = include_template('post_templates/post-window.php', ['post' => $post, 'comments' => $comments, 'user_info' => $user_info, 'this_user' => $this_user, 'is_subscribe' => $is_subscribe, 'user' => $user, 'validation_errors' => $validation_errors]);
+    $page_content = include_template('post_templates/post-window.php', [
+        'post' => $post,
+        'tags' => $tags,
+        'tab' => $tab,
+        'comments' => $comments,
+        'user_info' => $user_info,
+        'this_user' => $this_user,
+        'is_subscribe' => $is_subscribe,
+        'user' => $user,
+        'validation_errors' => $validation_errors
+    ]);
 
 } else {
     $error = mysqli_error($connection);
@@ -80,5 +123,8 @@ if ($result) {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
-    'user' => $user]);
+    'user' => $user,
+    'navigation_link' => $navigation_link,
+    'message_notification' => $message_notification
+]);
 print($layout_content);

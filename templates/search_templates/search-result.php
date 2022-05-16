@@ -11,7 +11,7 @@
         <div class="search__results-wrapper">
             <div class="container">
                 <div class="search__content">
-                    <?php if (!empty($posts)): ?>
+                    <?php if (!empty($posts)):?>
                     <?php foreach($posts as $post): ?>
                         <article class="feed__post post post-<?= $post['type'] ?>">
                             <header class="post__header post__author">
@@ -44,32 +44,7 @@
                             }
                             ?>
                             <footer class="post__footer post__indicators">
-                                <div class="post__buttons">
-                                    <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
-                                        <svg class="post__indicator-icon" width="20" height="17">
-                                            <use xlink:href="#icon-heart"></use>
-                                        </svg>
-                                        <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
-                                            <use xlink:href="#icon-heart-active"></use>
-                                        </svg>
-                                        <span>250</span>
-                                        <span class="visually-hidden">количество лайков</span>
-                                    </a>
-                                    <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
-                                        <svg class="post__indicator-icon" width="19" height="17">
-                                            <use xlink:href="#icon-comment"></use>
-                                        </svg>
-                                        <span>25</span>
-                                        <span class="visually-hidden">количество комментариев</span>
-                                    </a>
-                                    <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
-                                        <svg class="post__indicator-icon" width="19" height="17">
-                                            <use xlink:href="#icon-repost"></use>
-                                        </svg>
-                                        <span>5</span>
-                                        <span class="visually-hidden">количество репостов</span>
-                                    </a>
-                                </div>
+                                <?= include_template('post_buttons.php', ['post' => $post]) ?>
                             </footer>
                         </article>
                     <?php endforeach;

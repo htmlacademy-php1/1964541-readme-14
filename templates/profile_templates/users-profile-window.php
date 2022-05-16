@@ -17,14 +17,15 @@
                 <div class="profile__rating user__rating">
                     <p class="profile__rating-item user__rating-item user__rating-item--publications">
                         <span class="user__rating-amount"><?= $user_info['posts_count'] ?></span>
-                        <span class="profile__rating-text user__rating-text">публикаций</span>
+                        <span class="profile__rating-text user__rating-text"><?= get_noun_plural_form($user_info['posts_count'], 'публикация', 'публикации', 'публикаций') ?></span>
                     </p>
                     <p class="profile__rating-item user__rating-item user__rating-item--subscribers">
                         <span class="user__rating-amount"><?= $user_info['subscribers_count'] ?></span>
-                        <span class="profile__rating-text user__rating-text">подписчиков</span>
+                        <span class="profile__rating-text user__rating-text"><?= get_noun_plural_form($user_info['subscribers_count'], 'подписчик', 'подписчика', 'подписчиков') ?></span>
                     </p>
                 </div>
-                <div class="profile__user-buttons user__buttons">
+                <?php $classname = $this_user['id'] === $user['user_id'] ? 'visually-hidden' : '';?>
+                <div class="profile__user-buttons user__buttons <?= $classname ?>">
                     <?php
                     if ($is_subscribe) {
                         $button['class'] = 'button--main';
@@ -38,7 +39,7 @@
                     ?>
                     <a href="<?= $button['subscription'] ?>.php?id=<?= $this_user['id'] ?>"
                        class="profile__user-button user__button user__button--subscription button <?= $button['class'] ?>"><?= $button['name'] ?></a>
-                    <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
+                    <a class="profile__user-button user__button user__button--writing button button--green" href="messages.php?chat_id=<?= $this_user['id'] ?>">Сообщение</a>
                 </div>
             </div>
         </div>
@@ -66,10 +67,16 @@
                 </div>
                 <div class="profile__tab-content">
                     <?php
-                    if ($tab === 'posts' || $tab === 'likes') {
-                        echo include_template('profile_templates/users-window-types/users-posts.php', ['posts' => $posts]);
-                    } else {
-                        echo include_template('profile_templates/users-window-types/users-subscribes.php', ['posts' => $posts, 'user' => $user, 'connection' => $connection]);
+                    switch ($tab) {
+                        case 'posts':
+                            echo include_template('profile_templates/users-window-types/users-posts.php', ['posts' => $posts, 'connection' => $connection]);
+                            break;
+                        case 'likes':
+                            echo include_template('profile_templates/users-window-types/users-likes.php', ['posts' => $posts]);
+                            break;
+                        case 'subscribes':
+                            echo include_template('profile_templates/users-window-types/users-subscribes.php', ['posts' => $posts, 'user' => $user, 'connection' => $connection]);
+                            break;
                     }
                     ?>
                 </div>
