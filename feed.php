@@ -31,7 +31,10 @@ if ($tab) {
         ' AS likes,' .
         ' (SELECT COUNT(content) FROM comments' .
         ' WHERE post_id = p.id)' .
-        ' AS comment_sum' .
+        ' AS comment_sum,' .
+        ' (SELECT COUNT(original_id) FROM posts' .
+        ' WHERE original_id = p.id)' .
+        ' AS reposts_sum' .
         ' FROM posts p' .
         ' JOIN subscribes s ON p.user_id = s.follow_id' .
         ' JOIN users u ON p.user_id = u.id' .
