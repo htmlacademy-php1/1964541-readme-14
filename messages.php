@@ -35,6 +35,12 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $messages = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+$sql = 'UPDATE messages SET is_read = true WHERE sender_id = ?;';
+$stmt = mysqli_prepare($connection, $sql);
+mysqli_stmt_bind_param($stmt, 'i', $chat_id);
+mysqli_stmt_execute($stmt);
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $required = ['content'];
     $rules = [

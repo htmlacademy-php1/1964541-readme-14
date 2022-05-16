@@ -186,7 +186,8 @@
                                             <a class="header__profile-nav-link" href="messages.php">
                           <span class="header__profile-nav-text">
                             Сообщения
-                            <i class="header__profile-indicator"><?= $message_notification['unread_messages'] ?></i>
+                              <?php $classname = $message_notification['unread_messages'] ? '' : 'visually-hidden' ?>
+                            <i class="header__profile-indicator <?= $classname ?>"><?= $message_notification['unread_messages'] ?></i>
                           </span>
                                             </a>
                                         </li>
