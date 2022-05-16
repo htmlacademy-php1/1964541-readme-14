@@ -63,7 +63,6 @@ if ($this_user) {
     $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     $is_subscribe = check_subscription($connection, $this_user['id'], $user['user_id']);
-
     $user_info = get_user_info($connection, $user_id);
 
 } else {

@@ -21,7 +21,8 @@ function cut_text($text, $length = TEXT_PREVIEW_LENGTH): string
             $i++;
         }
         $text = array_slice($text_words, 0, $i);
-        $final_text = '<p>' . implode(' ', $text) . '...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+        $final_text = '<p>' . implode(' ',
+                $text) . '...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
     } else {
         $final_text = '<p>' . $text . '</p>';
     }
@@ -67,18 +68,24 @@ function show_past_time($time): string
     if ($diff < SECONDS_IN_HOUR) {
         $divider = SECONDS_IN_MIN;
         $form = ['минута', 'минуты', 'минут'];
-    } else if ($diff < SECONDS_IN_DAY) {
-        $divider = SECONDS_IN_HOUR;
-        $form = ['час', 'часа', 'часов'];
-    } else if ($diff < SECONDS_IN_WEEK) {
-        $divider = SECONDS_IN_DAY;
-        $form = ['день', 'дня', 'дней'];
-    } else if ($diff < SECONDS_IN_MONTH) {
-        $divider = SECONDS_IN_WEEK;
-        $form = ['неделя', 'недели', 'недель'];
     } else {
-        $divider = SECONDS_IN_MONTH;
-        $form = ['месяц', 'месяца', 'месяцев'];
+        if ($diff < SECONDS_IN_DAY) {
+            $divider = SECONDS_IN_HOUR;
+            $form = ['час', 'часа', 'часов'];
+        } else {
+            if ($diff < SECONDS_IN_WEEK) {
+                $divider = SECONDS_IN_DAY;
+                $form = ['день', 'дня', 'дней'];
+            } else {
+                if ($diff < SECONDS_IN_MONTH) {
+                    $divider = SECONDS_IN_WEEK;
+                    $form = ['неделя', 'недели', 'недель'];
+                } else {
+                    $divider = SECONDS_IN_MONTH;
+                    $form = ['месяц', 'месяца', 'месяцев'];
+                }
+            }
+        }
     }
     $diff /= $divider;
     $diff = floor($diff);
@@ -145,7 +152,7 @@ function validate_photo_link($value): ?string
 function validate_video($value): ?string
 {
     if ($value) {
-        if (check_youtube_url($value)){
+        if (check_youtube_url($value)) {
             return null;
         }
         return 'Видео не добавлено';
@@ -174,13 +181,13 @@ function getPostVal($name): ?string
  */
 function validate_text($value, $min, $max): ?string
 {
-        if ($value) {
-            $len = mb_strlen($value);
-            if ($len < $min or $len > $max) {
-                return "Значение должно быть от $min до $max символов";
-            }
+    if ($value) {
+        $len = mb_strlen($value);
+        if ($len < $min or $len > $max) {
+            return "Значение должно быть от $min до $max символов";
         }
-        return null;
+    }
+    return null;
 }
 
 /**
@@ -209,10 +216,10 @@ function validate_form_type($value, $content_types): bool
  */
 function validate_email($value, $email): ?string
 {
-    if($value) {
-            if($email) {
-                return 'Пользователь с таким email уже существует';
-            }
+    if ($value) {
+        if ($email) {
+            return 'Пользователь с таким email уже существует';
+        }
         return null;
     }
     return 'Введите корректный email';
@@ -241,14 +248,14 @@ function validate_password($password, $repeat_pass): ?string
  *
  * @return array Массив с ошибками валидации
  */
-function full_form_validation ($form, $rules, $required): array
+function full_form_validation($form, $rules, $required): array
 {
     foreach ($form as $key => $value) {
-        if(isset($rules[$key])) {
+        if (isset($rules[$key])) {
             $rule = $rules[$key];
             $validation_errors[$key] = $rule($value);
         }
-        if(in_array($key, $required) && empty($value)) {
+        if (in_array($key, $required) && empty($value)) {
             $validation_errors[$key] = 'Поле ' . $key . ' надо заполнить';
         }
     }
@@ -262,7 +269,7 @@ function full_form_validation ($form, $rules, $required): array
  *
  * @return array Логин, пароль и тд.
  */
-function get_user ($db_connection, $user_id): array
+function get_user($db_connection, $user_id): array
 {
     $sql = 'SELECT id, login, email, avatar, dt_add' .
         ' FROM users u' .
@@ -282,7 +289,7 @@ function get_user ($db_connection, $user_id): array
  *
  * @return array Массив с информацией о пользователе
  */
-function get_user_info ($db_connection, $user_id): array
+function get_user_info($db_connection, $user_id): array
 {
     $sql = 'SELECT (SELECT COUNT(p.id)' .
         ' FROM posts p' .
@@ -300,7 +307,12 @@ function get_user_info ($db_connection, $user_id): array
     mysqli_stmt_bind_param($stmt, 'i', $user_id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    return mysqli_fetch_assoc($result);
+    $array = mysqli_fetch_assoc($result);
+    if (!mysqli_num_rows($result)) {
+        $array = ['subscribers_count' => 0,
+        'posts_count' => 0];
+    }
+    return $array;
 }
 
 /**
@@ -311,12 +323,12 @@ function get_user_info ($db_connection, $user_id): array
  *
  * @return bool Есть подписка|Нет подписки
  */
-function check_subscription ($db_connection, $follow_id, $follower_id): bool
+function check_subscription($db_connection, $follow_id, $follower_id): bool
 {
     $sql = 'SELECT * FROM subscribes' .
         ' WHERE follow_id = ? AND follower_id = ?;';
     $stmt = mysqli_prepare($db_connection, $sql);
-    mysqli_stmt_bind_param($stmt,'ii', $follow_id, $follower_id);
+    mysqli_stmt_bind_param($stmt, 'ii', $follow_id, $follower_id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $result = mysqli_fetch_assoc($result);
@@ -334,7 +346,7 @@ function check_subscription ($db_connection, $follow_id, $follower_id): bool
  *
  * @return string|null Ошибка, информация об ошибке|Нет ошибки
  */
-function validate_comment ($value, $min): ?string
+function validate_comment($value, $min): ?string
 {
     if ($value) {
         $value = trim($value);
@@ -354,7 +366,7 @@ function validate_comment ($value, $min): ?string
  *
  * @return string|null Ошибка, информация об ошибке|Нет ошибки
  */
-function validate_message ($value, $min): ?string
+function validate_message($value, $min): ?string
 {
     if ($value) {
         $value = trim($value);
@@ -373,12 +385,12 @@ function validate_message ($value, $min): ?string
  * @param integer $post_id ID поста
  * @return string|null Поста не существует|Существует
  */
-function validate_post_id ($db_connection, $post_id): ?string
+function validate_post_id($db_connection, $post_id): ?string
 {
     $sql = 'SELECT * FROM posts' .
         ' WHERE id = ?';
     $stmt = mysqli_prepare($db_connection, $sql);
-    mysqli_stmt_bind_param($stmt,'i', $post_id);
+    mysqli_stmt_bind_param($stmt, 'i', $post_id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $result = mysqli_num_rows($result);
@@ -394,12 +406,12 @@ function validate_post_id ($db_connection, $post_id): ?string
  * @param integer $recipient_id ID получателя сообщения
  * @return string|null Пользователь не найден|Пользователь есть
  */
-function validate_recipient_id ($db_connection, $recipient_id): ?string
+function validate_recipient_id($db_connection, $recipient_id): ?string
 {
     $sql = 'SELECT * FROM users' .
         ' WHERE id = ?';
     $stmt = mysqli_prepare($db_connection, $sql);
-    mysqli_stmt_bind_param($stmt,'i', $recipient_id);
+    mysqli_stmt_bind_param($stmt, 'i', $recipient_id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $result = mysqli_num_rows($result);
@@ -415,7 +427,7 @@ function validate_recipient_id ($db_connection, $recipient_id): ?string
  * @param integer $post_id ID поста
  * @return array|null Возвращает массив с тегами | возвращает null
  */
-function get_tags ($db_connection, $post_id): ?array
+function get_tags($db_connection, $post_id): ?array
 {
     $sql = 'SELECT name FROM tags' .
         ' JOIN posts_tags pt on tags.id = pt.tag_id' .
