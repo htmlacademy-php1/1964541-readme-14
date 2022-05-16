@@ -5,10 +5,16 @@ use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
 
+$email_configuration = [
+    'dsn' => 'smtp://readmeproject2022@gmail.com:RUS220kc@smtp.gmail.com:465?encryption=tls',
+    'from' => 'readmeproject2022@gmail.com',
+    'host_info' => 'http://localhost:8080'
+];
+
 date_default_timezone_set("Europe/Moscow");
 setlocale(LC_ALL, 'ru_RU');
 
-$dsn = 'smtp://readmeproject2022@gmail.com:RUS220kc@smtp.gmail.com:465?encryption=tls';
+$dsn = $email_configuration['dsn'];
 $transport = Transport::fromDSN($dsn);
 
 
@@ -35,6 +41,7 @@ const MESSAGE_PREVIEW_LENGTH = 4;
 const TEXT_PREVIEW_LENGTH = 300;
 const MESSAGE_MIN_LENGTH = 1;
 const COMMENT_OFFSET = 3;
+
 
 $form_templates = [
     'photo' => 'add_templates/add_forms/add-post-photo.php',

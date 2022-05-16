@@ -168,10 +168,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $followers = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 foreach ($followers as $follower) {
                     $email = new Email();
-                    $email->from('readmeproject2022@gmail.com');
+                    $email->from($email_configuration['from']);
                     $email->to($follower['email']);
                     $email->subject('Новая публикация от пользователя' . $user['user']);
-                    $email->text('Здравствуйте, ' . $follower['login'] . '. Пользователь ' . $user['user'] . ' только что опубликовал новую запись ' . $post['title'] . '. Посмотрите её на странице пользователя: http://localhost:8080/users_profile.php?id=' . $user['user_id']);
+                    $email->text('Здравствуйте, ' . $follower['login'] . '. Пользователь ' . $user['user'] . ' только что опубликовал новую запись ' . $post['title'] . '. Посмотрите её на странице пользователя: ' . $email_configuration['host_info'] .'/users_profile.php?id=' . $user['user_id']);
                     $mailer = new Mailer($transport);
                     $mailer->send($email);
                 }
