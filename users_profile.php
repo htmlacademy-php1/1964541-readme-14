@@ -86,6 +86,7 @@ $layout_content = include_template('layout.php', [
     'title' => 'readme: блог, каким он должен быть',
     'this_user' => $this_user,
     'user' => $user,
-    'navigation_link' => $navigation_link
+    'navigation_link' => $navigation_link,
+    'message_notification' => $message_notification
 ]);
 print($layout_content);

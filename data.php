@@ -17,7 +17,6 @@ setlocale(LC_ALL, 'ru_RU');
 $dsn = $email_configuration['dsn'];
 $transport = Transport::fromDSN($dsn);
 
-
 $connection = mysqli_connect('localhost', 'root', '', 'readme');
 mysqli_set_charset($connection, 'utf8');
 
@@ -42,7 +41,6 @@ const TEXT_PREVIEW_LENGTH = 300;
 const MESSAGE_MIN_LENGTH = 1;
 const COMMENT_OFFSET = 3;
 
-
 $form_templates = [
     'photo' => 'add_templates/add_forms/add-post-photo.php',
     'text' => 'add_templates/add_forms/add-post-text.php',
@@ -50,7 +48,6 @@ $form_templates = [
     'video' => 'add_templates/add_forms/add-post-video.php',
     'quote' => 'add_templates/add_forms/add-post-quote.php'
 ];
-
 
 
 ?>

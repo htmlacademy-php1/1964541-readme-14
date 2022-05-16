@@ -68,6 +68,7 @@ CREATE TABLE messages (
                         dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         content TEXT NOT NULL,
                         sender_id INT NOT NULL,
+                        is_read bool NOT NULL DEFAULT false,
                         FOREIGN KEY (sender_id) REFERENCES users (id),
                         recipient_id INT NOT NULL,
                         FOREIGN KEY (recipient_id) REFERENCES users (id)

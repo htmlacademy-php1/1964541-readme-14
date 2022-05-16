@@ -171,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $email->from($email_configuration['from']);
                     $email->to($follower['email']);
                     $email->subject('Новая публикация от пользователя' . $user['user']);
-                    $email->text('Здравствуйте, ' . $follower['login'] . '. Пользователь ' . $user['user'] . ' только что опубликовал новую запись ' . $post['title'] . '. Посмотрите её на странице пользователя: ' . $email_configuration['host_info'] .'/users_profile.php?id=' . $user['user_id']);
+                    $email->text('Здравствуйте, ' . $follower['login'] . '. Пользователь ' . $user['user'] . ' только что опубликовал новую запись ' . $post['title'] . '. Посмотрите её на странице пользователя: ' . $email_configuration['host_info'] . '/users_profile.php?id=' . $user['user_id']);
                     $mailer = new Mailer($transport);
                     $mailer->send($email);
                 }
@@ -244,7 +244,8 @@ $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
     'user' => $user,
-    'navigation_link' => $navigation_link
+    'navigation_link' => $navigation_link,
+    'message_notification' => $message_notification
 ]);
 print($layout_content);
 
