@@ -177,17 +177,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             if ($post['tags']) {
-                $sql = 'SELECT id, name FROM tags WHERE name = ?;';
-                $stmt = mysqli_prepare($connection, $sql);
-                mysqli_stmt_bind_param($stmt, 's', $tag);
                 $post['tags'] = trim($post['tags']);
 
                 if (stristr($post['tags'], ' ')) {
                     $tags = explode(' ', $post['tags']);
                     foreach ($tags as $tag) {
+                        $sql = 'SELECT id, name FROM tags WHERE name = ?;';
+                        $stmt = mysqli_prepare($connection, $sql);
+                        mysqli_stmt_bind_param($stmt, 's', $tag);
                         mysqli_stmt_execute($stmt);
                         $result = mysqli_stmt_get_result($stmt);
-                        if ($result) {
+                        if (mysqli_num_rows($result)) {
                             $db_tag = mysqli_fetch_assoc($result);
                             $tag_id[] = $db_tag['id'];
                         } else {
@@ -200,6 +200,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 } else {
                     $tag = $post['tags'];
+                    $sql = 'SELECT id, name FROM tags WHERE name = ?;';
+                    $stmt = mysqli_prepare($connection, $sql);
+                    mysqli_stmt_bind_param($stmt, 's', $tag);
                     mysqli_stmt_execute($stmt);
                     $result = mysqli_stmt_get_result($stmt);
                     $db_tag = mysqli_fetch_assoc($result);
