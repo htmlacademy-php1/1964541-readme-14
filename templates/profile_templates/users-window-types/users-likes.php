@@ -14,7 +14,7 @@
                         <span><?= $post['login'] ?></span>
                     </a>
                     <div class="post-mini__action">
-                        <span class="post-mini__activity user__additional">Лайкнул вашу публикацию</span>
+                        <span class="post-mini__activity user__additional">Лайкнул публикацию</span>
                         <time class="post-mini__time user__additional" datetime="<?= $post['dt_add'] ?>"><?= show_past_time($post['dt_add']) ?></time>
                     </div>
                 </div>
