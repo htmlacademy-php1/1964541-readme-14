@@ -168,7 +168,7 @@ function validate_video($value): ?string
  */
 function getPostVal($name): ?string
 {
-    return $_POST[$name] ?? "";
+    return htmlspecialchars($_POST[$name] ?? "");
 }
 
 /**
