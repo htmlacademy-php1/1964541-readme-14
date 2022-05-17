@@ -40,11 +40,10 @@ if (isset($_SESSION['user'])) {
                 $_SESSION['posts_count'] = $db_user['posts_count'];
                 header('Location: feed.php');
                 exit;
-            } else {
-                $validation_errors['password'] = 'Пароли не совпадают';
             }
         } else {
             $validation_errors['email'] = 'Неверный пользователь и/или пароль';
+            $validation_errors['password'] = 'Неверный пользователь и/или пароль';
         }
         $user = null;
         $page_content = include_template('login-form.php', ['validation_errors' => $validation_errors]);
