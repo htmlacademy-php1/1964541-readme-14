@@ -6,7 +6,7 @@
             <div class="post-mini__user-info user__info">
                 <div class="post-mini__avatar user__avatar">
                     <a class="user__avatar-link" href="users_profile.php?id=<?= $post['user_id'] ?>">
-                        <img class="post-mini__picture user__picture" src="img/<?= $post['avatar'] ?>" alt="Аватар пользователя">
+                        <img class="post-mini__picture user__picture" src="<?= get_user_avatar($post['avatar']) ?>" alt="Аватар пользователя">
                     </a>
                 </div>
                 <div class="post-mini__name-wrapper user__name-wrapper">

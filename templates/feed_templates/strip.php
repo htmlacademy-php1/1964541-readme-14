@@ -12,7 +12,7 @@
                         <header class="post__header post__author">
                             <a class="post__author-link" href="users_profile.php?id=<?= $post['user_id'] ?>" title="<?= $post['login'] ?>">
                                 <div class="post__avatar-wrapper">
-                                    <img class="post__author-avatar" src="uploads/<?= $post['avatar'] ?>" alt="Аватар пользователя" width="60" height="60">
+                                    <img class="post__author-avatar" src="<?= get_user_avatar($post['avatar']) ?>" alt="Аватар пользователя" width="60" height="60">
                                 </div>
                                 <div class="post__info">
                                     <b class="post__author-name"><?= $post['login'] ?></b>

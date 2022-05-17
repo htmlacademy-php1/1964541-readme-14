@@ -55,7 +55,7 @@
                                 <?php foreach ($comments as $comment): ?>
                                 <li class="comments__item user">
                                     <div class="comments__avatar">
-                                        <a class="user__avatar-link" href="#">
+                                        <a class="user__avatar-link" href="users_profile.php?id=<?= $comment['user_id'] ?>">
                                             <img class="comments__picture" src="<?= get_user_avatar($comment['avatar']) ?>" alt="Аватар пользователя">
                                         </a>
                                     </div>
