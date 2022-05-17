@@ -103,12 +103,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
                 }
             } else {
-                if (empty($post['photo-link'])) {
-                    $validation_errors['file'] = 'Вы не загрузили файл и не добавили ссылку';
-                }
-            }
-
-            if (!isset($_FILES['userpic-file-photo']['name'])) {
                 $required[] = 'photo-link';
                 $rules['photo-link'] = function ($value) {
                     return validate_photo_link($value);
