@@ -66,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validation_errors = full_form_validation($user, $rules, $required);
 
     if ($validation_errors) {
+        $user = null;
         $page_content = include_template('registration_templates/reg-form.php', ['validation_errors' => $validation_errors, 'user' => $user]);
     } else {
         $user['password'] = password_hash($user['password'], PASSWORD_DEFAULT);

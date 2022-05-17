@@ -45,6 +45,7 @@ if (isset($_SESSION['user'])) {
             }
         } else {
             $validation_errors['email'] = 'Неверный пользователь и/или пароль';
+            $user = null;
         }
         $page_content = include_template('login-form.php', ['validation_errors' => $validation_errors]);
     }
