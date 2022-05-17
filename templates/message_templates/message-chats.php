@@ -5,7 +5,7 @@
             <?php $classname = $chat['id'] === $chat_id ? '--active' : ''; ?>
             <a class="messages__contacts-tab messages__contacts-tab<?= $classname ?> tabs__item tabs__item" href="messages.php?chat_id=<?= $chat['id'] ?>">
                 <div class="messages__avatar-wrapper">
-                    <img class="messages__avatar" src="img/<?= $chat['avatar'] ?>" alt="Аватар пользователя">
+                    <img class="messages__avatar" src="<?= get_user_avatar($chat['avatar']) ?>" alt="Аватар пользователя">
                 </div>
                 <div class="messages__info">
                   <span class="messages__contact-name">

@@ -3,7 +3,7 @@ USE readme;
 #заполняем юзеров
 INSERT INTO users (email, password, login, avatar)
 VALUES ('4204884@gmail.com', 'WASH32rh', 'gervant of irvia', '/img/cat.jpg'),
-       ('larisa@gmail.com', 'QWERTY1234', 'Лариса', 'uploads/userpic-larisa-small.jpg'),
+       ('larisa@gmail.com', 'QWERTY1234', 'Лариса', 'uploads/userpic-larisa.jpg'),
        ('volandeslav@gmail.com', 'BUric1hK', 'Владик', 'uploads/userpic.jpg'),
        ('dargin@mail.ru', 'SWAGmad', 'Виктор', 'uploads/userpic-mark.jpg');
 

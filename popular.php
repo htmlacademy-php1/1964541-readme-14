@@ -3,6 +3,8 @@ require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
 require_once 'session.php';
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL & E_NOTICE & E_WARNING);
 
 
 $tab = filter_input(INPUT_GET, 'tab');

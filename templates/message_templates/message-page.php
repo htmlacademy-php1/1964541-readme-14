@@ -9,7 +9,7 @@
                 $classname = empty($chat_id) ? 'visually-hidden' : '' ?>
                 <form class="comments__form form <?= $classname ?>" action="messages.php?chat_id=<?= $chat_id ?>" method="post">
                     <div class="comments__my-avatar">
-                        <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
+                        <img class="comments__picture" src="<?= get_user_avatar($user['avatar']) ?>" alt="Аватар пользователя">
                     </div>
                     <?php $classname = isset($validation_errors['content']) ? 'form__input-section--error' : ''; ?>
                     <div class="form__input-section <?= $classname ?> ">
