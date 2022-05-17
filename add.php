@@ -30,6 +30,10 @@ if (validate_form_type($form_type, $content_types)) {
         exit;
     }
 } else {
+    if ($form_type === null) {
+        header('Location: error.php?code=500');
+        exit;
+    }
     header('Location: error.php?code=404');
     exit;
 }
