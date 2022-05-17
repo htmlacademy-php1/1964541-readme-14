@@ -5,7 +5,7 @@
             <div class="profile__user user container">
                 <div class="profile__user-info user__info">
                     <div class="profile__avatar user__avatar">
-                        <img class="profile__picture user__picture" src="uploads/<?= $this_user['avatar'] ?>"
+                        <img class="profile__picture user__picture" src="<?= get_user_avatar($this_user['avatar']) ?>"
                              alt="Аватар пользователя">
                     </div>
                     <div class="profile__name-wrapper user__name-wrapper">

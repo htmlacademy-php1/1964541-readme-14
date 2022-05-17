@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL & E_NOTICE & E_WARNING);
 require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
@@ -51,7 +53,7 @@ if ($result) {
 
     $tags = get_tags($connection, $post_id);
 
-    $sql = 'SELECT content, user_id, c.dt_add, login' .
+    $sql = 'SELECT content, user_id, c.dt_add, login, avatar' .
         ' FROM comments c' .
         ' JOIN users u ON c.user_id = u.id' .
         ' WHERE post_id = ?' . $comments_offset;

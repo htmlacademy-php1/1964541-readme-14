@@ -7,7 +7,7 @@
                     <div class="messages__info-wrapper">
                         <div class="messages__item-avatar">
                             <a class="messages__author-link" href="users_profile.php?id=<?= $message['id'] ?>">
-                                <img class="messages__avatar" src="img/<?= $message['avatar'] ?>" alt="Аватар пользователя">
+                                <img class="messages__avatar" src="<?= get_user_avatar($message['avatar']) ?>" alt="Аватар пользователя">
                             </a>
                         </div>
                         <div class="messages__item-info">

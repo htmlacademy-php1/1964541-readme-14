@@ -3,6 +3,8 @@ require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
 require_once 'session.php';
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL & E_NOTICE & E_WARNING);
 
 
 $tab = filter_input(INPUT_GET, 'tab');
@@ -12,6 +14,10 @@ $navigation_link = 'popular';
 
 $get_sort = filter_input(INPUT_GET, 'sort');
 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
+
+$sql = 'SELECT id FROM posts;';
+$result = mysqli_query($connection, $sql);
+$posts_count = mysqli_num_rows($result);
 
 if ($page <= 0) {
     $page = 1;
@@ -91,7 +97,8 @@ if ($result) {
         'content_types' => $content_types,
         'tab' => $tab,
         'sort' => $sort,
-        'page' => $page
+        'page' => $page,
+        'posts_count' => $posts_count
     ]);
 } else {
     $error = mysqli_error($connection);

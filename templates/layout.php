@@ -122,7 +122,7 @@
         </form>
         <div class="header__nav-wrapper">
             <?php
-            if (!$user) :?>
+            if (!$user):?>
                 <nav class="header__nav">
                     <ul class="header__user-nav">
                         <li class="header__authorization">
@@ -160,12 +160,12 @@
                         <li class="header__profile">
                             <a class="header__profile-link" href="#">
                                 <div class="header__avatar-wrapper">
-                                    <img class="header__profile-avatar" src="img/userpic-medium.jpg"
+                                    <img class="header__profile-avatar" src="<?= get_user_avatar($user['avatar']) ?>"
                                          alt="Аватар профиля">
                                 </div>
                                 <div class="header__profile-name">
                                 <span>
-                                    <?= $user['user'] ?>
+                                    <?= htmlspecialchars($user['user']) ?>
                                 </span>
                                     <svg class="header__link-arrow" width="10" height="6">
                                         <use xlink:href="#icon-arrow-right-ad"></use>

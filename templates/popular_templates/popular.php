@@ -26,7 +26,7 @@
         <div class="post__author">
             <a class="post__author-link" href="users_profile.php?id=<?= $post['user_id'] ?>" title="Автор">
                 <div class="post__avatar-wrapper">
-                    <img class="post__author-avatar" src="uploads/<?= $post['avatar'] ?>"
+                    <img class="post__author-avatar" src="<?= get_user_avatar($post['avatar']) ?>"
                          alt="Аватар пользователя">
                 </div>
                 <div class="post__info">

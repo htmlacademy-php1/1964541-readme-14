@@ -15,7 +15,7 @@
                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                             <div class="form__error-text">
                                 <h3 class="form__error-title">Почта</h3>
-                                <p class="form__error-desc"><?= $validation_errors['email'] ?></p>
+                                <p class="form__error-desc"><?php isset($validation_errors['email']) ? print $validation_errors['email'] : '' ?></p>
                             </div>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                             <div class="form__error-text">
                                 <h3 class="form__error-title">Логин</h3>
-                                <p class="form__error-desc"><?= $validation_errors['login'] ?></p>
+                                <p class="form__error-desc"><?php isset($validation_errors['login']) ? print $validation_errors['login'] : '' ?></p>
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                             <div class="form__error-text">
                                 <h3 class="form__error-title">Пароль</h3>
-                                <p class="form__error-desc"><?= $validation_errors['password'] ?></p>
+                                <p class="form__error-desc"><?php isset($validation_errors['password']) ? print $validation_errors['password'] : '' ?></p>
                             </div>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                             <div class="form__error-text">
                                 <h3 class="form__error-title">Повтор пароля</h3>
-                                <p class="form__error-desc"><?= $validation_errors['password-repeat'] ?></p>
+                                <p class="form__error-desc"><?php isset($validation_errors['password-repeat']) ? print $validation_errors['password-repeat'] : '' ?></p>
                             </div>
                         </div>
                     </div>

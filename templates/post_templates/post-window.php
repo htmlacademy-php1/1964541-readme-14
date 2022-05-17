@@ -55,8 +55,8 @@
                                 <?php foreach ($comments as $comment): ?>
                                 <li class="comments__item user">
                                     <div class="comments__avatar">
-                                        <a class="user__avatar-link" href="#">
-                                            <img class="comments__picture" src="img/userpic-larisa.jpg" alt="Аватар пользователя">
+                                        <a class="user__avatar-link" href="users_profile.php?id=<?= $comment['user_id'] ?>">
+                                            <img class="comments__picture" src="<?= get_user_avatar($comment['avatar']) ?>" alt="Аватар пользователя">
                                         </a>
                                     </div>
                                     <div class="comments__info">
@@ -67,7 +67,7 @@
                                             <time class="comments__time" datetime="2019-03-20"><?= show_past_time($comment['dt_add']) ?></time>
                                         </div>
                                         <p class="comments__text">
-                                            <?= $comment['content'] ?>
+                                            <?= htmlspecialchars($comment['content']) ?>
                                         </p>
                                     </div>
                                 </li>
@@ -85,11 +85,11 @@
                     <div class="post-details__user-info user__info">
                         <div class="post-details__avatar user__avatar">
                             <a class="post-details__avatar-link user__avatar-link" href="#">
-                                <img class="post-details__picture user__picture" src="img/<?= $this_user['avatar'] ?>" alt="Аватар пользователя">
+                                <img class="post-details__picture user__picture" src="<?= get_user_avatar($this_user['avatar']) ?>" alt="Аватар пользователя">
                             </a>
                         </div>
                         <div class="post-details__name-wrapper user__name-wrapper">
-                            <a class="post-details__name user__name" href="users_profile.php?id=<?= $this_user['id'] ?>">
+                            <a class="post-details__name user__name" href="users_profile.php?id=<?= get_user_avatar($this_user['id']) ?>">
                                 <span><?= $this_user['login'] ?></span>
                             </a>
                             <time class="post-details__time user__time" datetime="2014-03-20"><?= show_past_time($this_user['dt_add']) ?></time>

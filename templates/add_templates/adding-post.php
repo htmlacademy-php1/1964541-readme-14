@@ -9,7 +9,8 @@
                     <?php foreach ($content_types as $types): ?>
                         <ul class="adding-post__tabs-list filters__list tabs__list">
                             <li class="adding-post__tabs-item filters__item">
-                                <a class="adding-post__tabs-link filters__button filters__button--<?= $types['type'] ?> filters__button--active tabs__item tabs__item--active button"
+                                <?php $classname = $types['type'] === $form_type ? 'filters__button--active' : '' ?>
+                                <a class="adding-post__tabs-link filters__button filters__button--<?= $types['type'] ?> <?= $classname ?> tabs__item tabs__item--active button"
                                    href="add.php?type=<?= $types['type'] ?>">
                                     <svg class="filters__icon" width="22" height="18">
                                         <use xlink:href="#icon-filter-<?= $types['type'] ?>"></use>

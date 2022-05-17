@@ -442,3 +442,17 @@ function get_tags($db_connection, $post_id): ?array
     }
     return null;
 }
+
+/**
+ * Проверяет наличие аватара, если нет, то ставит заглушку
+ * @param string $avatar Принимает значение аватара
+ *
+ * @return string Заглушка|Переданный аватар
+ */
+function get_user_avatar ($avatar): string
+{
+    if (!$avatar) {
+        $avatar = 'img/userpic-medium.jpg';
+    }
+    return $avatar;
+}
