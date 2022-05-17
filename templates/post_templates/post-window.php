@@ -67,7 +67,7 @@
                                             <time class="comments__time" datetime="2019-03-20"><?= show_past_time($comment['dt_add']) ?></time>
                                         </div>
                                         <p class="comments__text">
-                                            <?= $comment['content'] ?>
+                                            <?= htmlspecialchars($comment['content']) ?>
                                         </p>
                                     </div>
                                 </li>
