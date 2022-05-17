@@ -12,7 +12,7 @@ $user = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = filter_input_array(INPUT_POST, [
         'email' => FILTER_VALIDATE_EMAIL,
-        'login' => HTML_SPECIALCHARS,
+        'login' => FILTER_DEFAULT,
         'password' => FILTER_DEFAULT,
         'password-repeat' => FILTER_DEFAULT
     ], true);

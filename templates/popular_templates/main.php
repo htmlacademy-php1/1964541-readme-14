@@ -81,9 +81,12 @@
                 <?= include_template('popular_templates/popular.php', ['post' => $post]); ?>
             <?php endforeach; ?>
         </div>
+        <?php
+        if ($posts_count > PAGE_POST_LIMIT): ?>
         <div class="popular__page-links">
             <a class="popular__page-link popular__page-link--prev button button--gray" href="popular.php?tab=<?= $tab ?>&sort=<?= $sort ?>&page=<?= $page -= 1; ?>">Предыдущая страница</a>
             <a class="popular__page-link popular__page-link--next button button--gray" href="popular.php?tab=<?= $tab ?>&sort=<?= $sort ?>&page=<?= $page += 2; ?>">Следующая страница</a>
         </div>
+        <?php endif; ?>
     </div>
 </section>
