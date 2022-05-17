@@ -18,12 +18,12 @@ $dsn = $email_configuration['dsn'];
 $transport = Transport::fromDSN($dsn);
 
 $connection = mysqli_connect('localhost', 'root', '', 'readme');
-mysqli_set_charset($connection, 'utf8');
-
 if (!$connection) {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
 }
+mysqli_set_charset($connection, 'utf8');
+
 
 const SECONDS_IN_MIN = 60;
 const SECONDS_IN_HOUR = 3600;
