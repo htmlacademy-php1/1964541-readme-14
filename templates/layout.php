@@ -122,7 +122,7 @@
         </form>
         <div class="header__nav-wrapper">
             <?php
-            if (!$user) :?>
+            if (!$user):?>
                 <nav class="header__nav">
                     <ul class="header__user-nav">
                         <li class="header__authorization">
