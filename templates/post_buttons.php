@@ -1,3 +1,4 @@
+<?php if($post): ?>
 <div class="post__buttons">
     <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?= $post['id'] ?>" title="Лайк">
         <svg class="post__indicator-icon" width="20" height="17">
@@ -24,3 +25,4 @@
         <span class="visually-hidden">количество репостов</span>
     </a>
 </div>
+<?php endif; ?>
