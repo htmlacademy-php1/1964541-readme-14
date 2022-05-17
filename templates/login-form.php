@@ -4,9 +4,10 @@
     </div>
     <section class="login container">
         <h2 class="visually-hidden">Форма авторизации</h2>
-        <form class="login__form form" action="index.php" method="post">
+        <form class="login__form form" action="login.php" method="post">
             <div class="login__input-wrapper form__input-wrapper">
                 <label class="login__label form__label" for="login-email">Электронная почта</label>
+                <?php $classname = isset($validation_errors['email']) ? '--error' : ''; ?>
                 <div class="form__input-section">
                     <input class="login__input form__input" id="login-email" type="email" name="email" placeholder="Укажите эл.почту">
                     <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
