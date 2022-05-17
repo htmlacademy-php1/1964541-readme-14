@@ -82,7 +82,6 @@
                     </div>
                     <span class="form__error-label"><?php isset($validation_errors['password']) ? print $validation_errors['password'] : '' ?></span>
                 </div>
-                <a class="authorization__recovery" href="#">Восстановить пароль</a>
                 <button class="authorization__submit button button--main" type="submit">Войти</button>
             </form>
         </section>
