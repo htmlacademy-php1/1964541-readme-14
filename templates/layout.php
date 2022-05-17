@@ -165,7 +165,7 @@
                                 </div>
                                 <div class="header__profile-name">
                                 <span>
-                                    <?= $user['user'] ?>
+                                    <?= htmlspecialchars($user['user']) ?>
                                 </span>
                                     <svg class="header__link-arrow" width="10" height="6">
                                         <use xlink:href="#icon-arrow-right-ad"></use>
