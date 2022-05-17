@@ -442,3 +442,11 @@ function get_tags($db_connection, $post_id): ?array
     }
     return null;
 }
+
+function get_user_avatar ($avatar): string
+{
+    if (!$avatar) {
+        $avatar = 'img/userpic-medium.jpg';
+    }
+    return $avatar;
+}

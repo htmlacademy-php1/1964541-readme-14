@@ -3,9 +3,9 @@ USE readme;
 #заполняем юзеров
 INSERT INTO users (email, password, login, avatar)
 VALUES ('4204884@gmail.com', 'WASH32rh', 'gervant of irvia', '/img/cat.jpg'),
-       ('larisa@gmail.com', 'QWERTY1234', 'Лариса', 'userpic-larisa-small.jpg'),
-       ('volandeslav@gmail.com', 'BUric1hK', 'Владик', 'userpic.jpg'),
-       ('dargin@mail.ru', 'SWAGmad', 'Виктор', 'userpic-mark.jpg');
+       ('larisa@gmail.com', 'QWERTY1234', 'Лариса', 'uploads/userpic-larisa-small.jpg'),
+       ('volandeslav@gmail.com', 'BUric1hK', 'Владик', 'uploads/userpic.jpg'),
+       ('dargin@mail.ru', 'SWAGmad', 'Виктор', 'uploads/userpic-mark.jpg');
 
 #заполняем типы контента
 INSERT INTO content_type (name, type)
@@ -67,4 +67,3 @@ INSERT INTO likes (user_id, post_id)
 #Лариса подписалась на Владика
 INSERT INTO subscribes (follower_id, follow_id)
   VALUE (2, 3);
-

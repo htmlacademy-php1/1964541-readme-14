@@ -160,7 +160,7 @@
                         <li class="header__profile">
                             <a class="header__profile-link" href="#">
                                 <div class="header__avatar-wrapper">
-                                    <img class="header__profile-avatar" src="img/userpic-medium.jpg"
+                                    <img class="header__profile-avatar" src="<?= get_user_avatar($user['avatar']) ?>"
                                          alt="Аватар профиля">
                                 </div>
                                 <div class="header__profile-name">

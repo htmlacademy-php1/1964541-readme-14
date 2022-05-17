@@ -51,7 +51,7 @@ if ($result) {
 
     $tags = get_tags($connection, $post_id);
 
-    $sql = 'SELECT content, user_id, c.dt_add, login' .
+    $sql = 'SELECT content, user_id, c.dt_add, login, avatar' .
         ' FROM comments c' .
         ' JOIN users u ON c.user_id = u.id' .
         ' WHERE post_id = ?' . $comments_offset;
