@@ -456,3 +456,42 @@ function get_user_avatar ($avatar): string
     }
     return $avatar;
 }
+
+/**
+ * Проверяет вход на сайт.
+ *
+ * @param array $db_connection Подключение к БД
+ * @param array $user Данные входящего пользователя
+ *
+ * @return  array Массив с ошибками|Вход и переадресация на ленту пользователя
+ */
+function validate_login ($db_connection, $user) : array
+{
+    $sql = 'SELECT id, email, login, password, avatar, dt_add,' .
+        ' (SELECT COUNT(p.id)' .
+        ' FROM posts p' .
+        ' WHERE p.user_id = u.id)' .
+        ' AS posts_count' .
+        ' FROM users u WHERE email = ?';
+    $stmt = mysqli_prepare($db_connection, $sql);
+    mysqli_stmt_bind_param($stmt, 's', $user['email']);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $db_user = mysqli_fetch_assoc($result);
+
+    if ($db_user) {
+        if (password_verify($user['password'], $db_user['password'])) {
+            session_start();
+            $_SESSION['user_id'] = $db_user['id'];
+            $_SESSION['user'] = $db_user['login'];
+            $_SESSION['avatar'] = $db_user['avatar'];
+            $_SESSION['dt_add'] = $db_user['dt_add'];
+            $_SESSION['posts_count'] = $db_user['posts_count'];
+            header('Location: feed.php');
+            exit;
+        }
+    }
+    $validation_errors['email'] = 'Неверный пользователь и/или пароль';
+    $validation_errors['password'] = 'Неверный пользователь и/или пароль';
+    return $validation_errors;
+}
