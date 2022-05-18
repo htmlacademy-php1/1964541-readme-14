@@ -3,9 +3,10 @@ session_start();
 if (empty($_SESSION['user'])) {
     header('Location: index.php');
     exit;
-} else {
-    $user = $_SESSION;
 }
+
+$user = $_SESSION;
+
 
 $sql = 'SELECT COUNT(is_read)' .
     ' AS unread_messages' .
