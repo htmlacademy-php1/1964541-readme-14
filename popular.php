@@ -15,7 +15,8 @@ $navigation_link = 'popular';
 $get_sort = filter_input(INPUT_GET, 'sort');
 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
 
-$sql = 'SELECT id FROM posts;';
+$sql = 'SELECT id
+FROM posts;';
 $result = mysqli_query($connection, $sql);
 $posts_count = mysqli_num_rows($result);
 
@@ -37,7 +38,8 @@ if ($tab) {
         ' FROM likes' .
         ' WHERE likes.post_id = posts.id)' .
         ' AS likes,' .
-        ' (SELECT COUNT(content) FROM comments' .
+        ' (SELECT COUNT(content)' .
+        ' FROM comments' .
         ' WHERE post_id = posts.id)' .
         ' AS comment_sum' .
         ' FROM posts' .
@@ -47,8 +49,7 @@ if ($tab) {
         ' WHERE ct.type = ?' .
         " ORDER BY $sort DESC" .
         ' LIMIT ' . PAGE_POST_LIMIT . " OFFSET $offset";
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 's', $tab);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$tab]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 } else {
@@ -57,7 +58,8 @@ if ($tab) {
         ' FROM likes' .
         ' WHERE likes.post_id = posts.id)' .
         ' AS likes,' .
-        ' (SELECT COUNT(content) FROM comments' .
+        ' (SELECT COUNT(content)' .
+        ' FROM comments' .
         ' WHERE post_id = posts.id)' .
         ' AS comment_sum' .
         ' FROM posts' .
@@ -77,7 +79,8 @@ if ($result) {
 }
 
 
-$sql = 'SELECT id, name, type FROM content_type;';
+$sql = 'SELECT id, name, type
+ FROM content_type;';
 $result = mysqli_query($connection, $sql);
 
 

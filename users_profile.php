@@ -56,8 +56,7 @@ if ($this_user) {
                 ' JOIN subscribes s ON u.id = follow_id' .
                 ' WHERE follower_id = ?';
     }
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$user_id]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);

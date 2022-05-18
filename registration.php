@@ -18,9 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ], true);
     $repeat_pass = $user['password-repeat'];
 
-    $sql = 'SELECT email FROM users WHERE email=?';
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 's', $user['email']);
+    $sql = 'SELECT email FROM users
+     WHERE email=?';
+    $stmt = db_get_prepare_stmt($connection, $sql, [$user['email']]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $email = mysqli_num_rows($result);
@@ -71,9 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ['validation_errors' => $validation_errors, 'user' => $user]);
     } else {
         $user['password'] = password_hash($user['password'], PASSWORD_DEFAULT);
-        $sql = 'INSERT INTO users (email, password, login, avatar) VALUES (?, ?, ?, ?)';
-        $stmt = mysqli_prepare($connection, $sql);
-        mysqli_stmt_bind_param($stmt, 'ssss', $user['email'], $user['password'], $user['login'], $user['avatar']);
+        $sql = 'INSERT INTO users (email, password, login, avatar)
+         VALUES (?, ?, ?, ?)';
+        $stmt = db_get_prepare_stmt($connection, $sql, [$user['email'], $user['password'], $user['login'], $user['avatar']]);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
             header('Location: popular.php');

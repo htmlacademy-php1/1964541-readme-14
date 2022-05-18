@@ -25,8 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$validation_errors) {
         $sql = 'INSERT INTO comments (content, user_id, post_id)' .
             ' VALUES (?, ?, ?)';
-        $stmt = mysqli_prepare($connection, $sql);
-        mysqli_stmt_bind_param($stmt, 'sii', $comment['text'], $user['user_id'], $comment['post_id']);
+        $stmt = db_get_prepare_stmt($connection, $sql, [$comment['text'], $user['user_id'], $comment['post_id']]);
         mysqli_stmt_execute($stmt);
         header('Location: users_profile.php?id=' . $this_user['id']);
         exit;

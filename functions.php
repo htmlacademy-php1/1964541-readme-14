@@ -274,8 +274,7 @@ function get_user($db_connection, $user_id): array
     $sql = 'SELECT id, login, email, avatar, dt_add' .
         ' FROM users u' .
         ' WHERE id = ?;';
-    $stmt = mysqli_prepare($db_connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    $stmt = db_get_prepare_stmt($db_connection, $sql, [$user_id]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     return mysqli_fetch_assoc($result);
@@ -291,7 +290,8 @@ function get_user($db_connection, $user_id): array
  */
 function get_user_info($db_connection, $user_id): array
 {
-    $sql = 'SELECT (SELECT COUNT(p.id)' .
+    $sql = 'SELECT' .
+        ' (SELECT COUNT(p.id)' .
         ' FROM posts p' .
         ' WHERE p.user_id = u.id)' .
         ' AS posts_count,' .
@@ -303,8 +303,7 @@ function get_user_info($db_connection, $user_id): array
         ' JOIN users u ON p.user_id = u.id' .
         ' WHERE u.id = ?' .
         ' GROUP BY posts_count, subscribers_count;';
-    $stmt = mysqli_prepare($db_connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    $stmt = db_get_prepare_stmt($db_connection, $sql, [$user_id]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $array = mysqli_fetch_assoc($result);
@@ -328,8 +327,7 @@ function check_subscription($db_connection, $follow_id, $follower_id): bool
     $sql = 'SELECT * ' .
         ' FROM subscribes' .
         ' WHERE follow_id = ? AND follower_id = ?;';
-    $stmt = mysqli_prepare($db_connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'ii', $follow_id, $follower_id);
+    $stmt = db_get_prepare_stmt($db_connection, $sql, [$follow_id, $follower_id]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $result = mysqli_fetch_assoc($result);
@@ -391,8 +389,7 @@ function validate_post_id($db_connection, $post_id): ?string
     $sql = 'SELECT * ' .
         ' FROM posts' .
         ' WHERE id = ?';
-    $stmt = mysqli_prepare($db_connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $post_id);
+    $stmt = db_get_prepare_stmt($db_connection, $sql, [$post_id]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $result = mysqli_num_rows($result);

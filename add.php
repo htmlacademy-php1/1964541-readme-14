@@ -14,6 +14,7 @@ FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+$tag_id = null;
 $back = $_SERVER['HTTP_REFERER'];
 
 $form_type = filter_input(INPUT_GET, 'type', FILTER_DEFAULT);
@@ -134,8 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sql = 'SELECT id
     FROM content_type
     WHERE type = ?';
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 's', $form_type);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$form_type]);
     mysqli_stmt_execute($stmt);
     $type_result = mysqli_stmt_get_result($stmt);
     $type_row = mysqli_fetch_array($type_result, MYSQLI_ASSOC);
@@ -171,8 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ' FROM users' .
                 ' JOIN subscribes s on users.id = s.follower_id' .
                 ' WHERE follow_id = ?;';
-            $stmt = mysqli_prepare($connection, $sql);
-            mysqli_stmt_bind_param($stmt, 'i', $post['user_id']);
+            $stmt = db_get_prepare_stmt($connection, $sql, [$post['user_id']]);
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
             if ($result) {
@@ -196,20 +195,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $sql = 'SELECT id, name
                         FROM tags
                         WHERE name = ?;';
-                        $stmt = mysqli_prepare($connection, $sql);
-                        mysqli_stmt_bind_param($stmt, 's', $tag);
+                        $stmt = db_get_prepare_stmt($connection, $sql, [$tag]);
                         mysqli_stmt_execute($stmt);
                         $result = mysqli_stmt_get_result($stmt);
                         if (mysqli_num_rows($result)) {
                             $db_tag = mysqli_fetch_assoc($result);
-                            $tag_id[] = $db_tag['id'];
+                            $tag_ids[] = $db_tag['id'];
                         } else {
                             $sql = 'INSERT INTO tags (name)
                             VALUE (?)';
-                            $stmt = mysqli_prepare($connection, $sql);
-                            mysqli_stmt_bind_param($stmt, 's', $tag);
+                            $stmt = db_get_prepare_stmt($connection, $sql, [$tag]);
                             mysqli_stmt_execute($stmt);
-                            $tag_id[] = mysqli_insert_id($connection);
+                            $tag_ids[] = mysqli_insert_id($connection);
                         }
                     }
                 } else {
@@ -217,8 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $sql = 'SELECT id, name
                     FROM tags
                     WHERE name = ?;';
-                    $stmt = mysqli_prepare($connection, $sql);
-                    mysqli_stmt_bind_param($stmt, 's', $tag);
+                    $stmt = db_get_prepare_stmt($connection, $sql, [$tag]);
                     mysqli_stmt_execute($stmt);
                     $result = mysqli_stmt_get_result($stmt);
                     $db_tag = mysqli_fetch_assoc($result);
@@ -227,23 +223,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     } else {
                         $sql = 'INSERT INTO tags (name)
                         VALUE (?);';
-                        $stmt = mysqli_prepare($connection, $sql);
-                        mysqli_stmt_bind_param($stmt, 's', $tag);
+                        $stmt = db_get_prepare_stmt($connection, $sql, [$tag]);
                         mysqli_stmt_execute($stmt);
                         $tag_id = mysqli_insert_id($connection);
                     }
                 }
                 $sql = 'INSERT INTO posts_tags (post_id, tag_id)
                 VALUES (?, ?)';
-                $stmt = mysqli_prepare($connection, $sql);
 
-                if (is_array($tag_id)) {
-                    foreach ($tag_id as $item) {
-                        mysqli_stmt_bind_param($stmt, 'ii', $post_id, $item);
+                if (isset($tag_ids)) {
+                    foreach ($tag_ids as $tag_id) {
+                        $stmt = db_get_prepare_stmt($connection, $sql, [$post_id, $tag_id]);
                         mysqli_stmt_execute($stmt);
                     }
                 } else {
-                    mysqli_stmt_bind_param($stmt, 'ii', $post_id, $tag_id);
+                    $stmt = db_get_prepare_stmt($connection, $sql, [$post_id, $tag_id]);
                     mysqli_stmt_execute($stmt);
                 }
 

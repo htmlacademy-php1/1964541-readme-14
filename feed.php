@@ -44,8 +44,7 @@ if ($tab) {
         ' JOIN content_type ct ON p.content_type_id = ct.id' .
         ' WHERE follower_id = ? && type = ?' .
         ' ORDER BY dt_add ASC;';
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'is', $user['user_id'], $tab);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$user['user_id'], $tab]);
 } else {
     $sql = 'SELECT p.id, title, text, quote_auth, img, video, title, text, quote_auth, img, video, link, views, user_id, type, p.dt_add, login, avatar,' .
         ' (SELECT COUNT(post_id)' .
@@ -66,8 +65,7 @@ if ($tab) {
         ' JOIN content_type ct ON p.content_type_id = ct.id' .
         ' WHERE follower_id = ?' .
         ' ORDER BY dt_add ASC;';
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $user['user_id']);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$user['user_id']]);
 }
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
