@@ -13,7 +13,7 @@
                   </span>
                     <div class="messages__preview">
                         <p class="messages__preview-text">
-                            <?= cut_message($chat['last_message']) ?>
+                            <?= cut_message(htmlspecialchars($chat['last_message'])) ?>
                         </p>
                         <time class="messages__preview-time" datetime="2019-05-01T14:40">
                             <?= date('H:i', strtotime($chat['last_message_dt_add'])) ?>

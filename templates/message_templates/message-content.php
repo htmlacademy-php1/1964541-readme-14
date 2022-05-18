@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <p class="messages__text">
-                        <?= $message['content'] ?>
+                        <?= htmlspecialchars($message['content']) ?>
                     </p>
                 </li>
             <?php endforeach; ?>
