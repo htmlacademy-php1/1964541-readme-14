@@ -15,13 +15,11 @@ $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 $tag_id = null;
-$back = $_SERVER['HTTP_REFERER'];
+
 
 $form_type = filter_input(INPUT_GET, 'type', FILTER_DEFAULT);
 
-if ($form_type) {
-    $_SERVER['HTTP_REFERER'] = $back;
-}
+$back = $_SERVER['HTTP_REFERER'];
 
 $validation_errors = [];
 $required = ['title'];

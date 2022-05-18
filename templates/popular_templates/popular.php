@@ -3,7 +3,25 @@
         <h2><a href="post.php?id=<?= $post['id'] ?>"><?= htmlspecialchars($post['title']) ?></a></h2>
     </header>
     <div class="post__main">
-        <?= include_template('post_types_change.php', ['post' => $post]) ?>
+        <?php
+        switch ($post['type']) {
+            case 'photo':
+                echo include_template('popular_templates/popular_post_types/post-photo.php', ['post' => $post]);
+                break;
+            case 'video':
+                echo include_template('popular_templates/popular_post_types/post-video.php', ['post' => $post]);
+                break;
+            case 'quote':
+                echo include_template('popular_templates/popular_post_types/post-quote.php', ['post' => $post]);
+                break;
+            case 'text':
+                echo include_template('popular_templates/popular_post_types/post-text.php', ['post' => $post]);
+                break;
+            case 'link':
+                echo include_template('popular_templates/popular_post_types/post-link.php', ['post' => $post]);
+                break;
+        }
+        ?>
     </div>
     <footer class="post__footer">
         <div class="post__author">
@@ -21,7 +39,8 @@
         </div>
         <div class="post__indicators">
             <div class="post__buttons">
-                <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?= $post['id']?>" title="Лайк">
+                <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?= $post['id'] ?>"
+                   title="Лайк">
                     <svg class="post__indicator-icon" width="20" height="17">
                         <use xlink:href="#icon-heart"></use>
                     </svg>
