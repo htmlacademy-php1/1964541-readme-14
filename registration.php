@@ -67,18 +67,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($validation_errors) {
         $user = null;
-        $page_content = include_template('registration_templates/reg-form.php', ['validation_errors' => $validation_errors, 'user' => $user]);
+        $page_content = include_template('registration_templates/reg-form.php',
+            ['validation_errors' => $validation_errors, 'user' => $user]);
     } else {
         $user['password'] = password_hash($user['password'], PASSWORD_DEFAULT);
         $sql = 'INSERT INTO users (email, password, login, avatar) VALUES (?, ?, ?, ?)';
-        $stmt = db_get_prepare_stmt($connection, $sql, [$user['email'], $user['password'], $user['login'], $user['avatar']]);
+        $stmt = mysqli_prepare($connection, $sql);
+        mysqli_stmt_bind_param($stmt, 'ssss', $user['email'], $user['password'], $user['login'], $user['avatar']);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
             header('Location: popular.php');
             exit;
-        } else {
-            $page_content = include_template('error.php', ['error' => $error]);
         }
+        $page_content = include_template('error.php', ['error' => $error]);
+
     }
 }
 
@@ -88,5 +90,5 @@ $layout_content = include_template('layout.php', [
     'title' => 'readme: блог, каким он должен быть',
     'user' => $user,
     'navigation_link' => $navigation_link
-    ]);
+]);
 print($layout_content);
