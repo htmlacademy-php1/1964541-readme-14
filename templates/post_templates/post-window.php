@@ -120,7 +120,7 @@
                         ?>
                         <a href="<?= $button['subscription'] ?>.php?id=<?= $this_user['id'] ?>"
                            class="profile__user-button user__button user__button--subscription button <?= $button['class'] ?>"><?= $button['name'] ?></a>
-                        <a class="user__button user__button--writing button button--green" href="#">Сообщение</a>
+                        <a class="user__button user__button--writing button button--green" href="messages.php?chat_id=<?= $this_user['id'] ?>">Сообщение</a>
                     </div>
                 </div>
             </div>
