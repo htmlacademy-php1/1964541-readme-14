@@ -1,5 +1,4 @@
 <?php
-
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
 
@@ -15,7 +14,6 @@ $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 $tag_id = null;
-
 
 $form_type = filter_input(INPUT_GET, 'type', FILTER_DEFAULT);
 
@@ -242,10 +240,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             header('Location: post.php?id=' . $post_id);
             exit;
-        } else {
-            $page_content = include_template('error.php', ['error' => $error]);
         }
-
+        $page_content = include_template('error.php', ['error' => $error]);
     }
 }
 
