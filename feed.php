@@ -29,10 +29,12 @@ if ($tab) {
         ' FROM likes' .
         ' WHERE likes.post_id = p.id)' .
         ' AS likes,' .
-        ' (SELECT COUNT(content) FROM comments' .
+        ' (SELECT COUNT(content) ' .
+        ' FROM comments' .
         ' WHERE post_id = p.id)' .
         ' AS comment_sum,' .
-        ' (SELECT COUNT(original_id) FROM posts' .
+        ' (SELECT COUNT(original_id) ' .
+        ' FROM posts' .
         ' WHERE original_id = p.id)' .
         ' AS reposts_sum' .
         ' FROM posts p' .
@@ -43,10 +45,6 @@ if ($tab) {
         ' ORDER BY dt_add ASC;';
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 'is', $user['user_id'], $tab);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
 } else {
     $sql = 'SELECT p.id, title, text, quote_auth, img, video, title, text, quote_auth, img, video, link, views, user_id, type, p.dt_add, login, avatar,' .
         ' (SELECT COUNT(post_id)' .
@@ -67,11 +65,11 @@ if ($tab) {
         ' ORDER BY dt_add ASC;';
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 'i', $user['user_id']);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    if ($result) {
-        $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    }
+}
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+if ($result) {
+    $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
 
