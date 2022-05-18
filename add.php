@@ -9,7 +9,8 @@ require_once 'data.php';
 require_once 'session.php';
 
 $navigation_link = 'add';
-$sql = 'SELECT id, name, type FROM content_type;';
+$sql = 'SELECT id, name, type
+FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
@@ -130,7 +131,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
     }
 
-    $sql = 'SELECT id FROM content_type WHERE type = ?';
+    $sql = 'SELECT id
+    FROM content_type
+    WHERE type = ?';
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 's', $form_type);
     mysqli_stmt_execute($stmt);
@@ -149,7 +152,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'back' => $back
         ]);
     } else {
-        $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         $stmt = db_get_prepare_stmt($connection, $sql, [
             $post['title'],
             $post['text'],
@@ -163,7 +167,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = mysqli_stmt_execute($stmt);
         $post_id = mysqli_insert_id($connection);
         if ($result) {
-            $sql = 'SELECT id, login, email FROM users' .
+            $sql = 'SELECT id, login, email' .
+                ' FROM users' .
                 ' JOIN subscribes s on users.id = s.follower_id' .
                 ' WHERE follow_id = ?;';
             $stmt = mysqli_prepare($connection, $sql);
@@ -188,7 +193,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (stristr($post['tags'], ' ')) {
                     $tags = explode(' ', $post['tags']);
                     foreach ($tags as $tag) {
-                        $sql = 'SELECT id, name FROM tags WHERE name = ?;';
+                        $sql = 'SELECT id, name
+                        FROM tags
+                        WHERE name = ?;';
                         $stmt = mysqli_prepare($connection, $sql);
                         mysqli_stmt_bind_param($stmt, 's', $tag);
                         mysqli_stmt_execute($stmt);
@@ -197,7 +204,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $db_tag = mysqli_fetch_assoc($result);
                             $tag_id[] = $db_tag['id'];
                         } else {
-                            $sql = 'INSERT INTO tags (name) VALUE (?)';
+                            $sql = 'INSERT INTO tags (name)
+                            VALUE (?)';
                             $stmt = mysqli_prepare($connection, $sql);
                             mysqli_stmt_bind_param($stmt, 's', $tag);
                             mysqli_stmt_execute($stmt);
@@ -206,7 +214,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 } else {
                     $tag = $post['tags'];
-                    $sql = 'SELECT id, name FROM tags WHERE name = ?;';
+                    $sql = 'SELECT id, name
+                    FROM tags
+                    WHERE name = ?;';
                     $stmt = mysqli_prepare($connection, $sql);
                     mysqli_stmt_bind_param($stmt, 's', $tag);
                     mysqli_stmt_execute($stmt);
@@ -215,14 +225,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($db_tag) {
                         $tag_id = $db_tag['id'];
                     } else {
-                        $sql = 'INSERT INTO tags (name) VALUE (?);';
+                        $sql = 'INSERT INTO tags (name)
+                        VALUE (?);';
                         $stmt = mysqli_prepare($connection, $sql);
                         mysqli_stmt_bind_param($stmt, 's', $tag);
                         mysqli_stmt_execute($stmt);
                         $tag_id = mysqli_insert_id($connection);
                     }
                 }
-                $sql = 'INSERT INTO posts_tags (post_id, tag_id) VALUES (?, ?)';
+                $sql = 'INSERT INTO posts_tags (post_id, tag_id)
+                VALUES (?, ?)';
                 $stmt = mysqli_prepare($connection, $sql);
 
                 if (is_array($tag_id)) {

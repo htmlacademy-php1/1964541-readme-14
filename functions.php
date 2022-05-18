@@ -325,7 +325,8 @@ function get_user_info($db_connection, $user_id): array
  */
 function check_subscription($db_connection, $follow_id, $follower_id): bool
 {
-    $sql = 'SELECT * FROM subscribes' .
+    $sql = 'SELECT * ' .
+        ' FROM subscribes' .
         ' WHERE follow_id = ? AND follower_id = ?;';
     $stmt = mysqli_prepare($db_connection, $sql);
     mysqli_stmt_bind_param($stmt, 'ii', $follow_id, $follower_id);
@@ -387,7 +388,8 @@ function validate_message($value, $min): ?string
  */
 function validate_post_id($db_connection, $post_id): ?string
 {
-    $sql = 'SELECT * FROM posts' .
+    $sql = 'SELECT * ' .
+        ' FROM posts' .
         ' WHERE id = ?';
     $stmt = mysqli_prepare($db_connection, $sql);
     mysqli_stmt_bind_param($stmt, 'i', $post_id);
@@ -408,7 +410,8 @@ function validate_post_id($db_connection, $post_id): ?string
  */
 function validate_recipient_id($db_connection, $recipient_id): ?string
 {
-    $sql = 'SELECT * FROM users' .
+    $sql = 'SELECT *' .
+        ' FROM users' .
         ' WHERE id = ?';
     $stmt = mysqli_prepare($db_connection, $sql);
     mysqli_stmt_bind_param($stmt, 'i', $recipient_id);

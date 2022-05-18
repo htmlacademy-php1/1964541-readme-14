@@ -6,7 +6,8 @@ require_once 'session.php';
 
 $navigation_link = 'feed';
 
-$sql = 'SELECT id, name, type FROM content_type;';
+$sql = 'SELECT id, name, type
+FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
@@ -51,10 +52,12 @@ if ($tab) {
         ' FROM likes' .
         ' WHERE likes.post_id = p.id)' .
         ' AS likes,' .
-        ' (SELECT COUNT(content) FROM comments' .
+        ' (SELECT COUNT(content)' .
+        ' FROM comments' .
         ' WHERE post_id = p.id)' .
         ' AS comment_sum,' .
-        ' (SELECT COUNT(original_id) FROM posts' .
+        ' (SELECT COUNT(original_id)' .
+        ' FROM posts' .
         ' WHERE original_id = p.id)' .
         ' AS reposts_sum' .
         ' FROM posts p' .
