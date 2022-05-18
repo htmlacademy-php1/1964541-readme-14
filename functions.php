@@ -495,3 +495,5 @@ function validate_login ($db_connection, $user) : array
     $validation_errors['password'] = 'Неверный пользователь и/или пароль';
     return $validation_errors;
 }
+
+

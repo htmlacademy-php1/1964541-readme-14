@@ -6,6 +6,7 @@ require_once 'data.php';
 $user = null;
 $validation_errors = [];
 $navigation_link = 'login';
+$message_notification = null;
 $page_content = include_template('login-form.php', ['validation_errors' => $validation_errors]);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
