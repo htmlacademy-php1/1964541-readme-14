@@ -13,7 +13,13 @@ $sql = 'SELECT id, name, type FROM content_type;';
 $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+$back = $_SERVER['HTTP_REFERER'];
+
 $form_type = filter_input(INPUT_GET, 'type', FILTER_DEFAULT);
+
+if ($form_type) {
+    $_SERVER['HTTP_REFERER'] = $back;
+}
 
 $validation_errors = [];
 $required = ['title'];
@@ -21,7 +27,8 @@ $page_content = include_template('add_templates/adding-post.php', [
     'content_types' => $content_types,
     'validation_errors' => $validation_errors,
     'form_type' => $form_type,
-    'form_templates' => $form_templates
+    'form_templates' => $form_templates,
+    'back' => $back
 ]);
 
 if (validate_form_type($form_type, $content_types)) {
@@ -64,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'video' => FILTER_VALIDATE_URL,
         'link' => FILTER_VALIDATE_URL,
         'tags' => FILTER_DEFAULT,
-        'content_type_id' => $form_type,
+        'content_type_id' => $form_type
     ], true);
     $post['user_id'] = $user['user_id'];
 
@@ -138,7 +145,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'content_types' => $content_types,
             'validation_errors' => $validation_errors,
             'form_type' => $form_type,
-            'form_templates' => $form_templates
+            'form_templates' => $form_templates,
+            'back' => $back
         ]);
     } else {
         $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
