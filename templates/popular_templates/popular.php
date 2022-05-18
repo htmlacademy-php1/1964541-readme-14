@@ -30,7 +30,7 @@
                          alt="Аватар пользователя">
                 </div>
                 <div class="post__info">
-                    <b class="post__author-name"><?= $post['login'] ?></b>
+                    <b class="post__author-name"><?= htmlspecialchars($post['login']) ?></b>
                     <time class="post__time" title="<?= date("d.m.y H:i", strtotime($post['dt_add'])) ?>"
                           datetime="<?= $post['dt_add'] ?>"><?= show_past_time($post['dt_add']) ?></time>
                 </div>

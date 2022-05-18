@@ -15,7 +15,7 @@
                                     <img class="post__author-avatar" src="<?= get_user_avatar($post['avatar']) ?>" alt="Аватар пользователя" width="60" height="60">
                                 </div>
                                 <div class="post__info">
-                                    <b class="post__author-name"><?= $post['login'] ?></b>
+                                    <b class="post__author-name"><?= htmlspecialchars($post['login']) ?></b>
                                     <span class="post__time"><?= show_past_time($post['dt_add'])?></span>
                                 </div>
                             </a>

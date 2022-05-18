@@ -62,7 +62,7 @@
                                     <div class="comments__info">
                                         <div class="comments__name-wrapper">
                                             <a class="comments__user-name" href="#">
-                                                <span><?= $comment['login'] ?></span>
+                                                <span><?= htmlspecialchars($comment['login']) ?></span>
                                             </a>
                                             <time class="comments__time" datetime="2019-03-20"><?= show_past_time($comment['dt_add']) ?></time>
                                         </div>
@@ -90,7 +90,7 @@
                         </div>
                         <div class="post-details__name-wrapper user__name-wrapper">
                             <a class="post-details__name user__name" href="users_profile.php?id=<?= get_user_avatar($this_user['id']) ?>">
-                                <span><?= $this_user['login'] ?></span>
+                                <span><?= htmlspecialchars($this_user['login']) ?></span>
                             </a>
                             <time class="post-details__time user__time" datetime="2014-03-20"><?= show_past_time($this_user['dt_add']) ?></time>
                         </div>
