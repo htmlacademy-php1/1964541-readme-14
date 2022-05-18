@@ -5,24 +5,7 @@
             <h2 class="visually-hidden">Публикация</h2>
             <div class="post-details__wrapper post-photo">
                 <div class="post-details__main-block post post--details">
-                    <?php switch ($post['type']) {
-                        case 'photo':
-                            echo include_template('post_templates/post_window_types/post-photo.php', ['post' => $post]);
-                            break;
-                        case 'video':
-                            echo include_template('post_templates/post_window_types/post-video.php', ['post' => $post]);
-                            break;
-                        case 'quote':
-                            echo include_template('post_templates/post_window_types/post-quote.php', ['post' => $post]);
-                            break;
-                        case 'text':
-                            echo include_template('post_templates/post_window_types/post-text.php', ['post' => $post]);
-                            break;
-                        case 'link':
-                            echo include_template('post_templates/post_window_types/post-link.php', ['post' => $post]);
-                            break;
-                    }
-                    ?>
+                    <?= include_template('post_types_change.php', ['post' => $post]) ?>
                     <div class="post__indicators">
                         <?= include_template('post_buttons.php', ['post' => $post]) ?>
                         <span class="post__view"><?= $post['views'] ?></span>
