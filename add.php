@@ -7,6 +7,7 @@ require_once 'functions.php';
 require_once 'data.php';
 require_once 'session.php';
 
+
 $navigation_link = 'add';
 $sql = 'SELECT id, name, type
 FROM content_type;';
@@ -14,10 +15,9 @@ $result = mysqli_query($connection, $sql);
 $content_types = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 $tag_id = null;
-
 $form_type = filter_input(INPUT_GET, 'type', FILTER_DEFAULT);
 
-$back = $_SERVER['HTTP_REFERER'];
+$back = $_SESSION['back'];
 
 $validation_errors = [];
 $required = ['title'];
