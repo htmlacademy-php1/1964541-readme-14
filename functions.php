@@ -308,8 +308,10 @@ function get_user_info($db_connection, $user_id): array
     $result = mysqli_stmt_get_result($stmt);
     $array = mysqli_fetch_assoc($result);
     if (!mysqli_num_rows($result)) {
-        $array = ['subscribers_count' => 0,
-        'posts_count' => 0];
+        $array = [
+            'subscribers_count' => 0,
+            'posts_count' => 0
+        ];
     }
     return $array;
 }
@@ -449,7 +451,7 @@ function get_tags($db_connection, $post_id): ?array
  *
  * @return string Заглушка|Переданный аватар
  */
-function get_user_avatar ($avatar): string
+function get_user_avatar($avatar): string
 {
     if (!$avatar) {
         $avatar = 'img/userpic-medium.jpg';
@@ -465,7 +467,7 @@ function get_user_avatar ($avatar): string
  *
  * @return  array Массив с ошибками|Вход и переадресация на ленту пользователя
  */
-function validate_login ($db_connection, $user) : array
+function validate_login($db_connection, $user): array
 {
     $sql = 'SELECT id, email, login, password, avatar, dt_add,' .
         ' (SELECT COUNT(p.id)' .
@@ -497,65 +499,100 @@ function validate_login ($db_connection, $user) : array
 }
 
 /**
- * Вносит теги в БД, ничего не возвращает
- * @param array $db_connection  Подключение к БД
+ * Вносит теги в БД
+ * @param array $db_connection Подключение к БД
  * @param array|string $tags Теги добавляемые к посту
  * @param integer $post_id ID поста для добавления связи между тегами и постами
+ *
+ * @return void
  */
-function insert_tag ($db_connection, $tags, $post_id)
+function insert_tag($db_connection, $tags, $post_id)
 {
-    $tags = trim($tags);
-
-    if (stristr($tags, ' ')) {
-        $tags = explode(' ', $tags);
-        foreach ($tags as $tag) {
-            $sql = 'SELECT id, name
+    if ($tags) {
+        $tags = trim($tags);
+        if (stristr($tags, ' ')) {
+            $tags = explode(' ', $tags);
+            foreach ($tags as $tag) {
+                $sql = 'SELECT id, name
                         FROM tags
                         WHERE name = ?;';
+                $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
+                mysqli_stmt_execute($stmt);
+                $result = mysqli_stmt_get_result($stmt);
+                if (mysqli_num_rows($result)) {
+                    $db_tag = mysqli_fetch_assoc($result);
+                    $tag_ids[] = $db_tag['id'];
+                } else {
+                    $sql = 'INSERT INTO tags (name)
+                            VALUE (?)';
+                    $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
+                    mysqli_stmt_execute($stmt);
+                    $tag_ids[] = mysqli_insert_id($db_connection);
+                }
+            }
+        } else {
+            $tag = $tags;
+            $sql = 'SELECT id, name
+                    FROM tags
+                    WHERE name = ?;';
             $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
-            if (mysqli_num_rows($result)) {
-                $db_tag = mysqli_fetch_assoc($result);
-                $tag_ids[] = $db_tag['id'];
+            $db_tag = mysqli_fetch_assoc($result);
+            if ($db_tag) {
+                $tag_id = $db_tag['id'];
             } else {
                 $sql = 'INSERT INTO tags (name)
-                            VALUE (?)';
+                        VALUE (?);';
                 $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
                 mysqli_stmt_execute($stmt);
-                $tag_ids[] = mysqli_insert_id($db_connection);
+                $tag_id = mysqli_insert_id($db_connection);
             }
         }
-    } else {
-        $tag = $tags;
-        $sql = 'SELECT id, name
-                    FROM tags
-                    WHERE name = ?;';
-        $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-        $db_tag = mysqli_fetch_assoc($result);
-        if ($db_tag) {
-            $tag_id = $db_tag['id'];
-        } else {
-            $sql = 'INSERT INTO tags (name)
-                        VALUE (?);';
-            $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
-            mysqli_stmt_execute($stmt);
-            $tag_id = mysqli_insert_id($db_connection);
-        }
-    }
-    $sql = 'INSERT INTO posts_tags (post_id, tag_id)
+        $sql = 'INSERT INTO posts_tags (post_id, tag_id)
                 VALUES (?, ?)';
 
-    if (isset($tag_ids)) {
-        foreach ($tag_ids as $tag_id) {
+        if (isset($tag_ids)) {
+            foreach ($tag_ids as $tag_id) {
+                $stmt = db_get_prepare_stmt($db_connection, $sql, [$post_id, $tag_id]);
+                mysqli_stmt_execute($stmt);
+            }
+        } else {
             $stmt = db_get_prepare_stmt($db_connection, $sql, [$post_id, $tag_id]);
             mysqli_stmt_execute($stmt);
         }
-    } else {
-        $stmt = db_get_prepare_stmt($db_connection, $sql, [$post_id, $tag_id]);
-        mysqli_stmt_execute($stmt);
+    }
+}
+
+/**
+ * Оправляет подписанным пользователем уведомление на почту о новом посте
+ * @param array $db_connection Связь с БД, для обнаружения подписчиков
+ * @param array $post информация о самом посте
+ * @param array $email_configuration параметры письма
+ * @param object $email Создает письмо
+ * @param object $mailer Отправляет письмо
+ * @param array $user Пользователь, который публикует
+ *
+ * @return void
+ */
+function send_new_post_email($db_connection, $post, $email_configuration, $email, $mailer, $user)
+{
+    $sql = 'SELECT id, login, email' .
+        ' FROM users' .
+        ' JOIN subscribes s on users.id = s.follower_id' .
+        ' WHERE follow_id = ?;';
+    $stmt = db_get_prepare_stmt($db_connection, $sql, [$post['user_id']]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if ($result) {
+        $followers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        foreach ($followers as $follower) {
+            $email->from($email_configuration['from']);
+            $email->to($follower['email']);
+            $email->subject('Новая публикация от пользователя' . $user['user']);
+            $email->text('Здравствуйте, ' . $follower['login'] . '. Пользователь ' . $user['user'] . ' только что опубликовал новую запись ' . $post['title'] . '. Посмотрите её на странице пользователя: ' . $email_configuration['host_info'] . '/users_profile.php?id=' . $user['user_id']);
+            $mailer->send($email);
+        }
     }
 }
 

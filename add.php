@@ -157,28 +157,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = mysqli_stmt_execute($stmt);
         $post_id = mysqli_insert_id($connection);
         if ($result) {
-            $sql = 'SELECT id, login, email' .
-                ' FROM users' .
-                ' JOIN subscribes s on users.id = s.follower_id' .
-                ' WHERE follow_id = ?;';
-            $stmt = db_get_prepare_stmt($connection, $sql, [$post['user_id']]);
-            mysqli_stmt_execute($stmt);
-            $result = mysqli_stmt_get_result($stmt);
-            if ($result) {
-                $followers = mysqli_fetch_all($result, MYSQLI_ASSOC);
-                foreach ($followers as $follower) {
-                    $email = new Email();
-                    $email->from($email_configuration['from']);
-                    $email->to($follower['email']);
-                    $email->subject('Новая публикация от пользователя' . $user['user']);
-                    $email->text('Здравствуйте, ' . $follower['login'] . '. Пользователь ' . $user['user'] . ' только что опубликовал новую запись ' . $post['title'] . '. Посмотрите её на странице пользователя: ' . $email_configuration['host_info'] . '/users_profile.php?id=' . $user['user_id']);
-                    $mailer = new Mailer($transport);
-                    $mailer->send($email);
-                }
-            }
-            if ($post['tags']) {
-                insert_tag($connection, $post['tags'], $post_id);
-            }
+            $email = new Email();
+            $mailer = new Mailer($transport);
+            send_new_post_email ($connection, $post, $email_configuration, $email, $mailer, $user);
+
+            insert_tag($connection, $post['tags'], $post_id);
+
             header('Location: post.php?id=' . $post_id);
             exit;
         }
