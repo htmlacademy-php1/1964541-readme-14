@@ -19,6 +19,7 @@ $form_type = filter_input(INPUT_GET, 'type', FILTER_DEFAULT);
 
 $back = $_SESSION['back'];
 
+
 $validation_errors = [];
 $required = ['title'];
 $page_content = include_template('add_templates/adding-post.php', [

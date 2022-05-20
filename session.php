@@ -7,6 +7,10 @@ if (empty($_SESSION['user'])) {
 
 $user = $_SESSION;
 
+$tab = filter_input(INPUT_GET, 'tab');
+if ($tab === 'text') {
+    $_SESSION['back'] = $_SERVER['HTTP_REFERER'];
+}
 
 $sql = 'SELECT COUNT(is_read)' .
     ' AS unread_messages' .
