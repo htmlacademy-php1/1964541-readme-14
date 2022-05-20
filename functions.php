@@ -496,4 +496,67 @@ function validate_login ($db_connection, $user) : array
     return $validation_errors;
 }
 
+/**
+ * @param array $db_connection  Подключение к БД
+ * @param array|string $tags
+ * @param $post_id
+ * @return bool True - удалось внести в БД|False - не удалось
+ */
+function insert_tag ($db_connection, $tags, $post_id)
+{
+    $tags = trim($tags);
+
+    if (stristr($tags, ' ')) {
+        $tags = explode(' ', $tags);
+        foreach ($tags as $tag) {
+            $sql = 'SELECT id, name
+                        FROM tags
+                        WHERE name = ?;';
+            $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            if (mysqli_num_rows($result)) {
+                $db_tag = mysqli_fetch_assoc($result);
+                $tag_ids[] = $db_tag['id'];
+            } else {
+                $sql = 'INSERT INTO tags (name)
+                            VALUE (?)';
+                $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
+                mysqli_stmt_execute($stmt);
+                $tag_ids[] = mysqli_insert_id($db_connection);
+            }
+        }
+    } else {
+        $tag = $tags;
+        $sql = 'SELECT id, name
+                    FROM tags
+                    WHERE name = ?;';
+        $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $db_tag = mysqli_fetch_assoc($result);
+        if ($db_tag) {
+            $tag_id = $db_tag['id'];
+        } else {
+            $sql = 'INSERT INTO tags (name)
+                        VALUE (?);';
+            $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
+            mysqli_stmt_execute($stmt);
+            $tag_id = mysqli_insert_id($db_connection);
+        }
+    }
+    $sql = 'INSERT INTO posts_tags (post_id, tag_id)
+                VALUES (?, ?)';
+
+    if (isset($tag_ids)) {
+        foreach ($tag_ids as $tag_id) {
+            $stmt = db_get_prepare_stmt($db_connection, $sql, [$post_id, $tag_id]);
+            mysqli_stmt_execute($stmt);
+        }
+    } else {
+        $stmt = db_get_prepare_stmt($db_connection, $sql, [$post_id, $tag_id]);
+        mysqli_stmt_execute($stmt);
+    }
+}
+
 
