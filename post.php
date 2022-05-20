@@ -40,6 +40,8 @@ mysqli_stmt_bind_param($stmt, 'i', $post_id);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
+
+
 if ($result) {
     $post = mysqli_fetch_assoc($result);
     $user_info = get_user_info($connection, $post['user_id']);
@@ -81,19 +83,7 @@ if ($result) {
 
         $validation_errors = full_form_validation($comment, $rules, $required);
 
-        if ($validation_errors) {
-            $page_content = include_template('post_templates/post-window.php', [
-                'post' => $post,
-                'tags' => $tags,
-                'tab' => $tab,
-                'reposts_count' => $reposts_count,
-                'user_info' => $user_info,
-                'this_user' => $this_user,
-                'is_subscribe' => $is_subscribe,
-                'user' => $user,
-                'validation_errors' => $validation_errors
-            ]);
-        } else {
+        if (!$validation_errors) {
             $sql = 'INSERT INTO comments (content, user_id, post_id)' .
                 ' VALUES (?, ?, ?)';
             $stmt = mysqli_prepare($connection, $sql);

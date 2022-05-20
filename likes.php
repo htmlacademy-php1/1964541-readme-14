@@ -22,12 +22,13 @@ if ($result) {
     $back = $_SERVER['HTTP_REFERER'];
     header('Location:' . $back);
     exit;
-} else {
-    $sql = 'INSERT INTO likes (user_id, post_id)' .
-        ' VALUES (?, ?);';
-    $stmt = db_get_prepare_stmt($connection, $sql, [$user_id, $post_id]);
-    mysqli_stmt_execute($stmt);
-    $back = $_SERVER['HTTP_REFERER'];
-    header('Location:' . $back);
-    exit;
 }
+
+$sql = 'INSERT INTO likes (user_id, post_id)' .
+    ' VALUES (?, ?);';
+$stmt = db_get_prepare_stmt($connection, $sql, [$user_id, $post_id]);
+mysqli_stmt_execute($stmt);
+$back = $_SERVER['HTTP_REFERER'];
+header('Location:' . $back);
+exit;
+

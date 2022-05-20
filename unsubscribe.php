@@ -24,12 +24,13 @@ if ($result) {
         $sql = 'DELETE FROM subscribes
         WHERE follow_id = ? AND follower_id = ?;';
     }
+
     $stmt = db_get_prepare_stmt($connection, $sql, [$follow_id, $follower_id]);
     mysqli_stmt_execute($stmt);
     header('Location: users_profile.php?id=' . $follow_id);
     exit;
-
-} else {
-    header('Location: error.php?code=404');
-    exit;
 }
+
+header('Location: error.php?code=404');
+exit;
+

@@ -64,16 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $validation_errors = full_form_validation($message, $rules, $required);
 
-    if ($validation_errors) {
-        $page_content = include_template('message_templates/message-page.php', [
-            'messages' => $messages,
-            'chats' => $chats,
-            'chat_id' => $chat_id,
-            'user' => $user,
-            'validation_errors' => $validation_errors,
-        ]);
-
-    } else {
+    if (!$validation_errors) {
         $sql = 'INSERT INTO messages (content, recipient_id, sender_id)' .
             ' VALUES (?, ?, ?)';
         $stmt = db_get_prepare_stmt($connection, $sql, [$message['content'], $chat_id, $user['user_id']]);
@@ -83,9 +74,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-
 $page_content = include_template('message_templates/message-page.php',
-    ['messages' => $messages, 'chats' => $chats, 'chat_id' => $chat_id, 'user' => $user, 'validation_errors' => $validation_errors]);
+    [
+        'messages' => $messages,
+        'chats' => $chats,
+        'chat_id' => $chat_id,
+        'user' => $user,
+        'validation_errors' => $validation_errors
+    ]);
+
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',
@@ -93,4 +90,5 @@ $layout_content = include_template('layout.php', [
     'navigation_link' => $navigation_link,
     'message_notification' => $message_notification
 ]);
+
 print($layout_content);
