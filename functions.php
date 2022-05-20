@@ -497,10 +497,10 @@ function validate_login ($db_connection, $user) : array
 }
 
 /**
+ * Вносит теги в БД, ничего не возвращает
  * @param array $db_connection  Подключение к БД
- * @param array|string $tags
- * @param $post_id
- * @return bool True - удалось внести в БД|False - не удалось
+ * @param array|string $tags Теги добавляемые к посту
+ * @param integer $post_id ID поста для добавления связи между тегами и постами
  */
 function insert_tag ($db_connection, $tags, $post_id)
 {

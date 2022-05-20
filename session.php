@@ -7,7 +7,7 @@ if (empty($_SESSION['user'])) {
 
 $user = $_SESSION;
 
-$tab = filter_input(INPUT_GET, 'tab');
+$tab = filter_input(INPUT_GET, 'type');
 if ($tab === 'text') {
     $_SESSION['back'] = $_SERVER['HTTP_REFERER'];
 }

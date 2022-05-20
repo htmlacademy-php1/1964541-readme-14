@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
 
@@ -140,15 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $validation_errors = full_form_validation($post, $rules, $required);
 
-    if ($validation_errors) {
-        $page_content = include_template('add_templates/adding-post.php', [
-            'content_types' => $content_types,
-            'validation_errors' => $validation_errors,
-            'form_type' => $form_type,
-            'form_templates' => $form_templates,
-            'back' => $back
-        ]);
-    } else {
+    if (!$validation_errors) {
         $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         $stmt = db_get_prepare_stmt($connection, $sql, [
@@ -184,7 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             if ($post['tags']) {
-                insert_tag ($connection, $post['tags'], $post_id);
+                insert_tag($connection, $post['tags'], $post_id);
             }
             header('Location: post.php?id=' . $post_id);
             exit;
@@ -192,6 +185,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = mysqli_error($connection);
         $page_content = include_template('error.php', ['error' => $error]);
     }
+
+    $page_content = include_template('add_templates/adding-post.php', [
+        'content_types' => $content_types,
+        'validation_errors' => $validation_errors,
+        'form_type' => $form_type,
+        'form_templates' => $form_templates,
+        'back' => $back
+    ]);
+
 }
 
 
