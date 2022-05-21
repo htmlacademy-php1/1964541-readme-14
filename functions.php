@@ -596,4 +596,32 @@ function send_new_post_email($db_connection, $post, $email_configuration, $email
     }
 }
 
+/**
+ * Выбирает поля необходимые к заполнению
+ * @param string $form_type Параметр запроса формы
+ * @param array $required Необходимые к валидации поля
+ *
+ * @return array Возвращает необходимые к валидации поля
+ */
+function change_form($form_type, $required): array
+{
+    switch ($form_type) {
+        case 'text':
+            $required[] = 'text';
+            break;
+        case 'quote':
+            $required[] = 'quote_auth';
+            $required[] = 'text';
+            break;
+        case 'link':
+            $required[] = 'link';
+            break;
+        case 'video':
+            $required[] = 'video';
+            break;
+    }
+    return $required;
+}
+
+
 

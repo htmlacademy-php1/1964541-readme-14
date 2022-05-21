@@ -75,60 +75,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ], true);
     $post['user_id'] = $user['user_id'];
 
+    $required = change_form($form_type, $required);
 
-    switch ($form_type) {
-        case 'text':
-            $required[] = 'text';
-            break;
-        case 'quote':
-            $required[] = 'quote_auth';
-            $required[] = 'text';
-            break;
-        case 'photo':
-            if (!empty($_FILES['userpic-file-photo']['name'])) {
-                $tmp_name = $_FILES['userpic-file-photo']['tmp_name'];
-                $path = $_FILES['userpic-file-photo']['name'];
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                $file_type = finfo_file($finfo, $tmp_name);
-                $filename = uniqid();
-                switch ($file_type) {
-                    case 'image/gif':
-                        $filename .= '.gif';
-                        break;
-                    case 'image/jpeg':
-                        $filename .= '.jpg';
-                        break;
-                    case 'image/png':
-                        $filename .= '.png';
-                        break;
-                }
-
-                if ($file_type === 'image/gif' || $file_type === 'image/jpeg' || $file_type === 'image/png') {
-                    move_uploaded_file($tmp_name, 'uploads/' . $filename);
-                    $post['photo-link'] = $filename;
-                } else {
-                    $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
-                }
-            } else {
-                $required[] = 'photo-link';
-                $rules['photo-link'] = function ($value) {
-                    return validate_photo_link($value);
-                };
+    if ($form_type === 'photo') {
+        if (!empty($_FILES['userpic-file-photo']['name'])) {
+            $tmp_name = $_FILES['userpic-file-photo']['tmp_name'];
+            $path = $_FILES['userpic-file-photo']['name'];
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $file_type = finfo_file($finfo, $tmp_name);
+            $filename = uniqid();
+            switch ($file_type) {
+                case 'image/gif':
+                    $filename .= '.gif';
+                    break;
+                case 'image/jpeg':
+                    $filename .= '.jpg';
+                    break;
+                case 'image/png':
+                    $filename .= '.png';
+                    break;
             }
-            break;
-        case 'link':
-            $required[] = 'link';
-            $required['link'] = function ($value) {
-                if ($value) {
-                    return null;
-                }
-                return 'Введите верный URL';
+
+            if ($file_type === 'image/gif' || $file_type === 'image/jpeg' || $file_type === 'image/png') {
+                move_uploaded_file($tmp_name, 'uploads/' . $filename);
+                $post['photo-link'] = $filename;
+            } else {
+                $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
+            }
+        } else {
+            $required[] = 'photo-link';
+            $rules['photo-link'] = function ($value) {
+                return validate_photo_link($value);
             };
-            break;
-        case 'video':
-            $required[] = 'video';
-            break;
+        }
     }
+
 
     $sql = 'SELECT id
     FROM content_type
@@ -159,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result) {
             $email = new Email();
             $mailer = new Mailer($transport);
-            send_new_post_email ($connection, $post, $email_configuration, $email, $mailer, $user);
+            send_new_post_email($connection, $post, $email_configuration, $email, $mailer, $user);
 
             insert_tag($connection, $post['tags'], $post_id);
 
