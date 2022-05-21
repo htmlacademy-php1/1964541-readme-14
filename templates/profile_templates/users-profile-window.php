@@ -9,7 +9,7 @@
                              alt="Аватар пользователя">
                     </div>
                     <div class="profile__name-wrapper user__name-wrapper">
-                        <span class="profile__name user__name"><?= $this_user['login'] ?></span>
+                        <span class="profile__name user__name"><?= htmlspecialchars($this_user['login']) ?></span>
                         <time class="profile__user-time user__time"
                               datetime="2014-03-20"><?= show_past_time($this_user['dt_add']) ?></time>
                     </div>

@@ -168,7 +168,7 @@ function validate_video($value): ?string
  */
 function getPostVal($name): ?string
 {
-    return $_POST[$name] ?? "";
+    return htmlspecialchars($_POST[$name] ?? "");
 }
 
 /**
@@ -274,8 +274,7 @@ function get_user($db_connection, $user_id): array
     $sql = 'SELECT id, login, email, avatar, dt_add' .
         ' FROM users u' .
         ' WHERE id = ?;';
-    $stmt = mysqli_prepare($db_connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    $stmt = db_get_prepare_stmt($db_connection, $sql, [$user_id]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     return mysqli_fetch_assoc($result);
@@ -291,7 +290,8 @@ function get_user($db_connection, $user_id): array
  */
 function get_user_info($db_connection, $user_id): array
 {
-    $sql = 'SELECT (SELECT COUNT(p.id)' .
+    $sql = 'SELECT' .
+        ' (SELECT COUNT(p.id)' .
         ' FROM posts p' .
         ' WHERE p.user_id = u.id)' .
         ' AS posts_count,' .
@@ -303,14 +303,15 @@ function get_user_info($db_connection, $user_id): array
         ' JOIN users u ON p.user_id = u.id' .
         ' WHERE u.id = ?' .
         ' GROUP BY posts_count, subscribers_count;';
-    $stmt = mysqli_prepare($db_connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $user_id);
+    $stmt = db_get_prepare_stmt($db_connection, $sql, [$user_id]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $array = mysqli_fetch_assoc($result);
     if (!mysqli_num_rows($result)) {
-        $array = ['subscribers_count' => 0,
-        'posts_count' => 0];
+        $array = [
+            'subscribers_count' => 0,
+            'posts_count' => 0
+        ];
     }
     return $array;
 }
@@ -325,10 +326,10 @@ function get_user_info($db_connection, $user_id): array
  */
 function check_subscription($db_connection, $follow_id, $follower_id): bool
 {
-    $sql = 'SELECT * FROM subscribes' .
+    $sql = 'SELECT * ' .
+        ' FROM subscribes' .
         ' WHERE follow_id = ? AND follower_id = ?;';
-    $stmt = mysqli_prepare($db_connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'ii', $follow_id, $follower_id);
+    $stmt = db_get_prepare_stmt($db_connection, $sql, [$follow_id, $follower_id]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $result = mysqli_fetch_assoc($result);
@@ -387,10 +388,10 @@ function validate_message($value, $min): ?string
  */
 function validate_post_id($db_connection, $post_id): ?string
 {
-    $sql = 'SELECT * FROM posts' .
+    $sql = 'SELECT * ' .
+        ' FROM posts' .
         ' WHERE id = ?';
-    $stmt = mysqli_prepare($db_connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $post_id);
+    $stmt = db_get_prepare_stmt($db_connection, $sql, [$post_id]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $result = mysqli_num_rows($result);
@@ -408,7 +409,8 @@ function validate_post_id($db_connection, $post_id): ?string
  */
 function validate_recipient_id($db_connection, $recipient_id): ?string
 {
-    $sql = 'SELECT * FROM users' .
+    $sql = 'SELECT *' .
+        ' FROM users' .
         ' WHERE id = ?';
     $stmt = mysqli_prepare($db_connection, $sql);
     mysqli_stmt_bind_param($stmt, 'i', $recipient_id);
@@ -449,10 +451,177 @@ function get_tags($db_connection, $post_id): ?array
  *
  * @return string Заглушка|Переданный аватар
  */
-function get_user_avatar ($avatar): string
+function get_user_avatar($avatar): string
 {
     if (!$avatar) {
         $avatar = 'img/userpic-medium.jpg';
     }
     return $avatar;
 }
+
+/**
+ * Проверяет вход на сайт.
+ *
+ * @param array $db_connection Подключение к БД
+ * @param array $user Данные входящего пользователя
+ *
+ * @return  array Массив с ошибками|Вход и переадресация на ленту пользователя
+ */
+function validate_login($db_connection, $user): array
+{
+    $sql = 'SELECT id, email, login, password, avatar, dt_add,' .
+        ' (SELECT COUNT(p.id)' .
+        ' FROM posts p' .
+        ' WHERE p.user_id = u.id)' .
+        ' AS posts_count' .
+        ' FROM users u WHERE email = ?';
+    $stmt = mysqli_prepare($db_connection, $sql);
+    mysqli_stmt_bind_param($stmt, 's', $user['email']);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $db_user = mysqli_fetch_assoc($result);
+
+    if ($db_user) {
+        if (password_verify($user['password'], $db_user['password'])) {
+            session_start();
+            $_SESSION['user_id'] = $db_user['id'];
+            $_SESSION['user'] = $db_user['login'];
+            $_SESSION['avatar'] = $db_user['avatar'];
+            $_SESSION['dt_add'] = $db_user['dt_add'];
+            $_SESSION['posts_count'] = $db_user['posts_count'];
+            header('Location: feed.php');
+            exit;
+        }
+    }
+    $validation_errors['email'] = 'Неверный пользователь и/или пароль';
+    $validation_errors['password'] = 'Неверный пользователь и/или пароль';
+    return $validation_errors;
+}
+
+/**
+ * Вносит теги в БД
+ * @param array $db_connection Подключение к БД
+ * @param array|string $tags Теги добавляемые к посту
+ * @param integer $post_id ID поста для добавления связи между тегами и постами
+ *
+ * @return void
+ */
+function insert_tag($db_connection, $tags, $post_id)
+{
+    if ($tags) {
+        $tags = trim($tags);
+        if (stristr($tags, ' ')) {
+            $tags = explode(' ', $tags);
+            foreach ($tags as $tag) {
+                $sql = 'SELECT id, name
+                        FROM tags
+                        WHERE name = ?;';
+                $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
+                mysqli_stmt_execute($stmt);
+                $result = mysqli_stmt_get_result($stmt);
+                if (mysqli_num_rows($result)) {
+                    $db_tag = mysqli_fetch_assoc($result);
+                    $tag_ids[] = $db_tag['id'];
+                } else {
+                    $sql = 'INSERT INTO tags (name)
+                            VALUE (?)';
+                    $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
+                    mysqli_stmt_execute($stmt);
+                    $tag_ids[] = mysqli_insert_id($db_connection);
+                }
+            }
+        } else {
+            $tag = $tags;
+            $sql = 'SELECT id, name
+                    FROM tags
+                    WHERE name = ?;';
+            $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            $db_tag = mysqli_fetch_assoc($result);
+            if ($db_tag) {
+                $tag_id = $db_tag['id'];
+            } else {
+                $sql = 'INSERT INTO tags (name)
+                        VALUE (?);';
+                $stmt = db_get_prepare_stmt($db_connection, $sql, [$tag]);
+                mysqli_stmt_execute($stmt);
+                $tag_id = mysqli_insert_id($db_connection);
+            }
+        }
+        $sql = 'INSERT INTO posts_tags (post_id, tag_id)
+                VALUES (?, ?)';
+
+        if (isset($tag_ids)) {
+            foreach ($tag_ids as $tag_id) {
+                $stmt = db_get_prepare_stmt($db_connection, $sql, [$post_id, $tag_id]);
+                mysqli_stmt_execute($stmt);
+            }
+        } else {
+            $stmt = db_get_prepare_stmt($db_connection, $sql, [$post_id, $tag_id]);
+            mysqli_stmt_execute($stmt);
+        }
+    }
+}
+
+/**
+ * Оправляет подписанным пользователем уведомление на почту о новом посте
+ * @param array $db_connection Связь с БД, для обнаружения подписчиков
+ * @param array $post информация о самом посте
+ * @param array $email_configuration параметры письма
+ * @param object $email Создает письмо
+ * @param object $mailer Отправляет письмо
+ * @param array $user Пользователь, который публикует
+ *
+ * @return void
+ */
+function send_new_post_email($db_connection, $post, $email_configuration, $email, $mailer, $user)
+{
+    $sql = 'SELECT id, login, email' .
+        ' FROM users' .
+        ' JOIN subscribes s on users.id = s.follower_id' .
+        ' WHERE follow_id = ?;';
+    $stmt = db_get_prepare_stmt($db_connection, $sql, [$post['user_id']]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if ($result) {
+        $followers = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        foreach ($followers as $follower) {
+            $email->from($email_configuration['from']);
+            $email->to($follower['email']);
+            $email->subject('Новая публикация от пользователя' . $user['user']);
+            $email->text('Здравствуйте, ' . $follower['login'] . '. Пользователь ' . $user['user'] . ' только что опубликовал новую запись ' . $post['title'] . '. Посмотрите её на странице пользователя: ' . $email_configuration['host_info'] . '/users_profile.php?id=' . $user['user_id']);
+            $mailer->send($email);
+        }
+    }
+}
+
+/**
+ * Выбирает поля необходимые к заполнению
+ * @param string $form_type Параметр запроса формы
+ * @param array $required Необходимые к валидации поля
+ *
+ * @return array Возвращает необходимые к валидации поля
+ */
+function change_form($form_type, $required): array
+{
+    switch ($form_type) {
+        case 'text':
+            $required[] = 'text';
+            break;
+        case 'quote':
+            $required[] = 'quote_auth';
+            $required[] = 'text';
+            break;
+        case 'link':
+            $required[] = 'link';
+            break;
+        case 'video':
+            $required[] = 'video';
+            break;
+    }
+    return $required;
+}
+
+
+

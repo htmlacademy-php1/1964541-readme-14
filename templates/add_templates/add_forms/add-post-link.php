@@ -9,26 +9,16 @@ if ('link' === $form_type) {
     <form class="adding-post__form form" action="add.php?type=<?= $form_type ?>" method="post">
         <div class="form__text-inputs-wrapper">
             <div class="form__text-inputs">
-                <div class="adding-post__input-wrapper form__input-wrapper">
-                    <label class="adding-post__label form__label" for="link-heading">Заголовок <span class="form__input-required">*</span></label>
-                    <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="link-heading" type="text" name="title" placeholder="Введите заголовок">
-                        <input type="hidden" name="content_type_id" value="4">
-                        <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                        <div class="form__error-text">
-                            <h3 class="form__error-title">Заголовок сообщения</h3>
-                            <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                        </div>
-                    </div>
-                </div>
+                <?= include_template('add_templates/add-title-validation.php', ['validation_errors' => $validation_errors]) ?>
                 <div class="adding-post__textarea-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="post-link">Ссылка <span class="form__input-required">*</span></label>
-                    <div class="form__input-section">
+                    <?php $classname = isset($validation_errors['link']) ? 'form__input-section--error' : ''; ?>
+                    <div class="form__input-section <?= $classname ?>">
                         <input class="adding-post__input form__input" id="post-link" type="text" name="link" placeholder="Введите ссылку">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                         <div class="form__error-text">
-                            <h3 class="form__error-title">Заголовок сообщения</h3>
-                            <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                            <h3 class="form__error-title">Ошибка</h3>
+                            <p class="form__error-desc"><?php isset($validation_errors['link']) ? print $validation_errors['link'] : '' ?></p>
                         </div>
                     </div>
                 </div>
@@ -38,7 +28,7 @@ if ('link' === $form_type) {
         </div>
         <div class="adding-post__buttons">
             <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
-            <a class="adding-post__close" href="#">Закрыть</a>
+            <a class="adding-post__close" href="<?= $back ?>">Закрыть</a>
         </div>
     </form>
 </section>

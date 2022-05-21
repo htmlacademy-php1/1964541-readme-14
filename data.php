@@ -18,12 +18,12 @@ $dsn = $email_configuration['dsn'];
 $transport = Transport::fromDSN($dsn);
 
 $connection = mysqli_connect('localhost', 'root', '', 'readme');
-mysqli_set_charset($connection, 'utf8');
-
 if (!$connection) {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
 }
+mysqli_set_charset($connection, 'utf8');
+
 
 const SECONDS_IN_MIN = 60;
 const SECONDS_IN_HOUR = 3600;
@@ -39,7 +39,7 @@ const PAGE_POST_LIMIT = 6;
 const MESSAGE_PREVIEW_LENGTH = 4;
 const TEXT_PREVIEW_LENGTH = 300;
 const MESSAGE_MIN_LENGTH = 1;
-const COMMENT_OFFSET = 3;
+const COMMENT_OFFSET = 4;
 
 $form_templates = [
     'photo' => 'add_templates/add_forms/add-post-photo.php',

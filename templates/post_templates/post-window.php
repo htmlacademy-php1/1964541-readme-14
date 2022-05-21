@@ -5,24 +5,7 @@
             <h2 class="visually-hidden">Публикация</h2>
             <div class="post-details__wrapper post-photo">
                 <div class="post-details__main-block post post--details">
-                    <?php switch ($post['type']) {
-                        case 'photo':
-                            echo include_template('post_templates/post_window_types/post-photo.php', ['post' => $post]);
-                            break;
-                        case 'video':
-                            echo include_template('post_templates/post_window_types/post-video.php', ['post' => $post]);
-                            break;
-                        case 'quote':
-                            echo include_template('post_templates/post_window_types/post-quote.php', ['post' => $post]);
-                            break;
-                        case 'text':
-                            echo include_template('post_templates/post_window_types/post-text.php', ['post' => $post]);
-                            break;
-                        case 'link':
-                            echo include_template('post_templates/post_window_types/post-link.php', ['post' => $post]);
-                            break;
-                    }
-                    ?>
+                    <?= include_template('post_types_change.php', ['post' => $post]) ?>
                     <div class="post__indicators">
                         <?= include_template('post_buttons.php', ['post' => $post]) ?>
                         <span class="post__view"><?= $post['views'] ?></span>
@@ -62,7 +45,7 @@
                                     <div class="comments__info">
                                         <div class="comments__name-wrapper">
                                             <a class="comments__user-name" href="#">
-                                                <span><?= $comment['login'] ?></span>
+                                                <span><?= htmlspecialchars($comment['login']) ?></span>
                                             </a>
                                             <time class="comments__time" datetime="2019-03-20"><?= show_past_time($comment['dt_add']) ?></time>
                                         </div>
@@ -90,7 +73,7 @@
                         </div>
                         <div class="post-details__name-wrapper user__name-wrapper">
                             <a class="post-details__name user__name" href="users_profile.php?id=<?= get_user_avatar($this_user['id']) ?>">
-                                <span><?= $this_user['login'] ?></span>
+                                <span><?= htmlspecialchars($this_user['login']) ?></span>
                             </a>
                             <time class="post-details__time user__time" datetime="2014-03-20"><?= show_past_time($this_user['dt_add']) ?></time>
                         </div>
@@ -120,7 +103,7 @@
                         ?>
                         <a href="<?= $button['subscription'] ?>.php?id=<?= $this_user['id'] ?>"
                            class="profile__user-button user__button user__button--subscription button <?= $button['class'] ?>"><?= $button['name'] ?></a>
-                        <a class="user__button user__button--writing button button--green" href="#">Сообщение</a>
+                        <a class="user__button user__button--writing button button--green" href="messages.php?chat_id=<?= $this_user['id'] ?>">Сообщение</a>
                     </div>
                 </div>
             </div>

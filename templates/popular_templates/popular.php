@@ -3,7 +3,8 @@
         <h2><a href="post.php?id=<?= $post['id'] ?>"><?= htmlspecialchars($post['title']) ?></a></h2>
     </header>
     <div class="post__main">
-        <?php switch ($post['type']) {
+        <?php
+        switch ($post['type']) {
             case 'photo':
                 echo include_template('popular_templates/popular_post_types/post-photo.php', ['post' => $post]);
                 break;
@@ -30,7 +31,7 @@
                          alt="Аватар пользователя">
                 </div>
                 <div class="post__info">
-                    <b class="post__author-name"><?= $post['login'] ?></b>
+                    <b class="post__author-name"><?= htmlspecialchars($post['login']) ?></b>
                     <time class="post__time" title="<?= date("d.m.y H:i", strtotime($post['dt_add'])) ?>"
                           datetime="<?= $post['dt_add'] ?>"><?= show_past_time($post['dt_add']) ?></time>
                 </div>
@@ -38,7 +39,8 @@
         </div>
         <div class="post__indicators">
             <div class="post__buttons">
-                <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?= $post['id']?>" title="Лайк">
+                <a class="post__indicator post__indicator--likes button" href="likes.php?id=<?= $post['id'] ?>"
+                   title="Лайк">
                     <svg class="post__indicator-icon" width="20" height="17">
                         <use xlink:href="#icon-heart"></use>
                     </svg>

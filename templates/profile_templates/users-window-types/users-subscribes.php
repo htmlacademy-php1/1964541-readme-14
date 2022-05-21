@@ -11,7 +11,7 @@
                 </div>
                 <div class="post-mini__name-wrapper user__name-wrapper">
                     <a class="post-mini__name user__name" href="users_profile.php?id=<?= $post['id'] ?>">
-                        <span><?= $post['login'] ?></span>
+                        <span><?= htmlspecialchars($post['login']) ?></span>
                     </a>
                     <time class="post-mini__time user__additional" datetime="2014-03-20T20:20"><?= show_past_time($post['dt_add']) ?></time>
                 </div>

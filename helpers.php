@@ -1,27 +1,5 @@
 <?php
 /**
- * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
- *
- * Примеры использования:
- * is_date_valid('2019-01-01'); // true
- * is_date_valid('2016-02-29'); // true
- * is_date_valid('2019-04-31'); // false
- * is_date_valid('10.10.2010'); // false
- * is_date_valid('10/10/2010'); // false
- *
- * @param string $date Дата в виде строки
- *
- * @return bool true при совпадении с форматом 'ГГГГ-ММ-ДД', иначе false
- */
-function is_date_valid(string $date): bool
-{
-    $format_to_check = 'Y-m-d';
-    $dateTimeObj = date_create_from_format($format_to_check, $date);
-
-    return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
-}
-
-/**
  * Создает подготовленное выражение на основе готового SQL запроса и переданных данных
  *
  * @param $link mysqli Ресурс соединения
@@ -234,31 +212,4 @@ function extract_youtube_id($youtube_url)
     }
 
     return $id;
-}
-
-/**
- * @param $index
- * @return false|string
- */
-function generate_random_date($index)
-{
-    $deltas = [['minutes' => 59], ['hours' => 23], ['days' => 6], ['weeks' => 4], ['months' => 11]];
-    $dcnt = count($deltas);
-
-    if ($index < 0) {
-        $index = 0;
-    }
-
-    if ($index >= $dcnt) {
-        $index = $dcnt - 1;
-    }
-
-    $delta = $deltas[$index];
-    $timeval = rand(1, current($delta));
-    $timename = key($delta);
-
-    $ts = strtotime("$timeval $timename ago");
-    $dt = date('Y-m-d H:i:s', $ts);
-
-    return $dt;
 }

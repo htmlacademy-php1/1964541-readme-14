@@ -12,7 +12,7 @@
                         </div>
                         <div class="messages__item-info">
                             <a class="messages__author" href="users_profile.php?id=<?= $message['id'] ?>">
-                                <?= $message['login'] ?>
+                                <?= htmlspecialchars($message['login']) ?>
                             </a>
                             <time class="messages__time" datetime="2019-05-01T14:40">
                                 <?= show_past_time($message['dt_add']) ?>
@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <p class="messages__text">
-                        <?= $message['content'] ?>
+                        <?= htmlspecialchars($message['content']) ?>
                     </p>
                 </li>
             <?php endforeach; ?>

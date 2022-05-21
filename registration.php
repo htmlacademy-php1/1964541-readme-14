@@ -2,6 +2,7 @@
 require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
+require_once 'session_unlog.php';
 
 $navigation_link = 'register';
 $validation_errors = [];
@@ -18,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ], true);
     $repeat_pass = $user['password-repeat'];
 
-    $sql = 'SELECT email FROM users WHERE email=?';
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 's', $user['email']);
+    $sql = 'SELECT email FROM users
+     WHERE email=?';
+    $stmt = db_get_prepare_stmt($connection, $sql, [$user['email']]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $email = mysqli_num_rows($result);
@@ -67,18 +68,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($validation_errors) {
         $user = null;
-        $page_content = include_template('registration_templates/reg-form.php', ['validation_errors' => $validation_errors, 'user' => $user]);
+        $page_content = include_template('registration_templates/reg-form.php',
+            ['validation_errors' => $validation_errors, 'user' => $user]);
     } else {
         $user['password'] = password_hash($user['password'], PASSWORD_DEFAULT);
-        $sql = 'INSERT INTO users (email, password, login, avatar) VALUES (?, ?, ?, ?)';
+        $sql = 'INSERT INTO users (email, password, login, avatar)
+         VALUES (?, ?, ?, ?)';
         $stmt = db_get_prepare_stmt($connection, $sql, [$user['email'], $user['password'], $user['login'], $user['avatar']]);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
             header('Location: popular.php');
             exit;
-        } else {
-            $page_content = include_template('error.php', ['error' => $error]);
         }
+        $page_content = include_template('error.php', ['error' => $error]);
+
     }
 }
 
@@ -88,5 +91,5 @@ $layout_content = include_template('layout.php', [
     'title' => 'readme: блог, каким он должен быть',
     'user' => $user,
     'navigation_link' => $navigation_link
-    ]);
+]);
 print($layout_content);

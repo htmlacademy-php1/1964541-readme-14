@@ -24,7 +24,12 @@
                 <div class="adding-post__tab-content">
                     <?php
                     foreach ($form_templates as $form_template) {
-                        echo include_template($form_template, ['validation_errors' => $validation_errors, 'form_type' => $form_type, 'content_types' => $content_types]);
+                        echo include_template($form_template, [
+                            'validation_errors' => $validation_errors,
+                            'form_type' => $form_type,
+                            'content_types' => $content_types,
+                            'back' => $back
+                        ]);
                     }
                     ?>
                 </div>

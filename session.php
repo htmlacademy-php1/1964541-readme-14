@@ -3,14 +3,20 @@ session_start();
 if (empty($_SESSION['user'])) {
     header('Location: index.php');
     exit;
-} else {
-    $user = $_SESSION;
 }
 
-$sql = 'SELECT COUNT(is_read) AS unread_messages FROM messages' .
+$user = $_SESSION;
+
+$type = filter_input(INPUT_GET, 'type');
+if ($type === 'text') {
+    $_SESSION['back'] = $_SERVER['HTTP_REFERER'];
+}
+
+$sql = 'SELECT COUNT(is_read)' .
+    ' AS unread_messages' .
+    ' FROM messages' .
     ' WHERE (recipient_id = ?) AND (is_read = false);';
-$stmt = mysqli_prepare($connection, $sql);
-mysqli_stmt_bind_param($stmt, 'i', $user['user_id']);
+$stmt = db_get_prepare_stmt($connection, $sql, [$user['user_id']]);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 if ($result) {

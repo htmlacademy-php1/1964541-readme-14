@@ -14,8 +14,7 @@ if (str_starts_with($request, '#')) {
     $sql = 'SELECT post_id FROM posts_tags pt' .
         ' JOIN tags t on pt.tag_id = t.id' .
         ' WHERE name = ?;';
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 's', $request);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$request]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     if ($result) {
@@ -25,7 +24,8 @@ if (str_starts_with($request, '#')) {
             ' FROM likes' .
             ' WHERE likes.post_id = p.id)' .
             ' AS likes,' .
-            ' (SELECT COUNT(content) FROM comments' .
+            ' (SELECT COUNT(content)' .
+            ' FROM comments' .
             ' WHERE post_id = p.id)' .
             ' AS comment_sum,' .
             ' (SELECT COUNT(original_id) FROM posts' .
@@ -35,9 +35,8 @@ if (str_starts_with($request, '#')) {
             ' JOIN users u ON p.user_id = u.id' .
             ' JOIN content_type ct ON p.content_type_id = ct.id' .
             ' WHERE p.id = ?';
-        $stmt = mysqli_prepare($connection, $sql);
         foreach ($post_ids as $post_id) {
-            mysqli_stmt_bind_param($stmt, 'i', $post_id['post_id']);
+            $stmt = db_get_prepare_stmt($connection, $sql, [$post_id['post_id']]);
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
             if ($result) {
@@ -51,18 +50,20 @@ if (str_starts_with($request, '#')) {
         ' FROM likes' .
         ' WHERE likes.post_id = p.id)' .
         ' AS likes,' .
-        ' (SELECT COUNT(content) FROM comments' .
+        ' (SELECT COUNT(content)' .
+        ' FROM comments' .
         ' WHERE post_id = p.id)' .
         ' AS comment_sum,' .
-        ' (SELECT COUNT(original_id) FROM posts' .
+        ' (SELECT COUNT(original_id)' .
+        ' FROM posts' .
         ' WHERE original_id = p.id)' .
         ' AS reposts_sum' .
         ' FROM posts p' .
         ' JOIN users u ON p.user_id = u.id' .
         ' JOIN content_type ct ON p.content_type_id = ct.id' .
-        ' WHERE MATCH (title, text) AGAINST (?);';
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 's', $request);
+        ' WHERE MATCH (title, text)' .
+        ' AGAINST (?);';
+    $stmt = db_get_prepare_stmt($connection, $sql, [$request]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     if ($result) {
