@@ -2,6 +2,7 @@
 require_once 'functions.php';
 require_once 'helpers.php';
 require_once 'data.php';
+require_once 'session_unlog.php';
 
 $user = null;
 $validation_errors = [];
