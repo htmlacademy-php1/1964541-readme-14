@@ -1,13 +1,16 @@
 <div class="messages__chat">
     <div class="messages__chat-wrapper">
         <ul class="messages__list tabs__content tabs__content--active">
-            <?php foreach ($messages as $message): ?>
-                <?php $classname = $message['id'] === $user['user_id'] ? 'messages__item--my' : ''; ?>
+            <?php
+            foreach ($messages as $message): ?>
+                <?php
+                $classname = $message['id'] === $user['user_id'] ? 'messages__item--my' : ''; ?>
                 <li class="messages__item <?= $classname ?>">
                     <div class="messages__info-wrapper">
                         <div class="messages__item-avatar">
                             <a class="messages__author-link" href="users_profile.php?id=<?= $message['id'] ?>">
-                                <img class="messages__avatar" src="<?= get_user_avatar($message['avatar']) ?>" alt="Аватар пользователя">
+                                <img class="messages__avatar" src="<?= get_user_avatar($message['avatar']) ?>"
+                                     alt="Аватар пользователя">
                             </a>
                         </div>
                         <div class="messages__item-info">
@@ -23,5 +26,6 @@
                         <?= htmlspecialchars($message['content']) ?>
                     </p>
                 </li>
-            <?php endforeach; ?>
+            <?php
+            endforeach; ?>
     </div>

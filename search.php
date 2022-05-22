@@ -1,4 +1,5 @@
 <?php
+
 require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
@@ -71,8 +72,10 @@ if (str_starts_with($request, '#')) {
     }
 }
 
-$page_content = include_template('search_templates/search-result.php',
-    ['posts' => $posts, 'request' => $request, 'back' => $back]);
+$page_content = include_template(
+    'search_templates/search-result.php',
+    ['posts' => $posts, 'request' => $request, 'back' => $back]
+);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',

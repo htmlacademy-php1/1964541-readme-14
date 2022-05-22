@@ -1,4 +1,5 @@
 <?php
+
 require_once 'helpers.php';
 require_once 'functions.php';
 require_once 'data.php';
@@ -74,14 +75,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$page_content = include_template('message_templates/message-page.php',
+$page_content = include_template(
+    'message_templates/message-page.php',
     [
         'messages' => $messages,
         'chats' => $chats,
         'chat_id' => $chat_id,
         'user' => $user,
         'validation_errors' => $validation_errors
-    ]);
+    ]
+);
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,

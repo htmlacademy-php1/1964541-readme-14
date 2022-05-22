@@ -1,4 +1,5 @@
 <?php
+
 require_once 'helpers.php';
 require_once 'data.php';
 
@@ -21,8 +22,10 @@ function cut_text($text, $length = TEXT_PREVIEW_LENGTH): string
             $i++;
         }
         $text = array_slice($text_words, 0, $i);
-        $final_text = '<p>' . implode(' ',
-                $text) . '...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+        $final_text = '<p>' . implode(
+                ' ',
+                $text
+            ) . '...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
     } else {
         $final_text = '<p>' . $text . '</p>';
     }
@@ -590,7 +593,9 @@ function send_new_post_email($db_connection, $post, $email_configuration, $email
             $email->from($email_configuration['from']);
             $email->to($follower['email']);
             $email->subject('Новая публикация от пользователя' . $user['user']);
-            $email->text('Здравствуйте, ' . $follower['login'] . '. Пользователь ' . $user['user'] . ' только что опубликовал новую запись ' . $post['title'] . '. Посмотрите её на странице пользователя: ' . $email_configuration['host_info'] . '/users_profile.php?id=' . $user['user_id']);
+            $email->text(
+                'Здравствуйте, ' . $follower['login'] . '. Пользователь ' . $user['user'] . ' только что опубликовал новую запись ' . $post['title'] . '. Посмотрите её на странице пользователя: ' . $email_configuration['host_info'] . '/users_profile.php?id=' . $user['user_id']
+            );
             $mailer->send($email);
         }
     }

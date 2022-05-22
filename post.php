@@ -1,4 +1,5 @@
 <?php
+
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL & E_NOTICE & E_WARNING);
 require_once 'helpers.php';
@@ -39,7 +40,6 @@ $stmt = mysqli_prepare($connection, $sql);
 mysqli_stmt_bind_param($stmt, 'i', $post_id);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
-
 
 
 if ($result) {
@@ -105,7 +105,6 @@ if ($result) {
         'user' => $user,
         'validation_errors' => $validation_errors
     ]);
-
 } else {
     $error = mysqli_error($connection);
     $page_content = include_template('error.php', ['error' => $error]);
