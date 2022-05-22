@@ -1,4 +1,5 @@
 <?php
+
 require_once 'functions.php';
 require_once 'helpers.php';
 require_once 'data.php';
@@ -74,8 +75,10 @@ if ($result) {
 }
 
 
-$page_content = include_template('feed_templates/strip.php',
-    ['posts' => $posts, 'content_types' => $content_types, 'tab' => $tab]);
+$page_content = include_template(
+    'feed_templates/strip.php',
+    ['posts' => $posts, 'content_types' => $content_types, 'tab' => $tab]
+);
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'title' => 'readme: блог, каким он должен быть',

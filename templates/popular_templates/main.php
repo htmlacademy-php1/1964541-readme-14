@@ -8,8 +8,10 @@
                 <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
                 <ul class="popular__sorting-list sorting__list">
                     <li class="sorting__item sorting__item--popular">
-                        <?php $classname = $sort === 'views' ? '--active' : ''; ?>
-                        <a class="sorting__link sorting__link<?= $classname ?>" href="popular.php?tab=<?= $tab ?>&sort=views">
+                        <?php
+                        $classname = $sort === 'views' ? '--active' : ''; ?>
+                        <a class="sorting__link sorting__link<?= $classname ?>"
+                           href="popular.php?tab=<?= $tab ?>&sort=views">
                             <span>Популярность</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -17,8 +19,10 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <?php $classname = $sort === 'likes' ? '--active' : ''; ?>
-                        <a class="sorting__link sorting__link<?= $classname ?>" href="popular.php?tab=<?= $tab ?>&sort=likes">
+                        <?php
+                        $classname = $sort === 'likes' ? '--active' : ''; ?>
+                        <a class="sorting__link sorting__link<?= $classname ?>"
+                           href="popular.php?tab=<?= $tab ?>&sort=likes">
                             <span>Лайки</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -26,8 +30,10 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <?php $classname = $sort === 'dt_add' ? '--active' : ''; ?>
-                        <a class="sorting__link sorting__link<?= $classname ?>" href="popular.php?tab=<?= $tab ?>&sort=dt_add">
+                        <?php
+                        $classname = $sort === 'dt_add' ? '--active' : ''; ?>
+                        <a class="sorting__link sorting__link<?= $classname ?>"
+                           href="popular.php?tab=<?= $tab ?>&sort=dt_add">
                             <span>Дата</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -52,7 +58,10 @@
                             <span>Все</span>
                         </a>
                     </li>
-                    <?php foreach ($content_types as $type):
+                    <?php
+                    foreach ($content_types
+
+                    as $type):
                     $params['tab'] = $type['type'];
                     $params['sort'] = $sort;
                     $query = http_build_query($params);
@@ -73,20 +82,26 @@
                         </a>
                     </li>
                 </ul>
-                <?php endforeach; ?>
+                <?php
+                endforeach; ?>
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($posts as $post): ?>
+            <?php
+            foreach ($posts as $post): ?>
                 <?= include_template('popular_templates/popular.php', ['post' => $post]); ?>
-            <?php endforeach; ?>
+            <?php
+            endforeach; ?>
         </div>
         <?php
         if ($posts_count > PAGE_POST_LIMIT): ?>
-        <div class="popular__page-links">
-            <a class="popular__page-link popular__page-link--prev button button--gray" href="popular.php?tab=<?= $tab ?>&sort=<?= $sort ?>&page=<?= $page -= 1; ?>">Предыдущая страница</a>
-            <a class="popular__page-link popular__page-link--next button button--gray" href="popular.php?tab=<?= $tab ?>&sort=<?= $sort ?>&page=<?= $page += 2; ?>">Следующая страница</a>
-        </div>
-        <?php endif; ?>
+            <div class="popular__page-links">
+                <a class="popular__page-link popular__page-link--prev button button--gray"
+                   href="popular.php?tab=<?= $tab ?>&sort=<?= $sort ?>&page=<?= $page -= 1; ?>">Предыдущая страница</a>
+                <a class="popular__page-link popular__page-link--next button button--gray"
+                   href="popular.php?tab=<?= $tab ?>&sort=<?= $sort ?>&page=<?= $page += 2; ?>">Следующая страница</a>
+            </div>
+        <?php
+        endif; ?>
     </div>
 </section>

@@ -41,7 +41,9 @@ if (!$result) {
     $email->from($email_configuration['from']);
     $email->to($this_user['email']);
     $email->subject('У вас новый подписчик');
-    $email->text('Здравствуйте, ' . $this_user['login'] . '. На вас подписался новый пользователь ' . $user['user'] . '. Вот ссылка на его профиль:' . $email_configuration['host_info'] . '/users_profile.php?id=' . $user['user_id']);
+    $email->text(
+        'Здравствуйте, ' . $this_user['login'] . '. На вас подписался новый пользователь ' . $user['user'] . '. Вот ссылка на его профиль:' . $email_configuration['host_info'] . '/users_profile.php?id=' . $user['user_id']
+    );
     $mailer = new Mailer($transport);
     $mailer->send($email);
 

@@ -8,50 +8,70 @@
             <div class="form__text-inputs-wrapper">
                 <div class="form__text-inputs">
                     <div class="registration__input-wrapper form__input-wrapper">
-                        <label class="registration__label form__label" for="registration-email">Электронная почта <span class="form__input-required">*</span></label>
-                        <?php $classname = isset($validation_errors['email']) ? '--error' : ''; ?>
+                        <label class="registration__label form__label" for="registration-email">Электронная почта <span
+                                class="form__input-required">*</span></label>
+                        <?php
+                        $classname = isset($validation_errors['email']) ? '--error' : ''; ?>
                         <div class="form__input-section<?= $classname ?>">
-                            <input class="registration__input form__input" id="registration-email" type="email" name="email" value="<?= getPostVal('email') ?>" placeholder="Укажите эл.почту">
-                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                            <input class="registration__input form__input" id="registration-email" type="email"
+                                   name="email" value="<?= getPostVal('email') ?>" placeholder="Укажите эл.почту">
+                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span>
+                            </button>
                             <div class="form__error-text">
                                 <h3 class="form__error-title">Почта</h3>
-                                <p class="form__error-desc"><?php isset($validation_errors['email']) ? print $validation_errors['email'] : '' ?></p>
+                                <p class="form__error-desc"><?php
+                                    isset($validation_errors['email']) ? print $validation_errors['email'] : '' ?></p>
                             </div>
                         </div>
                     </div>
                     <div class="registration__input-wrapper form__input-wrapper">
-                        <label class="registration__label form__label" for="registration-login">Логин <span class="form__input-required">*</span></label>
-                        <?php $classname = isset($validation_errors['login']) ? '--error' : ''; ?>
+                        <label class="registration__label form__label" for="registration-login">Логин <span
+                                class="form__input-required">*</span></label>
+                        <?php
+                        $classname = isset($validation_errors['login']) ? '--error' : ''; ?>
                         <div class="form__input-section<?= $classname ?>">
-                            <input class="registration__input form__input" id="registration-login" type="text" name="login" value="<?= getPostVal('login') ?>" placeholder="Укажите логин">
-                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                            <input class="registration__input form__input" id="registration-login" type="text"
+                                   name="login" value="<?= getPostVal('login') ?>" placeholder="Укажите логин">
+                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span>
+                            </button>
                             <div class="form__error-text">
                                 <h3 class="form__error-title">Логин</h3>
-                                <p class="form__error-desc"><?php isset($validation_errors['login']) ? print $validation_errors['login'] : '' ?></p>
+                                <p class="form__error-desc"><?php
+                                    isset($validation_errors['login']) ? print $validation_errors['login'] : '' ?></p>
                             </div>
                         </div>
                     </div>
                     <div class="registration__input-wrapper form__input-wrapper">
-                        <label class="registration__label form__label" for="registration-password">Пароль<span class="form__input-required">*</span></label>
-                        <?php $classname = isset($validation_errors['password']) ? '--error' : ''; ?>
+                        <label class="registration__label form__label" for="registration-password">Пароль<span
+                                class="form__input-required">*</span></label>
+                        <?php
+                        $classname = isset($validation_errors['password']) ? '--error' : ''; ?>
                         <div class="form__input-section<?= $classname ?>">
-                            <input class="registration__input form__input" id="registration-password" type="password" name="password"  placeholder="Придумайте пароль">
-                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                            <input class="registration__input form__input" id="registration-password" type="password"
+                                   name="password" placeholder="Придумайте пароль">
+                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span>
+                            </button>
                             <div class="form__error-text">
                                 <h3 class="form__error-title">Пароль</h3>
-                                <p class="form__error-desc"><?php isset($validation_errors['password']) ? print $validation_errors['password'] : '' ?></p>
+                                <p class="form__error-desc"><?php
+                                    isset($validation_errors['password']) ? print $validation_errors['password'] : '' ?></p>
                             </div>
                         </div>
                     </div>
                     <div class="registration__input-wrapper form__input-wrapper">
-                        <label class="registration__label form__label" for="registration-password-repeat">Повтор пароля<span class="form__input-required">*</span></label>
-                        <?php $classname = isset($validation_errors['password-repeat']) ? '--error' : ''; ?>
+                        <label class="registration__label form__label" for="registration-password-repeat">Повтор
+                            пароля<span class="form__input-required">*</span></label>
+                        <?php
+                        $classname = isset($validation_errors['password-repeat']) ? '--error' : ''; ?>
                         <div class="form__input-section<?= $classname ?>">
-                            <input class="registration__input form__input" id="registration-password-repeat" type="password" name="password-repeat" placeholder="Повторите пароль">
-                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                            <input class="registration__input form__input" id="registration-password-repeat"
+                                   type="password" name="password-repeat" placeholder="Повторите пароль">
+                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span>
+                            </button>
                             <div class="form__error-text">
                                 <h3 class="form__error-title">Повтор пароля</h3>
-                                <p class="form__error-desc"><?php isset($validation_errors['password-repeat']) ? print $validation_errors['password-repeat'] : '' ?></p>
+                                <p class="form__error-desc"><?php
+                                    isset($validation_errors['password-repeat']) ? print $validation_errors['password-repeat'] : '' ?></p>
                             </div>
                         </div>
                     </div>
@@ -61,7 +81,8 @@
             <div class="registration__input-file-container form__input-container form__input-container--file">
                 <div class="registration__input-file-wrapper form__input-file-wrapper">
                     <div class="registration__file-zone form__file-zone dropzone">
-                        <input class="registration__input-file form__input-file" id="userpic-file" type="file" name="userpic-file" title=" ">
+                        <input class="registration__input-file form__input-file" id="userpic-file" type="file"
+                               name="userpic-file" title=" ">
                         <div class="form__file-zone-text">
                             <span>Перетащите фото сюда</span>
                         </div>

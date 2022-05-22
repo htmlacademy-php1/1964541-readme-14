@@ -9,7 +9,8 @@
                 <div class="form__text-inputs">
                     <div class="login__input-wrapper form__input-wrapper">
                         <label class="login__label form__label" for="login-email">Электронная почта</label>
-                        <?php $classname = isset($validation_errors['email']) ? '--error' : ''; ?>
+                        <?php
+                        $classname = isset($validation_errors['email']) ? '--error' : ''; ?>
                         <div class="form__input-section form__input-section<?= $classname ?>">
                             <input class="login__input form__input" id="login-email" type="email" name="email"
                                    value="<?= getPostVal('email') ?>" placeholder="Укажите эл.почту">
@@ -18,13 +19,15 @@
                             </button>
                             <div class="form__error-text">
                                 <h3 class="form__error-title">Ошибка</h3>
-                                <p class="form__error-desc"><?php isset($validation_errors['email']) ? print $validation_errors['email'] : '' ?></p>
+                                <p class="form__error-desc"><?php
+                                    isset($validation_errors['email']) ? print $validation_errors['email'] : '' ?></p>
                             </div>
                         </div>
                     </div>
                     <div class="login__input-wrapper form__input-wrapper">
                         <label class="login__label form__label" for="login-password">Пароль</label>
-                        <?php $classname = isset($validation_errors['password']) ? '--error' : ''; ?>
+                        <?php
+                        $classname = isset($validation_errors['password']) ? '--error' : ''; ?>
                         <div class="form__input-section form__input-section<?= $classname ?>">
                             <input class="login__input form__input" id="login-password" type="password" name="password"
                                    placeholder="Введите пароль">
@@ -32,7 +35,8 @@
                                     class="visually-hidden">Информация об ошибке</span></button>
                             <div class="form__error-text">
                                 <h3 class="form__error-title">Ошибка</h3>
-                                <p class="form__error-desc"><?php isset($validation_errors['password']) ? print $validation_errors['password'] : '' ?></p>
+                                <p class="form__error-desc"><?php
+                                    isset($validation_errors['password']) ? print $validation_errors['password'] : '' ?></p>
                             </div>
                         </div>
                     </div>

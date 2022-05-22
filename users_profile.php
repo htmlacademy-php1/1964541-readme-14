@@ -1,4 +1,5 @@
 <?php
+
 require_once 'functions.php';
 require_once 'helpers.php';
 require_once 'data.php';
@@ -20,7 +21,6 @@ if ($get_tab === 'posts' || $get_tab === 'likes' || $get_tab === 'subscribes') {
 if (!$this_user) {
     header('Location: error.php?code=404');
     exit;
-
 }
 switch ($tab) {
     case 'posts':

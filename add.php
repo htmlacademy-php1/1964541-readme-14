@@ -158,7 +158,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'form_templates' => $form_templates,
         'back' => $back
     ]);
-
 }
 
 
