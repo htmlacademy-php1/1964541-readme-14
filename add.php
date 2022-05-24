@@ -134,8 +134,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             insert_tag($connection, $post['tags'], $post_id);
 
-            //header('Location: post.php?id=' . $post_id);
-            //exit;
+            header('Location: post.php?id=' . $post_id);
+            exit;
         }
         $error = mysqli_error($connection);
         $page_content = include_template('error.php', ['error' => $error]);
