@@ -336,9 +336,8 @@ function check_subscription($db_connection, $follow_id, $follower_id): bool
     $result = mysqli_fetch_assoc($result);
     if ($result) {
         return false;
-    } else {
-        return true;
     }
+    return true;
 }
 
 /**
@@ -354,9 +353,8 @@ function validate_comment($value, $min): ?string
         $value = trim($value);
         if (mb_strlen($value) < $min) {
             return 'Комментарий должен быть больше 3 символов';
-        } else {
-            return null;
         }
+        return null;
     }
     return null;
 }
@@ -374,9 +372,8 @@ function validate_message($value, $min): ?string
         $value = trim($value);
         if (mb_strlen($value) < $min) {
             return 'Сообщение не может быть пустым';
-        } else {
-            return null;
         }
+        return null;
     }
     return null;
 }
