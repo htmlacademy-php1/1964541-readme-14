@@ -84,24 +84,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $file_type = finfo_file($finfo, $tmp_name);
             $filename = uniqid();
-            switch ($file_type) {
-                case 'image/gif':
-                    $filename .= '.gif';
-                    break;
-                case 'image/jpeg':
-                    $filename .= '.jpg';
-                    break;
-                case 'image/png':
-                    $filename .= '.png';
-                    break;
+
+            if (!in_array($file_type, ['gif', 'jpg', 'png'])) {
+                $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
+            } else {
+                $filename .= '.' . get_extension($file_type);
+                move_uploaded_file($tmp_name, 'uploads/' . $filename);
             }
 
-            if ($file_type === 'image/gif' || $file_type === 'image/jpeg' || $file_type === 'image/png') {
-                move_uploaded_file($tmp_name, 'uploads/' . $filename);
-                $post['photo-link'] = $filename;
-            } else {
-                $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
-            }
         } else {
             $required[] = 'photo-link';
             $rules['photo-link'] = function ($value) {
@@ -144,8 +134,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             insert_tag($connection, $post['tags'], $post_id);
 
-            header('Location: post.php?id=' . $post_id);
-            exit;
+            //header('Location: post.php?id=' . $post_id);
+            //exit;
         }
         $error = mysqli_error($connection);
         $page_content = include_template('error.php', ['error' => $error]);
