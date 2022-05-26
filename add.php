@@ -84,24 +84,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $file_type = finfo_file($finfo, $tmp_name);
             $filename = uniqid();
-            switch ($file_type) {
-                case 'image/gif':
-                    $filename .= '.gif';
-                    break;
-                case 'image/jpeg':
-                    $filename .= '.jpg';
-                    break;
-                case 'image/png':
-                    $filename .= '.png';
-                    break;
-            }
+            $lol = validate_file($form_type, $tmp_name);
+            $post['file'] = $file_type;
 
-            if ($file_type === 'image/gif' || $file_type === 'image/jpeg' || $file_type === 'image/png') {
-                move_uploaded_file($tmp_name, 'uploads/' . $filename);
-                $post['photo-link'] = $filename;
-            } else {
-                $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
-            }
+            $rules['file'] = function ($value) use ($tmp_name) {
+                return validate_file($value, $tmp_name);
+            };
+
         } else {
             $required[] = 'photo-link';
             $rules['photo-link'] = function ($value) {

@@ -16,8 +16,8 @@ CREATE TABLE users (
 
 CREATE TABLE content_type (
                             id INT AUTO_INCREMENT PRIMARY KEY,
-                            name CHAR(64) NOT NULL,
-                            type CHAR(64) NOT NULL,
+                            name VARCHAR(128) NOT NULL,
+                            type VARCHAR(128) NOT NULL,
                             UNIQUE INDEX UI_type (type)
 );
 
@@ -26,9 +26,9 @@ CREATE TABLE posts (
                      title VARCHAR(128) NOT NULL,
                      text TEXT DEFAULT NULL,
                      quote_auth VARCHAR(128) DEFAULT NULL,
-                     img TEXT DEFAULT NULL,
+                     img VARCHAR(320) DEFAULT NULL,
                      video TEXT DEFAULT NULL,
-                     link TEXT DEFAULT NULL,
+                     link VARCHAR(320) DEFAULT NULL,
                      views INT DEFAULT 0,
                      original_id INT DEFAULT NULL,
                      user_id INT NOT NULL,

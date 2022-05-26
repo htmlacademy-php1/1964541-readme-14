@@ -71,24 +71,22 @@ function show_past_time($time): string
     if ($diff < SECONDS_IN_HOUR) {
         $divider = SECONDS_IN_MIN;
         $form = ['минута', 'минуты', 'минут'];
-    } else {
-        if ($diff < SECONDS_IN_DAY) {
-            $divider = SECONDS_IN_HOUR;
-            $form = ['час', 'часа', 'часов'];
-        } else {
-            if ($diff < SECONDS_IN_WEEK) {
-                $divider = SECONDS_IN_DAY;
-                $form = ['день', 'дня', 'дней'];
-            } else {
-                if ($diff < SECONDS_IN_MONTH) {
-                    $divider = SECONDS_IN_WEEK;
-                    $form = ['неделя', 'недели', 'недель'];
-                } else {
-                    $divider = SECONDS_IN_MONTH;
-                    $form = ['месяц', 'месяца', 'месяцев'];
-                }
-            }
-        }
+    }
+    if (SECONDS_IN_HOUR < $diff && $diff < SECONDS_IN_DAY) {
+        $divider = SECONDS_IN_HOUR;
+        $form = ['час', 'часа', 'часов'];
+    }
+    if (SECONDS_IN_DAY < $diff && $diff < SECONDS_IN_WEEK) {
+        $divider = SECONDS_IN_DAY;
+        $form = ['день', 'дня', 'дней'];
+    }
+    if (SECONDS_IN_WEEK < $diff && $diff < SECONDS_IN_MONTH) {
+        $divider = SECONDS_IN_WEEK;
+        $form = ['неделя', 'недели', 'недель'];
+    }
+    if ($diff > SECONDS_IN_MONTH) {
+        $divider = SECONDS_IN_MONTH;
+        $form = ['месяц', 'месяца', 'месяцев'];
     }
     $diff /= $divider;
     $diff = floor($diff);
@@ -338,9 +336,8 @@ function check_subscription($db_connection, $follow_id, $follower_id): bool
     $result = mysqli_fetch_assoc($result);
     if ($result) {
         return false;
-    } else {
-        return true;
     }
+    return true;
 }
 
 /**
@@ -356,9 +353,8 @@ function validate_comment($value, $min): ?string
         $value = trim($value);
         if (mb_strlen($value) < $min) {
             return 'Комментарий должен быть больше 3 символов';
-        } else {
-            return null;
         }
+        return null;
     }
     return null;
 }
@@ -376,9 +372,8 @@ function validate_message($value, $min): ?string
         $value = trim($value);
         if (mb_strlen($value) < $min) {
             return 'Сообщение не может быть пустым';
-        } else {
-            return null;
         }
+        return null;
     }
     return null;
 }
@@ -626,6 +621,15 @@ function change_form($form_type, $required): array
             break;
     }
     return $required;
+}
+
+function validate_file($value, $tmp_name): string
+{
+    if (!in_array($value, ['gif', 'jpg', 'png'])) {
+        return 'Загрузите файл формата gif, jpeg или png';
+    }
+    $filename .= '.' . get_extension($value);
+    move_uploaded_file($tmp_name, 'uploads/' . $filename);
 }
 
 

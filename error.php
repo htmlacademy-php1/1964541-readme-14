@@ -13,7 +13,7 @@ switch ($code) {
         $error = 'Ошибка 404';
         break;
     case '500':
-        $error = 'Ошибка 500';
+        $error = 'Ошибка 500: Добавьте категории из queries.sql';
         break;
 }
 
