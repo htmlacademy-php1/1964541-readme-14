@@ -35,7 +35,19 @@ if ('photo' === $form_type) {
             </div>
             <?= include_template('validation_error.php', ['validation_errors' => $validation_errors]); ?>
         </div>
-        <input id='userpic-file-photo' type='file' name='userpic-file-photo' title=' '>
+        <div class="adding-post__input-wrapper form__input-wrapper">
+            <?php
+            $classname = isset($validation_errors['file']) ? 'form__input-section--error' : ''; ?>
+            <div class="form__input-section <?= $classname ?>">
+                <input id='userpic-file-photo' type='file' name='userpic-file-photo' title=''>
+                <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                <div class="form__error-text">
+                    <h3 class="form__error-title">Ошибка</h3>
+                    <p class="form__error-desc"><?php
+                        isset($validation_errors['file']) ? print $validation_errors['file'] : '' ?></p>
+                </div>
+            </div>
+        </div>
         <div class="adding-post__buttons">
             <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
             <a class="adding-post__close" href="<?= $back ?>">Закрыть</a>

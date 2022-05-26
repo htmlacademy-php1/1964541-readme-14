@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $filename = uniqid();
 
             if (!in_array($file_type, ['gif', 'jpg', 'png'])) {
-                $validation_errors['file'] = 'Загрузите файл формата gif, jpeg или png';
+                $file_error = 'Загрузите файл формата gif, jpeg или png';
             } else {
                 $filename .= '.' . get_extension($file_type);
                 move_uploaded_file($tmp_name, 'uploads/' . $filename);
@@ -111,6 +111,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post['content_type_id'] = $type_row['id'];
 
     $validation_errors = full_form_validation($post, $rules, $required);
+
+    if (isset($file_error)) {
+        $validation_errors['file'] = $file_error;
+    }
 
     if (!$validation_errors) {
         $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id)
