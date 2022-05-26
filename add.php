@@ -84,13 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $file_type = finfo_file($finfo, $tmp_name);
             $filename = uniqid();
+            $lol = validate_file($form_type, $tmp_name);
+            $post['file'] = $file_type;
 
-            if (!in_array($file_type, ['gif', 'jpg', 'png'])) {
-                $file_error = 'Загрузите файл формата gif, jpeg или png';
-            } else {
-                $filename .= '.' . get_extension($file_type);
-                move_uploaded_file($tmp_name, 'uploads/' . $filename);
-            }
+            $rules['file'] = function ($value) use ($tmp_name) {
+                return validate_file($value, $tmp_name);
+            };
 
         } else {
             $required[] = 'photo-link';
@@ -111,10 +110,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post['content_type_id'] = $type_row['id'];
 
     $validation_errors = full_form_validation($post, $rules, $required);
-
-    if (isset($file_error)) {
-        $validation_errors['file'] = $file_error;
-    }
 
     if (!$validation_errors) {
         $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id)
