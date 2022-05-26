@@ -84,11 +84,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $file_type = finfo_file($finfo, $tmp_name);
             $filename = uniqid();
-            $lol = validate_file($form_type, $tmp_name);
             $post['file'] = $file_type;
 
-            $rules['file'] = function ($value) use ($tmp_name) {
-                return validate_file($value, $tmp_name);
+            $rules['file'] = function ($value) use ($tmp_name, $filename) {
+                return validate_file($value);
             };
 
         } else {
@@ -112,6 +111,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validation_errors = full_form_validation($post, $rules, $required);
 
     if (!$validation_errors) {
+        if (isset($post['file'])) {
+            $path_parts = pathinfo($file_type);
+            $filename .= '.' . $path_parts['basename'];
+            move_uploaded_file($tmp_name, 'uploads/' . $filename);
+            $post['photo-link'] = $filename;
+        }
+
         $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         $stmt = db_get_prepare_stmt($connection, $sql, [
@@ -126,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         $result = mysqli_stmt_execute($stmt);
         $post_id = mysqli_insert_id($connection);
+
         if ($result) {
             $email = new Email();
             $mailer = new Mailer($transport);

@@ -623,13 +623,12 @@ function change_form($form_type, $required): array
     return $required;
 }
 
-function validate_file($value, $tmp_name): string
+function validate_file($value): ?string
 {
-    if (!in_array($value, ['gif', 'jpg', 'png'])) {
+    if (!str_contains($value, 'image')) {
         return 'Загрузите файл формата gif, jpeg или png';
     }
-    $filename .= '.' . get_extension($value);
-    move_uploaded_file($tmp_name, 'uploads/' . $filename);
+    return null;
 }
 
 
