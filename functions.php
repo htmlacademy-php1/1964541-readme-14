@@ -68,7 +68,12 @@ function show_past_time($time): string
     $cur_date = strtotime('now');
     $diff = $cur_date - $post_date;
 
-    if ($diff < SECONDS_IN_HOUR) {
+    if($diff < SECONDS_IN_MIN) {
+        $divider = 1;
+        $form = ['секунда', 'секунды', 'секунд'];
+    }
+
+    if (SECONDS_IN_MIN < $diff && $diff < SECONDS_IN_HOUR) {
         $divider = SECONDS_IN_MIN;
         $form = ['минута', 'минуты', 'минут'];
     }
@@ -137,7 +142,12 @@ function validate_photo_link($value): ?string
 {
     if ($value) {
         if (file_get_contents($value)) {
-            return null;
+            $photo = file_get_contents($value);
+            $temp_file = tempnam(sys_get_temp_dir(), 'ph');
+            file_put_contents($temp_file, $photo);
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $file_type = finfo_file($finfo, $temp_file);
+            return validate_file($file_type);
         }
         return 'Файл загрузить не получилось';
     }
@@ -623,6 +633,11 @@ function change_form($form_type, $required): array
     return $required;
 }
 
+/**
+ * Валидирует файл на формат фотокарточки
+ * @param string $value тип файла
+ * @return string|null Ошибка|Нет ошибки
+ */
 function validate_file($value): ?string
 {
     if (!str_contains($value, 'image')) {
