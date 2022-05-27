@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $filename = uniqid();
             $post['file'] = $file_type;
 
-            $rules['file'] = function ($value) use ($tmp_name, $filename) {
+            $rules['file'] = function ($value) {
                 return validate_file($value);
             };
 
@@ -111,12 +111,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validation_errors = full_form_validation($post, $rules, $required);
 
     if (!$validation_errors) {
+        if (!empty($post['photo-link'])) {
+            $photo = file_get_contents($post['photo-link']);
+            $temp_file = tempnam(sys_get_temp_dir(), 'ph');
+            file_put_contents($temp_file, $photo);
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $file_type = finfo_file($finfo, $temp_file);
+            $filename = uniqid();
+            $path_parts = pathinfo($file_type);
+            $filename .= '.' . $path_parts['basename'];
+            file_put_contents('uploads/' . $filename, $photo);
+            $post['photo-link'] = $filename;
+        }
+
         if (isset($post['file'])) {
             $path_parts = pathinfo($file_type);
             $filename .= '.' . $path_parts['basename'];
             move_uploaded_file($tmp_name, 'uploads/' . $filename);
             $post['photo-link'] = $filename;
         }
+
+
 
         $sql = 'INSERT INTO posts (title, text, quote_auth, img, video, link, content_type_id, user_id)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)';

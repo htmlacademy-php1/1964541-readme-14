@@ -15,6 +15,8 @@ switch ($code) {
     case '500':
         $error = 'Ошибка 500: Добавьте категории из queries.sql';
         break;
+    case '501':
+        $error = 'Ошибка: Невозможно сделать репост своего поста';
 }
 
 $page_content = include_template('error.php', ['error' => $error]);
